@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIcfBase.cs" />
+    <Compile Include="Class_1CD.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Tool1CD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

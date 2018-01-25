@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _1STool1CD
 {
-    public class Utils1CD
+    public static class Utils1CD
     {
         /// <summary>
         /// Версии формата базы 1С
