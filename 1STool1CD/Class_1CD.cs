@@ -228,7 +228,7 @@ namespace _1STool1CD
     /// <summary>
     /// Основной класс
     /// </summary>
-    public class Class_1CD
+    public class T_1CD
     {
         public static bool recoveryMode;
         public char[] locale;    // код языка базы
@@ -270,7 +270,7 @@ namespace _1STool1CD
         /// <summary>
         ///  Конструктор 
         /// </summary>
-        public Class_1CD()
+        public T_1CD()
         {
             
         }
@@ -362,6 +362,6 @@ namespace _1STool1CD
 
         private depot_ver get_depot_version(char record) { return depot_ver.Ver3; }
 
-    } // Окончание класса Class_1CD
+    } // Окончание класса T_1CD
 
 }
