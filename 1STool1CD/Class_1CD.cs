@@ -150,12 +150,14 @@ namespace _1STool1CD
     {
     }
 
+    /*
     /// <summary>
     /// Таблица
     /// </summary>
     public class TableFiles // Надо реализовывать
     {
     }
+    */
     
     /// <summary>
     /// v8object
@@ -191,13 +193,14 @@ namespace _1STool1CD
     public class ConfigStorageTableConfigSave // Надо реализовывать
     {
     }
+    /*
     /// <summary>
     /// table_blob_file
     /// </summary>
     public class table_blob_file // Надо реализовывать
     {
     }
-
+    */
     public class v8catalog
     {
     }
