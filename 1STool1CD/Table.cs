@@ -54,7 +54,7 @@ namespace _1STool1CD
 
 
 
-    class Table
+    public class Table
     {
         public static readonly UInt32 BLOB_RECORD_LEN = 256;
         public static readonly UInt32 BLOB_RECORD_DATA_LEN = 250;
