@@ -158,15 +158,6 @@ namespace _1STool1CD
     {
     }
 
-    /// <summary>
-    /// Index
-    /// </summary>
-    public class Field // Надо реализовывать
-    {
-    }
-
-
-
     public class v8catalog
     {
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _1STool1CD
 {
-    public class Constants
+    public static class Constants
     {
         public static readonly UInt32 LIVE_CASH = 5; // время жизни кешированных данных в минутах
 
