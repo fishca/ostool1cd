@@ -9,9 +9,6 @@ namespace _1STool1CD
     public class tree // надо реализовывать
     { }
 
-    public class FieldType // надо реализовывать
-    { }
-
     public class Field
     {
         #region public

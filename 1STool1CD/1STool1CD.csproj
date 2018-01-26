@@ -57,6 +57,7 @@
     <Compile Include="ConfigStorage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="FieldType.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="TableFiles.cs" />
     <Compile Include="TableFileStream.cs" />
