@@ -27,7 +27,7 @@ namespace _1STool1CD
         public DateTime ft_modify;
     };
 
-    class TableFiles
+    public class TableFiles
     {
         private Table table;
         private SortedDictionary<String, table_file> allfiles;

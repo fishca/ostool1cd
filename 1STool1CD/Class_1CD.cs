@@ -165,19 +165,7 @@ namespace _1STool1CD
     {
     }
 
-    /// <summary>
-    /// ConfigStorageTableConfig
-    /// </summary>
-    public class ConfigStorageTableConfig // Надо реализовывать
-    {
-    }
 
-    /// <summary>
-    /// ConfigStorageTableConfigSave
-    /// </summary>
-    public class ConfigStorageTableConfigSave // Надо реализовывать
-    {
-    }
 
     public class v8catalog
     {

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="APIcfBase.cs" />
     <Compile Include="Class_1CD.cs" />
+    <Compile Include="ConfigStorage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="TableFiles.cs" />
