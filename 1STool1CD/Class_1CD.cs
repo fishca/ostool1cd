@@ -144,19 +144,7 @@ namespace _1STool1CD
      * **************************************************************************************************************/
 
     
-    /// <summary>
-    /// v8object
-    /// </summary>
-    public class v8object // Надо реализовывать
-    {
-    }
 
-    /// <summary>
-    /// Index
-    /// </summary>
-    public class Index // Надо реализовывать
-    {
-    }
 
     public class v8catalog
     {

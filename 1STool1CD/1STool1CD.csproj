@@ -11,6 +11,7 @@
     <AssemblyName>1STool1CD</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -53,11 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIcfBase.cs" />
+    <Compile Include="BinaryDecimalNumber.cs" />
     <Compile Include="Class_1CD.cs" />
     <Compile Include="ConfigStorage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="FieldType.cs" />
+    <Compile Include="Index.cs" />
+    <Compile Include="MemBlock.cs" />
+    <Compile Include="MemoryTributary.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="TableFiles.cs" />
     <Compile Include="TableFileStream.cs" />

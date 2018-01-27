@@ -50,8 +50,8 @@ namespace _1STool1CD
     {
         public char[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
         public Int16 fatlevel; // 0x0000 пока! но может ... уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
-        UInt32 version;        // ??? предположительно...
-        UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
+        public UInt32 version;        // ??? предположительно...
+        public UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
     }
 
     // типы внутренних файлов
@@ -66,21 +66,21 @@ namespace _1STool1CD
     }
 
 
-    class V8Object
+    public class v8object
     {
         /// <summary>
         /// Конструктор существующего объекта
         /// </summary>
         /// <param name="_base"></param>
         /// <param name="blockNum"></param>
-        public V8Object(T_1CD _base, UInt32 blockNum) 
+        public v8object(T_1CD _base, UInt32 blockNum) 
         { }
 
         /// <summary>
         /// Конструктор нового (еще не существующего) объекта
         /// </summary>
         /// <param name="_base"></param>
-        public V8Object(T_1CD _base) 
+        public v8object(T_1CD _base) 
         { }
 
         #region Public
