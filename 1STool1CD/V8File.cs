@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace _1STool1CD
 {
-    class V8File
+    public class v8file
     {
         enum FileIsCatalog { unknown, yes, no }
         
-        public V8File() // конструктор
+        public v8file() // конструктор
         { }
 
         public string name;  // имя файла GUID
