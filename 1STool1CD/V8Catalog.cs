@@ -25,23 +25,23 @@ namespace _1STool1CD
 
 
 
-        public v8file GetFile(String FileName) { return new v8file(); }
-		public v8file GetFirst() { return new v8file(); }
-        public v8file createFile(String FileName, bool _selfzipped = false) { return new v8file(); } // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
+        public v8file GetFile(String FileName) { return null; }
+		public v8file GetFirst() { return null; }
+        public v8file createFile(String FileName, bool _selfzipped = false) { return null; } // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
         public v8catalog CreateCatalog(String FileName, bool _selfzipped = false) { return null; }
         public void DeleteFile(String FileName) { }
 		public v8catalog GetParentCatalog() { return null; }
-        public v8file GetSelfFile() { return new v8file(); }
+        public v8file GetSelfFile() { return null; }
         public void SaveToDir(String DirName) { }
         public bool isOpen() { return true; }
         public void Flush() { }
         public void HalfClose() { }
         public void HalfOpen(String name) { }
 
-        public v8file get_first_file() { return new v8file(); }
+        public v8file get_first_file() { return null; }
         public void first_file(v8file value) { }
 
-        public v8file get_last_file() { return new v8file(); }
+        public v8file get_last_file() { return null; }
         public void last_file(v8file value) { }
 
         #endregion
