@@ -1,6 +1,6 @@
 environment:
-  sonar_auth_token:
-    secure: EncryptedSonarAuthToken
+  EncryptedSonarAuthToken:
+    secure: 4oQqAYybKEVxkYT82Bvs8HtbPb1N/M6u56FVieqmrZD87tdY6x3+xaVCA28h2gNu
 
 init:
 - REG ADD "HKLM\Software\Microsoft\Command Processor" /v Autorun /t REG_SZ /d "chcp 65001>nul" /f
