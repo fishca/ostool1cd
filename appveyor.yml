@@ -1,4 +1,5 @@
 environment:
+  main_project: 1STool1CD
   sonar_auth_token:
     secure: EncryptedSonarAuthToken
 
