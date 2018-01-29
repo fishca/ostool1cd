@@ -8,7 +8,7 @@ init:
 
 before_build:
 - nuget restore
-- ps: MSBuild.SonarQube.Runner.exe begin /k:"ostool1cd" /d:"sonar.organization=sonar-opensource-add" /d:"sonar.host.url=https://sonar.silverbulleters.org" /d:"sonar.login=$env:EncryptedSonarAuthToken"
+- ps: MSBuild.SonarQube.Runner.exe begin /k:"ostool1cd" /d:"sonar.organization=sonar-opensource-add" /d:"sonar.host.url=https://sonar.silverbulleters.org" /d:"sonar.login=$env:EncryptedSonarAuthToken" /d:"sonar.sourceEncoding=UTF-8"
 
 build_script:
 - msbuild "ostool1cd.sln"
