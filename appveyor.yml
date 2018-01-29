@@ -1,5 +1,4 @@
 environment:
-  main_project: 1STool1CD
   sonar_auth_token:
     secure: EncryptedSonarAuthToken
 
@@ -14,6 +13,9 @@ branches:
 before_build:
 - ps: nuget restore
 - MSBuild.SonarQube.Runner.exe begin /k:"ostool1cd" /d:"sonar.organization="sonar-opensource-add" /d:"sonar.host.url=https://sonar.silverbulleters.org" /d:"sonar.login=${env.EncryptedSonarAuthToken}"
+
+build_script:
+- msbuild "ostool1cd.sln"
 
 after_build:
 - MSBuild.SonarQube.Runner.exe end
