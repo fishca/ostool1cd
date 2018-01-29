@@ -6,12 +6,8 @@ init:
 - REG ADD "HKLM\Software\Microsoft\Command Processor" /v Autorun /t REG_SZ /d "chcp 65001>nul" /f
 - choco install "msbuild-sonarqube-runner" -y
 
-branches:
-  only:
-    - develop
-
 before_build:
-- ps: nuget restore
+- nuget restore
 - MSBuild.SonarQube.Runner.exe begin /k:"ostool1cd" /d:"sonar.organization="sonar-opensource-add" /d:"sonar.host.url=https://sonar.silverbulleters.org" /d:"sonar.login=${env.EncryptedSonarAuthToken}"
 
 build_script:
