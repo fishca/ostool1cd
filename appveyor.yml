@@ -17,4 +17,4 @@ build_script:
 - msbuild "ostool1cd.sln"
 
 after_build:
-- MSBuild.SonarQube.Runner.exe end /d:sonar.login=$env:SONAR_OAUTH_TOKEN
+- ps: "MSBuild.SonarQube.Runner.exe end /d:sonar.login=$env:SONAR_OAUTH_TOKEN"
