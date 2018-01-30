@@ -7,12 +7,18 @@ using System.IO;
 
 namespace _1STool1CD
 {
+    /// <summary>
+    /// структура версии
+    /// </summary>
     public struct _version_rec
     {
         public UInt32 version_1; // версия реструктуризации
         public UInt32 version_2; // версия изменения
     }
 
+    /// <summary>
+    /// структура версии
+    /// </summary>
     public struct _version
     {
         public UInt32 version_1; // версия реструктуризации
@@ -20,13 +26,17 @@ namespace _1STool1CD
         public UInt32 version_3; // версия изменения 2
     }
 
-    // Структура страницы размещения уровня 1 версий от 8.3.8
+    /// <summary>
+    /// Структура страницы размещения уровня 1 версий от 8.3.8 
+    /// </summary>
     public struct objtab838
     {
         public UInt32[] blocks; // реальное количество блоков зависит от размера страницы (pagesize)
     }
 
-    // структура заголовочной страницы файла данных или файла свободных страниц
+    /// <summary>
+    /// структура заголовочной страницы файла данных или файла свободных страниц 
+    /// </summary>
     public struct v8ob
     {
         public char[] sig; // сигнатура SIG_OBJ
@@ -35,7 +45,9 @@ namespace _1STool1CD
         public UInt32[] blocks;
     }
 
-    // структура заголовочной страницы файла данных начиная с версии 8.3.8
+    /// <summary>
+    /// структура заголовочной страницы файла данных начиная с версии 8.3.8 
+    /// </summary>
     struct v838ob_data
     {
         public char[] sig;       // сигнатура 0x1C 0xFD (1C File Data?)
@@ -45,7 +57,9 @@ namespace _1STool1CD
         public UInt32[] blocks;  // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
     }
 
-    // структура заголовочной страницы файла свободных страниц начиная с версии 8.3.8
+    /// <summary>
+    /// структура заголовочной страницы файла свободных страниц начиная с версии 8.3.8 
+    /// </summary>
     public struct v838ob_free
     {
         public char[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
@@ -54,8 +68,9 @@ namespace _1STool1CD
         public UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
     }
 
-    // типы внутренних файлов
-    // типы внутренних файлов
+    /// <summary>
+    /// типы внутренних файлов
+    /// </summary>
     public enum v8objtype
     {
 	    unknown = 0, // тип неизвестен
@@ -65,7 +80,9 @@ namespace _1STool1CD
 	    free838 = 4  // файл свободных страниц формата 8.3.8
     }
 
-
+    /// <summary>
+    /// Класс v8object
+    /// </summary>
     public class v8object
     {
         /// <summary>
@@ -107,7 +124,6 @@ namespace _1STool1CD
         public UInt32 get_block_number() { return 0; }
         public Stream readBlob(Stream _str, UInt32 _startblock, UInt32 _length = UInt32.MaxValue, bool rewrite = true) { return (Stream)null; }
 
-
         #endregion
 
         #region Private
@@ -137,7 +153,6 @@ namespace _1STool1CD
 
         private void init() { }
         private void init(T_1CD _base, Int32 blockNum) { }
-
 
         #endregion
 

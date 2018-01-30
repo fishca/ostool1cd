@@ -7,27 +7,35 @@ using System.Threading.Tasks;
 
 namespace _1STool1CD
 {
-    struct fat_item
+    /// <summary>
+    /// Структура заголовка
+    /// </summary>
+    public struct fat_item
     {
         public UInt32 header_start;
         public UInt32 data_start;
         public UInt32 ff;            // всегда 7fffffff
     }
+
+    /// <summary>
+    /// Класс v8catalog
+    /// </summary>
     public class v8catalog
     {
         #region public
+
+        #region Конструкторы класса
         public v8catalog(v8file f) { }   // создать каталог из файла
         public v8catalog(String name) { } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
         public v8catalog(String name, bool _zipped) { } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
         public v8catalog(Stream stream, bool _zipped, bool leave_stream = false) { } // создать каталог из потока
+        #endregion
 
         public bool IsCatalog() { return true; }
 
-
-
         public v8file GetFile(String FileName) { return null; }
 		public v8file GetFirst() { return null; }
-        public v8file createFile(String FileName, bool _selfzipped = false) { return null; } // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
+        public v8file createFile(String FileName, bool _selfzipped = false) { return null; }         // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
         public v8catalog CreateCatalog(String FileName, bool _selfzipped = false) { return null; }
         public void DeleteFile(String FileName) { }
 		public v8catalog GetParentCatalog() { return null; }
@@ -47,6 +55,7 @@ namespace _1STool1CD
         #endregion
 
         #region private
+
         private v8file file;  // файл, которым является каталог. Для корневого каталога NULL
         private Stream data; // поток каталога. Если file не NULL (каталог не корневой), совпадает с file->data
         private Stream cfu;  // поток файла cfu. Существует только при is_cfu == true

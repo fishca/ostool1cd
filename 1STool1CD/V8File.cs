@@ -13,9 +13,7 @@ namespace _1STool1CD
     public class v8file
     {
 
-
         public v8file(v8catalog _parent, String _name, v8file _previous, int _start_data, int _start_header, Int64 _time_create, Int64 _time_modify) { }
-
 
         public bool IsCatalog() { return true; }
         public v8catalog GetCatalog() { return new v8catalog(" "); }
@@ -25,10 +23,10 @@ namespace _1STool1CD
         //public Int64 Read(std::vector<System::t::Byte> Buffer, int Start, int Length) { return 100; }
 
         public Int64 Write(byte[] Buffer, int Start, int Length){ return 100; }                           // дозапись/перезапись частично
-        //public Int64 Write(std::vector<System::t::Byte> Buffer, int Start, int Length); // дозапись/перезапись частично
-        public Int64 Write(byte[] Buffer, int Length) { return 100; }                                      // перезапись целиком
-        public Int64 Write(Stream Stream_, int Start, int Length) { return 100; }                              // дозапись/перезапись частично
-        public Int64 Write(Stream Stream_) { return 100; }                                                     // перезапись целиком
+        //public Int64 Write(std::vector<System::t::Byte> Buffer, int Start, int Length);                 // дозапись/перезапись частично
+        public Int64 Write(byte[] Buffer, int Length) { return 100; }                                     // перезапись целиком
+        public Int64 Write(Stream Stream_, int Start, int Length) { return 100; }                         // дозапись/перезапись частично
+        public Int64 Write(Stream Stream_) { return 100; }                                                // перезапись целиком
 
         public String GetFileName() { return " "; }
         public String GetFullName() { return " "; }
