@@ -1,0 +1,20 @@
+environment:
+  SONAR_OAUTH_TOKEN:
+    secure: 4oQqAYybKEVxkYT82Bvs8HtbPb1N/M6u56FVieqmrZD87tdY6x3+xaVCA28h2gNu
+
+cache:
+  - '%USERPROFILE%\.sonar\cache'
+
+init:
+- REG ADD "HKLM\Software\Microsoft\Command Processor" /v Autorun /t REG_SZ /d "chcp 65001>nul" /f
+- choco install "msbuild-sonarqube-runner" -y
+
+before_build:
+- nuget restore
+- ps: "MSBuild.SonarQube.Runner.exe begin /k:ostool1cd /d:sonar.organization=sonar-opensource-add /d:sonar.host.url=https://sonar.silverbulleters.org /d:sonar.login=$env:SONAR_OAUTH_TOKEN /d:sonar.sourceEncoding=UTF-8"
+
+build_script:
+- msbuild "ostool1cd.sln"
+
+after_build:
+- ps: "MSBuild.SonarQube.Runner.exe end /d:sonar.login=$env:SONAR_OAUTH_TOKEN"
