@@ -10,11 +10,11 @@ namespace _1STool1CD
     /// <summary>
     /// Класс таблицы контейнера файлов (CONFIG, CONFIGSAVE, PARAMS, FILES, CONFICAS, CONFICASSAVE)
     /// </summary>
-    class TableFileStream : FileStream
+    public class TableFileStream : FileStream
     {
         #region public
 
-        TableFileStream(table_file tf) : base(" ", FileMode.Open) { }
+        public TableFileStream(table_file tf) : base(" ", FileMode.Open) { }
 
         public virtual Int64 Read(byte[] Buffer, Int64 Count) { return 0; }
 	    public override Int32 Read(byte[] Buffer, Int32 Offset, Int32 Count) { return 0; }
