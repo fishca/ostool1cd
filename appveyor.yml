@@ -1,6 +1,6 @@
 environment:
   SONAR_OAUTH_TOKEN:
-    secure: 4oQqAYybKEVxkYT82Bvs8HtbPb1N/M6u56FVieqmrZD87tdY6x3+xaVCA28h2gNu
+    secure: sCvP9gP7a49uelDMhGY8TKQO5ZK0MTZv1SRO1nq8Wf5m0KEAREqTA0RCCCwiL0u4
 
 cache:
   - '%USERPROFILE%\.sonar\cache'
