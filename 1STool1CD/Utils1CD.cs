@@ -21,7 +21,7 @@ namespace _1STool1CD
 	        ver8_3_8_0  = 6
         }
 
-        enum node_type
+        public enum node_type
         {
             nd_empty = 0,		// пусто
 	        nd_string = 1,		// строка
