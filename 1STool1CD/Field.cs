@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace _1STool1CD
 {
-    public class tree // надо реализовывать
-    { }
 
     public class Field
     {
@@ -37,7 +35,7 @@ namespace _1STool1CD
         public bool save_blob_to_file(char[] rec, String filename, bool unpack) { return true; }
         public UInt32 getSortKey(char[] rec, char[] SortKey, Int32 maxlen) { return 0; }
 
-        public static Field field_from_tree(tree field_tree, bool has_version, Table parent) { return new Field(new Table()); }
+        public static Field field_from_tree(Tree field_tree, bool has_version, Table parent) { return new Field(new Table()); }
         #endregion
 
         #region private

@@ -14,7 +14,7 @@ namespace _1STool1CD
         public Int32 precision;
         public bool case_sensitive;
 
-        public static field_type_declaration parse_tree(tree field_tree) { return new field_type_declaration(); }
+        public static field_type_declaration parse_tree(Tree field_tree) { return new field_type_declaration(); }
     }
 
     public class FieldType
