@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static _1STool1CD.Utils1CD;
 
 namespace _1STool1CD
 {
@@ -99,7 +100,7 @@ namespace _1STool1CD
 
         #region private
         private Table tbase;
-        private Utils1CD.db_ver version; // версия базы
+        private db_ver version; // версия базы
         private UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
         private String name;

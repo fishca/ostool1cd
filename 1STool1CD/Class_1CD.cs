@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using static _1STool1CD.Utils1CD;
 
 namespace _1STool1CD
 {
@@ -219,7 +220,7 @@ namespace _1STool1CD
         public bool is_open() { return true; }
         UInt32 get_numtables() { return 100; }
         Table gettable(UInt32 numtable) { return (Table)null; }
-        Utils1CD.db_ver getversion() { return Utils1CD.db_ver.ver8_2_14_0; }
+        db_ver getversion() { return db_ver.ver8_2_14_0; }
 
         public bool save_config(String filename) { return true; }
         public bool save_configsave(String filename) { return true; }
@@ -253,8 +254,8 @@ namespace _1STool1CD
         private UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
         FileStream fs;
-
-        private Utils1CD.db_ver version; // версия базы
+        
+        private db_ver version;
 
         private UInt32 length;        // длина базы в блоках
 
