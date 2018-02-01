@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace _1STool1CD
 {
     /// <summary>
@@ -57,12 +58,14 @@ namespace _1STool1CD
         #region private
 
         private v8file file;  // файл, которым является каталог. Для корневого каталога NULL
-        private Stream data; // поток каталога. Если file не NULL (каталог не корневой), совпадает с file->data
+        public Stream data; // поток каталога. Если file не NULL (каталог не корневой), совпадает с file->data
         private Stream cfu;  // поток файла cfu. Существует только при is_cfu == true
         private void initialize() { }
-        private v8file first; // первый файл в каталоге
-        private v8file last;  // последний файл в каталоге
-        private SortedDictionary<String, v8file> files; // Соответствие имен и файлов
+        //private v8file first; // первый файл в каталоге
+        public v8file first; // первый файл в каталоге
+        public v8file last;  // последний файл в каталоге
+        //private SortedDictionary<String, v8file> files; // Соответствие имен и файлов
+        public SortedDictionary<String, v8file> files; // Соответствие имен и файлов
         private Int64 start_empty; // начало первого пустого блока
         private int page_size;   // размер страницы по умолчанию
         private int version;     // версия
@@ -71,17 +74,17 @@ namespace _1STool1CD
         private bool iscatalog;
         private bool iscatalogdefined;
 
-        private bool is_fatmodified;
+        public bool is_fatmodified;
         private bool is_emptymodified;
         private bool is_modified;
 
-        private void free_block(int start) { }
+        public void free_block(int start) { }
 
         private int write_block(Stream block, int start, bool use_page_size, int len = -1) { return 0; }       // возвращает адрес начала блока
         private int write_datablock(Stream block, int start, bool _zipped = false, int len = -1) { return 0; } // возвращает адрес начала блока
 
-        private Stream read_datablock(int start) { return null; }
-        private Int64 get_nextblock(Int64 start) { return 0; }
+        public MemoryTributary read_datablock(int start) { return null; }
+        public Int64 get_nextblock(Int64 start) { return 0; }
 
         private bool is_destructed; // признак, что работает деструктор
         private bool flushed;       // признак, что происходит сброс
