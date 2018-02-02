@@ -71,6 +71,7 @@
     <Compile Include="Tool1CD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tree.cs" />
+    <Compile Include="TV8FileStream.cs" />
     <Compile Include="Utils1CD.cs" />
     <Compile Include="V8Catalog.cs" />
     <Compile Include="V8File.cs" />
