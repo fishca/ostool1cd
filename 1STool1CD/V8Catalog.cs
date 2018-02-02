@@ -57,7 +57,7 @@ namespace _1STool1CD
 
         #region private
 
-        private v8file file;  // файл, которым является каталог. Для корневого каталога NULL
+        public v8file file;  // файл, которым является каталог. Для корневого каталога NULL
         public Stream data; // поток каталога. Если file не NULL (каталог не корневой), совпадает с file->data
         private Stream cfu;  // поток файла cfu. Существует только при is_cfu == true
         private void initialize() { }
@@ -81,12 +81,12 @@ namespace _1STool1CD
         public void free_block(int start) { }
 
         private int write_block(Stream block, int start, bool use_page_size, int len = -1) { return 0; }       // возвращает адрес начала блока
-        private int write_datablock(Stream block, int start, bool _zipped = false, int len = -1) { return 0; } // возвращает адрес начала блока
+        public int write_datablock(Stream block, int start, bool _zipped = false, int len = -1) { return 0; } // возвращает адрес начала блока
 
         public MemoryTributary read_datablock(int start) { return null; }
         public Int64 get_nextblock(Int64 start) { return 0; }
 
-        private bool is_destructed; // признак, что работает деструктор
+        public bool is_destructed; // признак, что работает деструктор
         private bool flushed;       // признак, что происходит сброс
         private bool leave_data;    // признак, что не нужно удалять основной поток (data) при уничтожении объекта
 

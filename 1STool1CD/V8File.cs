@@ -250,7 +250,6 @@ namespace _1STool1CD
             return ret;
         }
 
-
         public Int64 GetFileLength()
         {
             Int64 ret = 0;
@@ -282,17 +281,133 @@ namespace _1STool1CD
             return ret;
             
         }
-        
 
-        public Int64 Write(byte[] Buffer, int Start, int Length){ return 100; }                           // дозапись/перезапись частично
-        public Int64 Write(byte[] Buffer, int Length) { return 100; }                                     // перезапись целиком
-        public Int64 Write(MemoryTributary Stream_, int Start, int Length) { return 100; }                         // дозапись/перезапись частично
-        public Int64 Write(MemoryTributary Stream_) { return 100; }                                                // перезапись целиком
+        /// <summary>
+        /// Дозапись/перезапись частично
+        /// </summary>
+        /// <param name="Buffer"></param>
+        /// <param name="Start"></param>
+        /// <param name="Length"></param>
+        /// <returns></returns>
+        public Int64 Write(byte[] Buffer, int Start, int Length)
+        {
+            Int64 ret = 0;
 
-        public String GetFileName() { return " "; }
-        public String GetFullName() { return " "; }
+            if (!try_open())
+            {
+                return ret;
+            }
+            setCurrentTime(time_modify);
+            is_headermodified = true;
+            is_datamodified   = true;
+            data.Seek(Start, SeekOrigin.Begin);
+            data.Write(Buffer, Start, Length);
+            ret = Length;
 
-        public void SetFileName(String _name) { }
+            return ret;
+        }
+
+        /// <summary>
+        /// Перезапись целиком
+        /// </summary>
+        /// <param name="Buffer"></param>
+        /// <param name="Length"></param>
+        /// <returns></returns>
+        public Int64 Write(byte[] Buffer, int Length)
+        {
+            Int64 ret = 0;
+            
+            if (!try_open())
+            {
+                return ret;
+            }
+            setCurrentTime(time_modify);
+            is_headermodified = true;
+            is_datamodified   = true;
+            if (data.Length > Length)
+                data.SetLength(Length);
+
+            data.Seek(0, SeekOrigin.Begin);
+            data.Write(Buffer, 0, Length);
+            ret = Length;
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Дозапись/перезапись частично
+        /// </summary>
+        /// <param name="Stream_"></param>
+        /// <param name="Start"></param>
+        /// <param name="Length"></param>
+        /// <returns></returns>
+        public Int64 Write(MemoryTributary Stream_, int Start, int Length)
+        {
+            Int64 ret = 0;
+            if (!try_open())
+            {
+                return ret;
+            }
+            setCurrentTime(time_modify);
+            is_headermodified = true;
+            is_datamodified   = true;
+            data.Seek(Start, SeekOrigin.Begin);
+            Stream_.CopyTo(data, Length);
+            ret = Length;
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Перезапись целиком 
+        /// </summary>
+        /// <param name="Stream_"></param>
+        /// <returns></returns>
+        public Int64 Write(MemoryTributary Stream_)
+        {
+            Int64 ret = 0;
+            if (!try_open())
+            {
+                return ret;
+            }
+            setCurrentTime(time_modify);
+            is_headermodified = true;
+            is_datamodified   = true;
+            if (data.Length > Stream_.Length)
+                data.SetLength(Stream_.Length);
+            data.Seek(0, SeekOrigin.Begin);
+            Stream_.CopyTo(data);
+            ret = data.Length;
+
+            return ret;
+        }
+
+        public String GetFileName() { return name; }
+
+        public String GetFullName()
+        {
+            if (parent != null)
+            { 
+                if (parent.file != null)
+                {
+                    String fulln = parent.file.GetFullName();
+                    if (!String.IsNullOrEmpty(fulln))
+                    {
+                        fulln += "\\";
+                        fulln += name;
+                        return fulln;
+                    }
+                }
+            }
+            return name;
+        }
+
+        public void SetFileName(String _name)
+        {
+            name = _name;
+            is_headermodified = true;
+        }
+
         public v8catalog GetParentCatalog() { return parent; }
 
         public void DeleteFile()
@@ -338,7 +453,10 @@ namespace _1STool1CD
 
         public v8file GetNext() { return next; }
 
-
+        /// <summary>
+        /// Открыть файл
+        /// </summary>
+        /// <returns></returns>
         public bool Open()
         {
             if (parent != null) return false;
@@ -352,23 +470,197 @@ namespace _1STool1CD
             return true;
         }
 
-
+        /// <summary>
+        /// Закрыть файл
+        /// </summary>
         public void Close()
+        {
+            int _t = 0;
+
+            if (parent != null) return;
+            
+            if (!is_opened) return;
+
+            if (self != null) if (!self.is_destructed)
+                {
+                    self = null;
+                }
+
+            self = null;
+
+            if (parent.data != null)
+            {
+                if (is_datamodified || is_headermodified)
+                {
+                    
+                    if (is_datamodified)
+                    {
+                        start_data = parent.write_datablock(this.data, start_data, selfzipped);
+                    }
+                    if (is_headermodified)
+                    {
+                        // TODO: Что-то с этим надо делать
+                        /*
+                        TMemoryStream* hs = new TMemoryStream();
+                        hs->Write(&time_create, 8);
+                        hs->Write(&time_modify, 8);
+                        hs->Write(&_t, 4);
+                        # ifndef _DELPHI_STRING_UNICODE // FIXME: определится используем WCHART или char
+                        int ws = name.WideCharBufSize();
+                        char* tb = new char[ws];
+                        name.WideChar((WCHART*)tb, ws);
+                        hs->Write((char*)tb, ws);
+                        delete[] tb;
+                        #else
+                        hs->Write(name.c_str(), name.Length() * 2);
+                        #endif
+                        hs->Write(&_t, 4);
+
+                        start_header = parent->write_block(hs, start_header, false);
+                        delete hs;
+                        */
+                    }
+                    
+                }
+            }
+            data = null;
+            iscatalog = FileIsCatalog.unknown;
+            is_opened = false;
+            is_datamodified = false;
+            is_headermodified = false;
+        }
+
+        /// <summary>
+        /// Перезапись целиком и закрытие файла (для экономии памяти не используется data файла)
+        /// </summary>
+        /// <param name="Stream_"></param>
+        /// <param name="Length"></param>
+        /// <returns></returns>
+        public Int64 WriteAndClose(MemoryTributary Stream_, int Length = -1)
+        {
+            Int32 _4bzero = 0;
+
+            
+            if (!try_open())
+            {
+                return 0;
+            }
+
+            if (parent != null)
+            {
+                return 0;
+            }
+
+            if (self != null) 
+                self = null;
+
+            data = null;
+
+            if (parent.data != null)
+            {
+                /* TODO: Что-то с этим надо сделать
+                 * 
+                int name_size = name.WideCharBufSize();
+                WCHART* wname = new WCHART[name_size];
+                name.WideChar(wname, name.Length());
+
+                parent->Lock->Acquire();
+                start_data = parent->write_datablock(Stream, start_data, selfzipped, Length);
+                TMemoryStream hs;
+                hs.Write(&time_create, 8);
+                hs.Write(&time_modify, 8);
+                hs.Write(&_4bzero, 4);
+                hs.Write(wname, name.Length() * sizeof(WCHART));
+                hs.Write(&_4bzero, 4);
+                start_header = parent->write_block(&hs, start_header, false);
+                parent->Lock->Release();
+                delete[] wname;
+                */
+            }
+            iscatalog = FileIsCatalog.unknown;
+            is_opened         = false;
+            is_datamodified   = false;
+            is_headermodified = false;
+
+            if (Length == -1)
+                return Stream_.Length;
+
+            return Length;
+        }
+
+        /* надо реализовывать */
+
+        public void GetTimeCreate(Int64 ft)
         {
 
         }
 
-        public Int64 WriteAndClose(MemoryTributary Stream_, int Length = -1) { return 100; } // перезапись целиком и закрытие файла (для экономии памяти не используется data файла)
+        public void GetTimeModify(Int64 ft)
+        {
 
-        /* надо реализовывать
-        public void GetTimeCreate(System::FILETIME* ft);
-        public void GetTimeModify(System::FILETIME* ft);
-        public void SetTimeCreate(System::FILETIME* ft);
-        public void SetTimeModify(System::FILETIME* ft);
-        */
+        }
 
-        public void SaveToFile(String FileName) { }
+        public void SetTimeCreate(Int64 ft)
+        {
 
+        }
+
+        public void SetTimeModify(Int64 ft)
+        {
+
+        }
+
+        public void SaveToFile(String FileName)
+        {
+            //FILETIME create, modify;
+
+            /*
+            # ifdef _MSC_VER
+
+                struct _utimbuf ut;
+
+            #else
+
+        		struct utimbuf ut;
+
+            #endif // _MSC_VER
+            */
+            if (!try_open())
+            {
+                return;
+            }
+
+            /*
+            TFileStream* fs = new TFileStream(FileName, fmCreate);
+            Lock->Acquire();
+            fs->CopyFrom(data, 0);
+            Lock->Release();
+
+            GetTimeCreate(&create);
+            GetTimeModify(&modify);
+
+            time_t RawtimeCreate = FileTime_to_POSIX(&create);
+            struct tm * ptm_create = localtime(&RawtimeCreate);
+            ut.actime = mktime(ptm_create);
+
+            time_t RawtimeModified = FileTime_to_POSIX(&create);
+            struct tm * ptm_modified = localtime(&RawtimeModified);
+            ut.modtime = mktime(ptm_modified);
+
+            # ifdef _MSC_VER
+
+                _utime(FileName.c_str(), &ut);
+
+            #else
+
+                utime(FileName.c_str(), &ut);
+
+            #endif // _MSC_VER
+
+            delete fs;
+            */
+        }
+    
         public void SaveToStream(MemoryTributary stream)
         {
             if (!try_open())
@@ -378,9 +670,76 @@ namespace _1STool1CD
 
             data.CopyTo(stream);
         }
-        
-        //public TV8FileStream* get_stream(bool own = false);
-        public void Flush() { }
+
+        public TV8FileStream get_stream(bool own = false)
+        {
+            return new TV8FileStream(this, own);
+        }
+
+        public void Flush()
+        {
+            int _t = 0;
+            
+            if (flushed)
+            {
+                return;
+            }
+
+            if ( parent != null )
+            {
+                return;
+            }
+            if (!is_opened)
+            {
+                return;
+            }
+
+            flushed = true;
+            if (self != null) self.Flush();
+
+            if ( parent.data != null )
+            {
+                if (is_datamodified || is_headermodified)
+                {
+                    
+                    if (is_datamodified)
+                    {
+                        start_data = parent.write_datablock(data, start_data, selfzipped);
+                        is_datamodified = false;
+                    }
+                    if (is_headermodified)
+                    {
+                        // TODO: Что-то надо делать с этим...
+                        /*
+                        TMemoryStream* hs = new TMemoryStream();
+                        hs->Write(&time_create, 8);
+                        hs->Write(&time_modify, 8);
+                        hs->Write(&_t, 4);
+                        # ifndef _DELPHI_STRING_UNICODE
+                        int ws = name.WideCharBufSize();
+                        char* tb = new char[ws];
+                        name.WideChar((WCHART*)tb, ws);
+                        hs->Write((char*)tb, ws);
+                        delete[] tb;
+                        #else
+                        hs->Write(name.c_str(), name.Length() * 2);
+                        #endif
+                        hs->Write(&_t, 4);
+
+                        start_header = parent->write_block(hs, start_header, false);
+                        delete hs;
+                        is_headermodified = false;
+                        */
+                    }
+                }
+            }
+            flushed = false;
+        }
+
+        public bool try_open()
+        {
+            return (is_opened ? true : Open());
+        }
 
         private String name;
         private Int64 time_create;
@@ -390,9 +749,9 @@ namespace _1STool1CD
         private v8catalog parent;
         private FileIsCatalog iscatalog;
 
-        public v8catalog self;        // указатель на каталог, если файл является каталогом
-        private v8file next;           // следующий файл в каталоге
-        private v8file previous;       // предыдущий файл в каталоге
+        public v8catalog self;          // указатель на каталог, если файл является каталогом
+        private v8file next;            // следующий файл в каталоге
+        private v8file previous;        // предыдущий файл в каталоге
         private bool is_opened;         // признак открытого файла (инициализирован поток data)
         private int start_data;         // начало блока данных файла в каталоге (0 означает, что файл в каталоге не записан)
         private int start_header;       // начало блока заголовка файла в каталоге
@@ -404,12 +763,6 @@ namespace _1STool1CD
 
         // private std::set<TV8FileStream*> streams; ХЗ пока что это
         private SortedSet<TV8FileStream> streams;
-
-        private bool try_open()
-        {
-            return (is_opened ? true : Open());
-        }
-
 
     }
 }

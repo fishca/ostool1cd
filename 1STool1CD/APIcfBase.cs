@@ -31,7 +31,7 @@ namespace _1STool1CD
             public Int64 time_create;
             public Int64 time_modify;
             public Int64 zero;
-        };
+        }
 
         public struct Catalog_header
         {
@@ -39,14 +39,30 @@ namespace _1STool1CD
             public Int32 page_size;   // размер страницы по умолчанию
             public Int32 version;     // версия
             public Int32 zero;        // всегда ноль?
-        };
+        }
 
         public enum Block_header : int
         {
             doc_len   = 2,
 	        block_len = 11,
 	        nextblock = 20
-        };
+        }
+
+        /// <summary>
+        /// установка текущего времени
+        /// </summary>
+        /// <param name="v8t"></param>
+        public static void setCurrentTime(Int64 v8t)
+        {
+            //SYSTEMTIME st;
+            //FILETIME ft;
+
+            //GetSystemTime(&st);
+            //SystemTimeToFileTime(&st, &ft);
+            //FileTimeToV8time(&ft, v8t);
+            v8t = 100500;
+        }
+
 
     } // окончание класса APIcfBase     
 }
