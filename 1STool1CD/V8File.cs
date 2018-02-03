@@ -745,21 +745,21 @@ namespace _1STool1CD
         private Int64 time_create;
         private Int64 time_modify;
         
-        private MemoryTributary data;
+        public MemoryTributary data;
         private v8catalog parent;
         private FileIsCatalog iscatalog;
 
         public v8catalog self;          // указатель на каталог, если файл является каталогом
-        private v8file next;            // следующий файл в каталоге
+        public v8file next;            // следующий файл в каталоге
         private v8file previous;        // предыдущий файл в каталоге
         private bool is_opened;         // признак открытого файла (инициализирован поток data)
-        private int start_data;         // начало блока данных файла в каталоге (0 означает, что файл в каталоге не записан)
-        private int start_header;       // начало блока заголовка файла в каталоге
-        private bool is_datamodified;   // признак модифицированности данных файла (требуется запись в каталог при закрытии)
+        public int start_data;         // начало блока данных файла в каталоге (0 означает, что файл в каталоге не записан)
+        public int start_header;       // начало блока заголовка файла в каталоге
+        public bool is_datamodified;   // признак модифицированности данных файла (требуется запись в каталог при закрытии)
         private bool is_headermodified; // признак модифицированности заголовка файла (требуется запись в каталог при закрытии)
         private bool is_destructed;     // признак, что работает деструктор
         private bool flushed;           // признак, что происходит сброс
-        private bool selfzipped;        // Признак, что файл является запакованным независимо от признака zipped каталога
+        public bool selfzipped;        // Признак, что файл является запакованным независимо от признака zipped каталога
 
         // private std::set<TV8FileStream*> streams; ХЗ пока что это
         private SortedSet<TV8FileStream> streams;

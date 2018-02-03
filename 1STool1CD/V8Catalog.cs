@@ -20,46 +20,528 @@ namespace _1STool1CD
     }
 
     /// <summary>
-    /// Класс v8catalog
+    /// Класс v8catalog  
     /// </summary>
     public class v8catalog
     {
         #region public
 
         #region Конструкторы класса
-        public v8catalog(v8file f) { }   // создать каталог из файла
-        public v8catalog(String name) { } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
-        public v8catalog(String name, bool _zipped) { } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
-        public v8catalog(Stream stream, bool _zipped, bool leave_stream = false) { } // создать каталог из потока
+        /// <summary>
+        /// создать каталог из файла
+        /// </summary>
+        /// <param name="f"></param>
+        public v8catalog(v8file f)
+        {
+            is_cfu = false;
+            iscatalogdefined = false;
+            file = f;
+            
+            file.Open();
+            data = file.data;
+            zipped = false;
+
+            if (IsCatalog()) initialize();
+            else
+            {
+                first = null;
+                last = null;
+                start_empty = 0;
+                page_size = 0;
+                version = 0;
+                zipped = false;
+
+                is_fatmodified = false;
+                is_emptymodified = false;
+                is_modified = false;
+                is_destructed = false;
+                flushed = false;
+                leave_data = false;
+            }
+            
+
+        }   // создать каталог из файла
+
+        /// <summary>
+        /// создать каталог из физического файла (cf, epf, erf, hbk, cfu)
+        /// </summary>
+        /// <param name="name"></param>
+        public v8catalog(String name)
+        {
+
+            
+            iscatalogdefined = false;
+
+            String ext = Path.GetExtension(name).ToLower();
+            if (ext == str_cfu)
+            {
+                is_cfu = true;
+                zipped = false;
+                //data = new MemoryStream();
+                data = new MemoryTributary();
+                if (!File.Exists(name))
+                {
+                    //data.WriteBuffer(_EMPTY_CATALOG_TEMPLATE, CATALOG_HEADER_LEN);
+                    data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
+                    cfu = new FileStream(name, FileMode.Create);
+                }
+                else
+                {
+                    cfu = new FileStream(name, FileMode.Append);
+                    // Inflate((MemoryTributary)cfu, out data); TODO надо дорабатывать обязательно
+                }
+            }
+            else
+            {
+                zipped = ext == str_cf || ext == str_epf || ext == str_erf || ext == str_cfe;
+                is_cfu = false;
+
+                if (!File.Exists(name))
+                {
+                    FileStream data1 = new FileStream(name, FileMode.Create);
+                    data1.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
+                    data1 = null;
+                }
+                data = new FileStream(name, FileMode.Append);
+            }
+
+            file = null;
+            if (IsCatalog()) initialize();
+            else
+            {
+                first = null;
+                last = null;
+                start_empty = 0;
+                page_size = 0;
+                version = 0;
+                zipped = false;
+
+                is_fatmodified = false;
+                is_emptymodified = false;
+                is_modified = false;
+                is_destructed = false;
+                flushed = false;
+                leave_data = false;
+            }
+
+        } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
+
+        /// <summary>
+        /// создать каталог из физического файла (cf, epf, erf, hbk, cfu)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="_zipped"></param>
+        public v8catalog(String name, bool _zipped)
+        {
+            
+            iscatalogdefined = false;
+            is_cfu = false;
+            zipped = _zipped;
+
+            if (!File.Exists(name))
+            {
+                FileStream data = new FileStream(name, FileMode.Create);
+                data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
+                data = null;
+            }
+            data = new FileStream(name, FileMode.Append);
+            file = null;
+            if (IsCatalog()) initialize();
+            else
+            {
+                first = null;
+                last = null;
+                start_empty = 0;
+                page_size = 0;
+                version = 0;
+                zipped = false;
+
+                is_fatmodified = false;
+                is_emptymodified = false;
+                is_modified = false;
+                is_destructed = false;
+                flushed = false;
+                leave_data = false;
+            }
+
+        } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
+
+        /// <summary>
+        /// Создать каталог из потока
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="_zipped"></param>
+        /// <param name="leave_stream"></param>
+        public v8catalog(Stream stream, bool _zipped, bool leave_stream = false)
+        {
+            
+            is_cfu = false;
+            iscatalogdefined = false;
+            zipped = _zipped;
+            data = stream;
+            file = null;
+
+            if (data.Length != 0)
+                data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
+
+            if (IsCatalog())
+                initialize();
+            else
+            {
+                first = null;
+                last = null;
+                start_empty = 0;
+                page_size = 0;
+                version = 0;
+                zipped = false;
+
+                is_fatmodified = false;
+                is_emptymodified = false;
+                is_modified = false;
+                is_destructed = false;
+                flushed = false;
+            }
+            leave_data = leave_stream;
+        } // создать каталог из потока
         #endregion
 
+        /// <summary>
+        /// Это каталог?
+        /// </summary>
+        /// <returns></returns>
         public bool IsCatalog()
         {
 
+            Int64 _filelen;
+            Int32 _startempty = (-1);
+            //char _t[BLOCK_HEADER_LEN];
+            Byte[] _t = new Byte[BLOCK_HEADER_LEN];
+            
+            if (iscatalogdefined)
+            {
+                
+                return iscatalog;
+            }
+            iscatalogdefined = true;
+            iscatalog = false;
+
+            // эмпирический метод?
+            _filelen = data.Length;
+            if (_filelen == CATALOG_HEADER_LEN2)
+            {
+                data.Seek(0, SeekOrigin.Begin);
+                data.Read(_t, 0, CATALOG_HEADER_LEN2);
+                //if (memcmp(_t, _EMPTY_CATALOG_TEMPLATE, CATALOG_HEADER_LEN) != 0)
+                if (!_t.ToString().StartsWith(_EMPTY_CATALOG_TEMPLATE))
+                    {
+                    
+                    return false;
+                }
+                else
+                {
+                    iscatalog = true;
+                    
+                    return true;
+                }
+            }
+
+            data.Seek(0, SeekOrigin.Begin);
+            //data->Read(&_startempty, 4); TODO: ХЗ что с этим делать
+            if (_startempty != LAST_BLOCK)
+            {
+                if (_startempty + 31 >= _filelen)
+                {
+                    
+                    return false;
+                }
+                data.Seek(0, SeekOrigin.Begin);
+                data.Read(_t, 0, 31);
+                if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
+                {
+                    
+                    return false;
+                }
+            }
+            if (_filelen < (BLOCK_HEADER_LEN - 1 + CATALOG_HEADER_LEN))
+            {
+                
+                return false;
+            }
+            
+            data.Seek(CATALOG_HEADER_LEN, SeekOrigin.Begin);
+            data.Read(_t, 0, 31);
+            if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
+            {
+                
+                return false;
+            }
+            iscatalog = true;
             
             return true;
 
 
         }
 
-        public v8file GetFile(String FileName) { return null; }
-		public v8file GetFirst() { return null; }
-        public v8file createFile(String FileName, bool _selfzipped = false) { return null; }         // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
-        public v8catalog CreateCatalog(String FileName, bool _selfzipped = false) { return null; }
-        public void DeleteFile(String FileName) { }
-		public v8catalog GetParentCatalog() { return null; }
+        /// <summary>
+        /// Получить файл по имени
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        public v8file GetFile(String FileName)
+        {
+            v8file ret = null;
+
+            foreach (KeyValuePair<String, v8file> kvp in files)
+            {
+                if (kvp.Key.Equals(FileName))
+                { 
+                    ret = kvp.Value;
+                    break;
+                }
+                else
+                    ret = null;
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Получить первый
+        /// </summary>
+        /// <returns></returns>
+        public v8file GetFirst()
+        {
+            return first;
+        }
+
+        /// <summary>
+        /// Создать файл
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="_selfzipped"></param>
+        /// <returns></returns>
+        public v8file createFile(String FileName, bool _selfzipped = false)
+        {
+            Int64 v8t = 0; ;
+            v8file f;
+
+            f = GetFile(FileName);
+            if ( f != null)
+            {
+                setCurrentTime(v8t);
+                f = new v8file(this, FileName, last, 0, 0, v8t, v8t);
+                f.selfzipped = _selfzipped;
+                last = f;
+                is_fatmodified = true;
+            }
+            
+            return f;
+            
+        }         // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
+
+        public v8catalog CreateCatalog(String FileName, bool _selfzipped = false)
+        {
+            v8catalog ret;
+            
+            v8file f = createFile(FileName, _selfzipped);
+            if (f.GetFileLength() > 0)
+            {
+                if (f.IsCatalog()) ret = f.GetCatalog();
+                else ret = null;
+            }
+            else
+            {
+                f.Write(Encoding.UTF8.GetBytes(_EMPTY_CATALOG_TEMPLATE), CATALOG_HEADER_LEN2);
+                ret = f.GetCatalog();
+            }
+            
+            return ret;
+            return null;
+        }
+
+        public void DeleteFile(String FileName)
+        {
+
+        }
+
+        public v8catalog GetParentCatalog() { return null; }
+
         public v8file GetSelfFile() { return null; }
-        public void SaveToDir(String DirName) { }
-        public bool isOpen() { return true; }
-        public void Flush() { }
-        public void HalfClose() { }
-        public void HalfOpen(String name) { }
 
-        public v8file get_first_file() { return null; }
-        public void first_file(v8file value) { }
+        public void SaveToDir(String DirName)
+        {
+            /*
+            CreateDir(DirName);
+            if (DirName.SubString(DirName.Length(), 1) != str_backslash) DirName += str_backslash;
+            
+            v8file* f = first;
+            while (f)
+            {
+                if (f->IsCatalog()) f->GetCatalog()->SaveToDir(DirName + f->name);
+                else f->SaveToFile(DirName + f->name);
+                f->Close();
+                f = f->next;
+            }
+            */
+        }
 
-        public v8file get_last_file() { return null; }
-        public void last_file(v8file value) { }
+        /// <summary>
+        /// Файл открыт?
+        /// </summary>
+        /// <returns></returns>
+        public bool isOpen()
+        {
+            return IsCatalog();
+        }
+
+        public void Flush()
+        {
+            fat_item fi;
+            v8file f;
+
+            
+            if (flushed)
+            {
+                
+                return;
+            }
+            flushed = true;
+
+            f = first;
+            while (f != null)
+            {
+                f.Flush();
+                f = f.next;
+            }
+
+            if (data != null)
+            {
+                if (is_fatmodified)
+                {
+                    MemoryStream fat = new MemoryStream();
+                    fi.ff = LAST_BLOCK2;
+                    f = first;
+                    while (f != null)
+                    {
+                        fi.header_start = (uint)f.start_header;
+                        fi.data_start = (uint)f.start_data;
+                        //fat.Write(fi, 0, 12); TODO: Подумать
+                        f = f.next;
+                    }
+                    write_block(fat, CATALOG_HEADER_LEN2, true);
+                    is_fatmodified = false;
+                }
+
+                if (is_emptymodified)
+                {
+                    data.Seek(0, SeekOrigin.Begin);
+                    // data.Write(start_empty, 0, 4); TODO: Подумать
+                    is_emptymodified = false;
+                }
+                if (is_modified)
+                {
+                    version++;
+                    data.Seek(0, SeekOrigin.Begin);
+                    // data.Write(version, 0, 4); TODO: Подумать
+                }
+            }
+
+            if (file != null)
+            {
+                if (is_modified)
+                {
+                    file.is_datamodified = true;
+                }
+                file.Flush();
+            }
+            else
+            {
+                if (is_cfu)
+                {
+                    if (data != null && cfu != null && is_modified)
+                    {
+                        data.Seek(0, SeekOrigin.Begin);
+                        cfu.Seek(0, SeekOrigin.Begin);
+
+                        //ZDeflateStream(data, cfu);
+                        // Deflate(data, out cfu); TODO: Додумать
+                    }
+                }
+            }
+
+            is_modified = false;
+            flushed = false;
+
+        }
+
+        /// <summary>
+        /// Хальф клосе
+        /// </summary>
+        public void HalfClose()
+        {
+            
+            Flush();
+            if (is_cfu)
+            {
+                
+                cfu = null;
+            }
+            else
+            {
+                
+                data = null;
+            }
+            
+        }
+
+        /// <summary>
+        /// Хальф опен
+        /// </summary>
+        /// <param name="name"></param>
+        public void HalfOpen(String name)
+        {
+            
+            if (is_cfu)
+                cfu = new FileStream(name, FileMode.Append);
+            else
+                data = new FileStream(name, FileMode.Append);
+            
+        }
+
+        /// <summary>
+        /// Получить первый файл
+        /// </summary>
+        /// <returns></returns>
+        public v8file get_first_file()
+        {
+            return first;
+        }
+
+        /// <summary>
+        /// Установить первый файл
+        /// </summary>
+        /// <param name="value"></param>
+        public void first_file(v8file value)
+        {
+            first = value;
+        }
+
+        /// <summary>
+        /// Получить последний файл
+        /// </summary>
+        /// <returns></returns>
+        public v8file get_last_file()
+        {
+            return last;
+        }
+
+        /// <summary>
+        /// Последний файл
+        /// </summary>
+        /// <param name="value"></param>
+        public void last_file(v8file value)
+        {
+            last = value;
+        }
 
         #endregion
 

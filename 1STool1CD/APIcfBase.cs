@@ -24,10 +24,11 @@ namespace _1STool1CD
         public static string _EMPTY_CATALOG_TEMPLATE = "FFFFFF7F020000000000";
 
         public static Int32 LAST_BLOCK = 0x7FFFFFFF;
-
+        public static UInt32 LAST_BLOCK2 = 0x7FFFFFFF;
         public static UInt32 BLOCK_HEADER_LEN   = 32U;
         public static Int32 BLOCK_HEADER_LEN2 = 32;
         public static UInt32 CATALOG_HEADER_LEN = 16U;
+        public static Int32 CATALOG_HEADER_LEN2 = 16;
 
         public static Int64 EPOCH_START_WIN = 504911232000000;
         public static Int32 HEX_INT_LEN = 2 * 2;
@@ -66,7 +67,7 @@ namespace _1STool1CD
         /// <param name="compressedMemoryStream"></param>
         /// <param name="outBufStream"></param>
         /// <returns></returns>
-        private bool Inflate(MemoryTributary compressedMemoryStream, out MemoryTributary outBufStream)
+        public static bool Inflate(MemoryTributary compressedMemoryStream, out MemoryTributary outBufStream)
         {
             bool result = true;
 
@@ -93,7 +94,7 @@ namespace _1STool1CD
         /// <param name="pDataStream"></param>
         /// <param name="outBufStream"></param>
         /// <returns></returns>
-        private bool Deflate(MemoryTributary pDataStream, out MemoryTributary outBufStream)
+        public static bool Deflate(MemoryTributary pDataStream, out MemoryTributary outBufStream)
         {
             bool result = true;
 
@@ -480,6 +481,11 @@ namespace _1STool1CD
 
             return stream_to;
 
+        }
+
+        public static Byte[] StringToByteArr(String instr, Encoding enc)
+        {
+            return enc.GetBytes(instr);
         }
 
 
