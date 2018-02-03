@@ -33,7 +33,14 @@ namespace _1STool1CD
         public v8catalog(Stream stream, bool _zipped, bool leave_stream = false) { } // создать каталог из потока
         #endregion
 
-        public bool IsCatalog() { return true; }
+        public bool IsCatalog()
+        {
+
+            
+            return true;
+
+
+        }
 
         public v8file GetFile(String FileName) { return null; }
 		public v8file GetFirst() { return null; }
