@@ -338,6 +338,12 @@ namespace _1STool1CD
             
         }         // CreateFile в win64 определяется как CreateFileW, пришлось заменить на маленькую букву
 
+        /// <summary>
+        /// Создать каталог
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="_selfzipped"></param>
+        /// <returns></returns>
         public v8catalog CreateCatalog(String FileName, bool _selfzipped = false)
         {
             v8catalog ret;
@@ -358,17 +364,75 @@ namespace _1STool1CD
             return null;
         }
 
+        /// <summary>
+        /// Удалить файл по имени
+        /// </summary>
+        /// <param name="FileName"></param>
         public void DeleteFile(String FileName)
         {
-
+            v8file f = first;
+            while (f != null)
+            {
+                //if (!f.name.CompareIC(FileName))
+                if (String.Compare(f.name, FileName, true) != 0)
+                {
+                    f.DeleteFile();
+                    f = null;
+                }
+                f = f.next;
+            }
         }
 
-        public v8catalog GetParentCatalog() { return null; }
+        /// <summary>
+        /// Получить родительский каталог
+        /// </summary>
+        /// <returns></returns>
+        public v8catalog GetParentCatalog()
+        {
+            if (file != null)
+                return null;
+            return 
+                file.parent;
+            
+        }
 
-        public v8file GetSelfFile() { return null; }
+        /// <summary>
+        /// Получить свой файл
+        /// </summary>
+        /// <returns></returns>
+        public v8file GetSelfFile()
+        {
+            return file;
+        }
 
+        /// <summary>
+        /// Сохранить в каталог на диске
+        /// </summary>
+        /// <param name="DirName"></param>
         public void SaveToDir(String DirName)
         {
+
+            v8file f = first;
+
+            DirectoryInfo di = new DirectoryInfo(DirName);
+
+            di.Create();
+
+            if (DirName.IndexOf('\\') == -1)
+                DirName += '\\';
+
+            while (f != null)
+            {
+                if (f.IsCatalog())
+                    f.GetCatalog().SaveToDir(DirName + f.name);
+                else
+                    f.SaveToFile(DirName + f.name);
+                f.Close();
+                f = f.next;
+            }
+
+
+
             /*
             CreateDir(DirName);
             if (DirName.SubString(DirName.Length(), 1) != str_backslash) DirName += str_backslash;
@@ -393,6 +457,9 @@ namespace _1STool1CD
             return IsCatalog();
         }
 
+        /// <summary>
+        /// Сбросить
+        /// </summary>
         public void Flush()
         {
             fat_item fi;

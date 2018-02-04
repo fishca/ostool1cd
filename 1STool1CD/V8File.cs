@@ -741,12 +741,12 @@ namespace _1STool1CD
             return (is_opened ? true : Open());
         }
 
-        private String name;
+        public String name;
         private Int64 time_create;
         private Int64 time_modify;
         
         public MemoryTributary data;
-        private v8catalog parent;
+        public v8catalog parent;
         private FileIsCatalog iscatalog;
 
         public v8catalog self;          // указатель на каталог, если файл является каталогом
