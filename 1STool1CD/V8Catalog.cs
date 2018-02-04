@@ -418,7 +418,7 @@ namespace _1STool1CD
 
             di.Create();
 
-            if (DirName.IndexOf('\\') == -1)
+            if (!DirName.EndsWith("\\"))
                 DirName += '\\';
 
             while (f != null)

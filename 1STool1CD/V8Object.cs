@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using static _1STool1CD.Utils1CD;
 
 namespace _1STool1CD
 {
@@ -91,14 +92,36 @@ namespace _1STool1CD
         /// <param name="_base"></param>
         /// <param name="blockNum"></param>
         public v8object(T_1CD _base, UInt32 blockNum) 
-        { }
+        {
+            init(_base, (int)blockNum);
+        }
 
         /// <summary>
         /// Конструктор нового (еще не существующего) объекта
         /// </summary>
         /// <param name="_base"></param>
         public v8object(T_1CD _base) 
-        { }
+        {
+            UInt32 blockNum;
+            Byte[] b = new Byte[_base.pagesize];
+
+            blockNum = _base.get_free_block();
+            b = _base.getblock_for_write(blockNum, false);
+
+            //memset(b, 0, _base->pagesize);
+
+            if (_base.version < db_ver.ver8_3_8_0)
+            {
+                //memcpy(((v8ob*)b)->sig, SIG_OBJ, 8);
+                v8ob
+            }
+            else
+            {
+                b[0] = 0x1c;
+                b[1] = 0xfd;
+            }
+            init(_base, (int)blockNum);
+        }
 
         #region Public
 

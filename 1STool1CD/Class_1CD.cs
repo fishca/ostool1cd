@@ -251,11 +251,11 @@ namespace _1STool1CD
         public UInt32 getpagesize() { return pagesize; }
 
         private String filename;
-        private UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
+        public UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
         FileStream fs;
         
-        private db_ver version;
+        public db_ver version;
 
         private UInt32 length;        // длина базы в блоках
 
@@ -288,9 +288,9 @@ namespace _1STool1CD
         private bool getblock(byte[] buf, UInt32 block_number, Int32 blocklen = -1) { return true; } // буфер принадлежит вызывающей процедуре
 
         private char getblock(UInt32 block_number) { return ' '; }           // буфер не принадлежит вызывающей стороне (принадлежит memblock)
-        private char getblock_for_write(UInt32 block_number, bool read) { return ' '; } // буфер не принадлежит вызывающей стороне (принадлежит memblock)
+        public Byte[] getblock_for_write(UInt32 block_number, bool read) { return new Byte[2]; } // буфер не принадлежит вызывающей стороне (принадлежит memblock)
         private void set_block_as_free(UInt32 block_number) { } // пометить блок как свободный
-        private UInt32 get_free_block() { return 100; } // получить номер свободного блока (и пометить как занятый)
+        public UInt32 get_free_block() { return 100; } // получить номер свободного блока (и пометить как занятый)
 
         private void add_supplier_config(table_file file) { }
 
