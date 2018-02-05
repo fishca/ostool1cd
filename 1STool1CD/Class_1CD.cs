@@ -42,22 +42,22 @@ namespace _1STool1CD
     /// </summary>
     public struct objtab
     {
-        UInt32 numblocks;
-        UInt32[] blocks;
+        public UInt32 numblocks;
+        public UInt32[] blocks;
     };
     
     public struct root_80
     {
-        char[] lang; // 8
-        UInt32 numblocks;
-        UInt32[] blocks;
+        public char[] lang; // 8
+        public UInt32 numblocks;
+        public UInt32[] blocks;
     };
 
     public struct root_81
     {
-        char[] lang; //32
-        UInt32 numblocks;
-        UInt32[] blocks;
+        public char[] lang; //32
+        public UInt32 numblocks;
+        public UInt32[] blocks;
     };
     
     /// <summary>
@@ -92,10 +92,10 @@ namespace _1STool1CD
     /// </summary>
     public struct pagemaprec
     {
-        Int32 tab;     // Индекс в T_1CD::tables, -1 - страница не относится к таблицам
-        pagetype type; // тип страницы
-        UInt32 number; // номер страницы в своем типе
-        pagemaprec(Int32 _tab = -1, pagetype _type = pagetype.lost, UInt32 _number = 0)
+        public Int32 tab;     // Индекс в T_1CD::tables, -1 - страница не относится к таблицам
+        public pagetype type; // тип страницы
+        public UInt32 number; // номер страницы в своем типе
+        public pagemaprec(Int32 _tab = -1, pagetype _type = pagetype.lost, UInt32 _number = 0)
         {
             tab = -1;
             type = _type;
@@ -289,7 +289,7 @@ namespace _1STool1CD
 
         private char getblock(UInt32 block_number) { return ' '; }           // буфер не принадлежит вызывающей стороне (принадлежит memblock)
         public Byte[] getblock_for_write(UInt32 block_number, bool read) { return new Byte[2]; } // буфер не принадлежит вызывающей стороне (принадлежит memblock)
-        private void set_block_as_free(UInt32 block_number) { } // пометить блок как свободный
+        public void set_block_as_free(UInt32 block_number) { } // пометить блок как свободный
         public UInt32 get_free_block() { return 100; } // получить номер свободного блока (и пометить как занятый)
 
         private void add_supplier_config(table_file file) { }
