@@ -376,6 +376,10 @@ namespace _1STool1CD
             v8t = 100500;
         }
 
+        public static UInt64 GetTickCount()
+        {
+            return 100500;
+        }    
         /// <summary>
         /// Читает блок из потока каталога stream_from, собирая его по страницам
         /// </summary>

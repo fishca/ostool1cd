@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using static _1STool1CD.Utils1CD;
+using static _1STool1CD.APIcfBase;
+using static _1STool1CD.Constants;
 
 namespace _1STool1CD
 {
@@ -86,6 +88,7 @@ namespace _1STool1CD
     /// </summary>
     public class v8object
     {
+        #region Конструктора
         /// <summary>
         /// Конструктор существующего объекта
         /// </summary>
@@ -114,6 +117,7 @@ namespace _1STool1CD
             {
                 //memcpy(((v8ob*)b)->sig, SIG_OBJ, 8);
                 //v8ob
+                
             }
             else
             {
@@ -122,10 +126,106 @@ namespace _1STool1CD
             }
             init(_base, (int)blockNum);
         }
+        #endregion
 
         #region Public
 
-        public char getdata() { return '0'; } // чтение всего объекта целиком, поддерживает кеширование объектов. Буфер принадлежит объекту
+        /// <summary>
+        /// Чтение всего объекта целиком, поддерживает кеширование объектов. Буфер принадлежит объекту
+        /// </summary>
+        /// <returns></returns>
+        public char[] getdata()
+        {
+            char[] tt;
+            objtab b = new objtab();
+            objtab838 bb = new objtab838();
+            UInt32 i, l;
+            Int32 j, pagesize, blocksperpage;
+            UInt64 ll;
+            UInt32 curlen = 0;
+
+            lastdataget = (uint)GetTickCount();
+            if (len == 0)
+                return "Text".ToCharArray();
+            if (data != null)
+                return data;
+
+            if (type == v8objtype.free80)
+            {
+                l = (uint)len * 4;
+                data = new char[l];
+                tt = data;
+                i = 0;
+                while (l > DEFAULT_PAGE_SIZE)
+                {
+
+                    base_.getblock(tt.ToString(), blocks[i++]);
+                    tt += DEFAULT_PAGE_SIZE;
+                    l -= DEFAULT_PAGE_SIZE;
+                }
+                base->getblock(tt, blocks[i], l);
+            }
+            else if (type == v8objtype::data80)
+            {
+                l = len;
+                data = new char[l];
+                tt = data;
+                for (i = 0; i < numblocks; i++)
+                {
+                    b = (objtab*)base->getblock(blocks[i]);
+                    for (j = 0; j < b->numblocks; j++)
+                    {
+                        curlen = std::min(DEFAULT_PAGE_SIZE, l);
+                        base->getblock(tt, b->blocks[j], curlen);
+                        if (l <= curlen) break;
+                        l -= curlen;
+                        tt += DEFAULT_PAGE_SIZE;
+                    }
+                    if (l <= curlen) break;
+                }
+            }
+            else if (type == v8objtype::data838)
+            {
+                pagesize = base->pagesize;
+                blocksperpage = pagesize / 4;
+                ll = len;
+                data = new char[ll];
+                tt = data;
+                if (fatlevel)
+                {
+                    for (i = 0; i < numblocks; i++)
+                    {
+                        bb = (objtab838*)base->getblock(blocks[i]);
+                        for (j = 0; j < blocksperpage; j++)
+                        {
+                            curlen = ll > pagesize ? pagesize : ll;
+                            base->getblock(tt, bb->blocks[j], curlen);
+                            if (ll <= curlen) break;
+                            ll -= curlen;
+                            tt += pagesize;
+                        }
+                        if (ll <= curlen) break;
+                    }
+                }
+                else
+                {
+                    for (i = 0; i < numblocks; i++)
+                    {
+                        curlen = ll > pagesize ? pagesize : ll;
+                        base->getblock(tt, blocks[i], curlen);
+                        if (ll <= curlen) break;
+                        ll -= curlen;
+                        tt += pagesize;
+                    }
+                }
+            }
+            else if (type == v8objtype.free838)
+            {
+                // TODO: реализовать v8object::getdata() для файла свободных страниц формата 8.3.8
+            }
+            return data;
+
+        } 
         public char getdata(byte[] buf, UInt64 _start, UInt64 _length) { return '0'; } // чтение кусочка объекта, поддерживает кеширование блоков. Буфер не принадлежит объекту
         public bool setdata(byte[] buf, UInt64 _start, UInt64 _length) { return true; } // запись кусочка объекта, поддерживает кеширование блоков.
         public bool setdata(byte[] buf, UInt64 _length) { return true; } // запись объекта целиком, поддерживает кеширование блоков.
@@ -291,7 +391,7 @@ namespace _1STool1CD
 
                 bd.len = _len;
 
-                num_data_blocks = (_len + base_.pagesize - 1) / base->pagesize;
+                num_data_blocks = (uint)(_len + base_.pagesize - 1) / base_.pagesize;
                 if (num_data_blocks > offsperpage - 6)
                 {
                     num_blocks = (num_data_blocks + offsperpage - 1) / offsperpage;
@@ -302,72 +402,83 @@ namespace _1STool1CD
                     num_blocks = num_data_blocks;
                     newfatlevel = 0;
                 }
-                cur_data_blocks = (len + base->pagesize - 1) / base->pagesize;
+                cur_data_blocks = (uint)(len + base_.pagesize - 1) / base_.pagesize;
 
                 if (numblocks != num_blocks)
                 {
-                    delete[] blocks;
-                    if (num_blocks) blocks = new uint32_t[num_blocks];
-                    else blocks = nullptr;
+                    blocks = null;
+                    if (num_blocks != 0)
+                        blocks = new UInt32[num_blocks];
+                    else
+                        blocks = null;
                 }
 
                 if (num_data_blocks > cur_data_blocks)
                 {
                     // Увеличение длины объекта
-                    if (fatlevel == 0 && newfatlevel)
+                    if (fatlevel == 0 && newfatlevel != 0)
                     {
-                        bl = base->get_free_block();
-                        bb = (objtab838*)base->getblock_for_write(bl, false);
-                        memcpy(bb->blocks, bd->blocks, numblocks * 4);
-                        fatlevel = newfatlevel;
-                        bd->fatlevel = newfatlevel;
-                        bd->blocks[0] = bl;
+                        bl = base_.get_free_block();
+                        //bb = (objtab838)base_.getblock_for_write(bl, false); TODO : Надо исправлять
+                        //memcpy(bb->blocks, bd->blocks, numblocks * 4);
+                        Array.Copy(bd.blocks, bb.blocks, (int)numblocks * 4);
+                        fatlevel = (int)newfatlevel;
+                        bd.fatlevel = (short)newfatlevel;
+                        bd.blocks[0] = bl;
                         numblocks = 1;
                     }
-                    else bb = (objtab838*)base->getblock_for_write(bd->blocks[numblocks - 1], true);
+                    else
+                    {
+                        //bb = (objtab838)base_.getblock_for_write(bd.blocks[numblocks - 1], true);
+                    }
 
-                    if (fatlevel)
+                    if (fatlevel != 0)
                     {
                         for (; cur_data_blocks < num_data_blocks; cur_data_blocks++)
                         {
                             i = cur_data_blocks % offsperpage;
                             if (i == 0)
                             {
-                                bl = base->get_free_block();
-                                bd->blocks[numblocks++] = bl;
-                                bb = (objtab838*)base->getblock_for_write(bl, false);
+                                bl = base_.get_free_block();
+                                bd.blocks[numblocks++] = bl;
+                                //bb = (objtab838)base_.getblock_for_write(bl, false); // TODO : Надо исправлять
                             }
-                            bl = base->get_free_block();
-                            base->getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
-                            bb->blocks[i] = bl;
+                            bl = base_.get_free_block();
+                            base_.getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
+                            bb.blocks[i] = bl;
                         }
                     }
                     else
                     {
                         for (; cur_data_blocks < num_data_blocks; cur_data_blocks++)
                         {
-                            bl = base->get_free_block();
-                            base->getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
-                            bd->blocks[cur_data_blocks] = bl;
+                            bl = base_.get_free_block();
+                            base_.getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
+                            bd.blocks[cur_data_blocks] = bl;
                         }
                     }
                 }
                 else if (num_data_blocks < cur_data_blocks)
                 {
                     // Уменьшение длины объекта
-                    if (fatlevel)
+                    if (fatlevel != 0)
                     {
-                        bb = (objtab838*)base->getblock_for_write(b->blocks[numblocks - 1], true);
+                        //bb = (objtab838*)base->getblock_for_write(b->blocks[numblocks - 1], true); // TODO: Надо исправлять
+                        bb = new objtab838();
                         for (cur_data_blocks--; cur_data_blocks >= num_data_blocks; cur_data_blocks--)
                         {
                             i = cur_data_blocks % offsperpage;
-                            base->set_block_as_free(bb->blocks[i]);
-                            bb->blocks[i] = 0;
+                            base_.set_block_as_free(bb.blocks[i]);
+                            bb.blocks[i] = 0;
                             if (i == 0)
                             {
-                                base->set_block_as_free(bd->blocks[--numblocks]);
-                                bd->blocks[numblocks] = 0;
-                                if (numblocks) bb = (objtab838*)base->getblock_for_write(b->blocks[numblocks - 1], true);
+                                base_.set_block_as_free(bd.blocks[--numblocks]);
+                                bd.blocks[numblocks] = 0;
+                                if (numblocks != 0)
+                                {
+                                    //bb = (objtab838*)base->getblock_for_write(b->blocks[numblocks - 1], true);
+                                    bb = new objtab838(); // TODO: Надо исправлять
+                                }
                             }
                         }
                     }
@@ -375,28 +486,33 @@ namespace _1STool1CD
                     {
                         for (cur_data_blocks--; cur_data_blocks >= num_data_blocks; cur_data_blocks--)
                         {
-                            base->set_block_as_free(bd->blocks[cur_data_blocks]);
-                            bd->blocks[cur_data_blocks] = 0;
+                            base_.set_block_as_free(bd.blocks[cur_data_blocks]);
+                            bd.blocks[cur_data_blocks] = 0;
                         }
                         numblocks = num_data_blocks;
                     }
 
-                    if (fatlevel && newfatlevel == 0)
+                    if (fatlevel != 0 && newfatlevel == 0)
                     {
-                        if (numblocks)
+                        if (numblocks != 0 )
                         {
-                            bl = bd->blocks[0];
-                            memcpy(bd->blocks, bb->blocks, num_data_blocks * 4);
-                            base->set_block_as_free(bl);
+                            bl = bd.blocks[0];
+                            //memcpy(bd->blocks, bb->blocks, num_data_blocks * 4);
+                            Array.Copy(bb.blocks, bd.blocks, num_data_blocks * 4);
+                            base_.set_block_as_free(bl);
                         }
                         fatlevel = 0;
-                        bd->fatlevel = 0;
+                        bd.fatlevel = 0;
                     }
 
                 }
 
                 len = _len;
-                if (numblocks) memcpy(blocks, bd->blocks, numblocks * 4);
+                if (numblocks != 0)
+                {
+                    //memcpy(blocks, bd->blocks, numblocks * 4);
+                    Array.Copy(bd.blocks, blocks, (int)numblocks * 4);
+                }
 
                 write_new_version();
             }
