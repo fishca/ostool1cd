@@ -32,11 +32,18 @@ namespace _1STool1CD
 
         public static String GUIDas1C(String str_guid)
         {
+            Guid g = new Guid();
+            StringBuilder str = new StringBuilder(str_guid);
+
+
+
         	return "";
         }
 
         public static String GUIDasMS(String str_guid)
         {
+            StringBuilder str = new StringBuilder(str_guid);
+
             return "";
         }
 
