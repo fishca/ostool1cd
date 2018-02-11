@@ -136,6 +136,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public char[] getdata()
         {
+            /*
             char[] tt;
             objtab b = new objtab();
             objtab838 bb = new objtab838();
@@ -224,7 +225,8 @@ namespace _1STool1CD
                 // TODO: реализовать v8object::getdata() для файла свободных страниц формата 8.3.8
             }
             return data;
-
+            */
+            return data;
         } 
         public char getdata(byte[] buf, UInt64 _start, UInt64 _length) { return '0'; } // чтение кусочка объекта, поддерживает кеширование блоков. Буфер не принадлежит объекту
         public bool setdata(byte[] buf, UInt64 _start, UInt64 _length) { return true; } // запись кусочка объекта, поддерживает кеширование блоков.

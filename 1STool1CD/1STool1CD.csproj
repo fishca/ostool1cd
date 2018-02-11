@@ -65,6 +65,7 @@
     <Compile Include="Index.cs" />
     <Compile Include="MemBlock.cs" />
     <Compile Include="MemoryTributary.cs" />
+    <Compile Include="Parse_Tree.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="TableFiles.cs" />
     <Compile Include="TableFileStream.cs" />
