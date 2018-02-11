@@ -30,12 +30,12 @@ namespace _1STool1CD
             
         }
 
-        public static String GUIDas1C(String fr)
+        public static String GUIDas1C(String str_guid)
         {
         	return "";
         }
 
-        public static String GUIDasMS(String fr)
+        public static String GUIDasMS(String str_guid)
         {
             return "";
         }
