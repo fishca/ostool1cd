@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace DevelPlatform.OneCEUtils.V8Formats
+namespace _1STool1CD
 {
     class Parse_Tree
     {
