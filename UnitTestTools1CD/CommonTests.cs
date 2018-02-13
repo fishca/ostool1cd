@@ -15,7 +15,16 @@ namespace _1STool1CD.Tests
         [TestMethod()]
         public void time1CD_to_FileTimeTest()
         {
-            Assert.Fail();
+            //DateTime ft = (DateTime)"20180212 10:25:00";
+            // dd.MM.yyyy hh:mm:ss
+            DateTime ft = new DateTime(2019, 2, 12, 10, 25, 0);
+            DateTime ft_res = new DateTime(2000, 2, 12, 10, 25, 0);
+            time1CD_to_FileTime(ref ft_res, "12.02.2019 10:25:00");
+
+            bool res = (ft_res == ft);
+            Assert.IsTrue(res,
+                String.Format("Исходное число test_val = '{0}': 0x11223344; Преобразованное должно быть 0x44332211, а оно: {1}",
+                               ft.ToString(), ft_res.ToString()));
         }
 
         [TestMethod()]
