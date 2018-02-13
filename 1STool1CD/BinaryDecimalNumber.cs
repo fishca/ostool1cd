@@ -10,7 +10,10 @@ namespace _1STool1CD
     {
         public List<int> data;
 
-        public BinaryDecimalBuilder(List<int> data) => this.data = data;
+        public BinaryDecimalBuilder(List<int> data)
+        { 
+            this.data = data;
+        }
 
         public void push1(byte lo)
         {

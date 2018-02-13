@@ -28,7 +28,9 @@ namespace _1STool1CD.Tests
             // 1144201745
             test_res = reverse_byte_order(test_val);
             bool res = (test_res == 0x44332211);
-            Assert.IsTrue(res, String.Format("Исходное число test_val = '{0}': 0x11223344; Преобразованное должно быть 0x44332211, а оно: {1}", test_val, test_res));
+            Assert.IsTrue(res, 
+                String.Format("Исходное число test_val = '{0}': 0x11223344; Преобразованное должно быть 0x44332211, а оно: {1}", 
+                               test_val, test_res));
 
         }
 
