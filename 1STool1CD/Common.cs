@@ -9,16 +9,33 @@ namespace _1STool1CD
 {
     public static class Common
     {
+        /// <summary>
+        /// Длина строкового представления GUID-а
+        /// </summary>
         public static readonly UInt32 GUID_LEN = 36;
+
+        /// <summary>
+        /// Шестнадцатеричные символы
+        /// </summary>
         public static readonly String hexdecode = "0123456789abcdef";
 
-
+        /// <summary>
+        /// Преобразование времени из строки в DateTime
+        /// </summary>
+        /// <param name="ft"></param>
+        /// <param name="time1CD"></param>
         public static void time1CD_to_FileTime(ref DateTime ft, String time1CD)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(time1CD);
             ft = DateTime.Parse(time1CD);
         }
 
+        /// <summary>
+        /// Меняет порядок байт в числе
+        /// 0x11223344 => 0x44332211
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static UInt32 reverse_byte_order(UInt32 value)
         {
 
@@ -30,6 +47,11 @@ namespace _1STool1CD
             
         }
 
+        /// <summary>
+        /// Отображение GUID в стиле 1С
+        /// </summary>
+        /// <param name="str_guid"></param>
+        /// <returns></returns>
         public static String GUIDas1C(String str_guid)
         {
             Guid g = new Guid();
@@ -40,6 +62,11 @@ namespace _1STool1CD
         	return "";
         }
 
+        /// <summary>
+        /// Отображение GUID в стиле Microsoft
+        /// </summary>
+        /// <param name="str_guid"></param>
+        /// <returns></returns>
         public static String GUIDasMS(String str_guid)
         {
             StringBuilder str = new StringBuilder(str_guid);
@@ -47,11 +74,22 @@ namespace _1STool1CD
             return "";
         }
 
+        /// <summary>
+        /// Преобразование GUID в строку
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         public static String GUID_to_string(Guid guid)
         {
             return GUIDas1C(guid.ToString());
         }
 
+        /// <summary>
+        /// Преобразование строки в GUID
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         public static bool string_to_GUID(String str, Guid guid)
         {
             int i, j;
@@ -113,6 +151,11 @@ namespace _1STool1CD
             return res;
         }
 
+        /// <summary>
+        /// Преобразование GUID в плоскую строку
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         public static String GUID_to_string_flat(Guid guid)
         {
             int i, j;
@@ -142,7 +185,13 @@ namespace _1STool1CD
     	    return buf.ToString();
         }
 
-    public static bool string_to_GUID_flat(String str, Guid guid)
+        /// <summary>
+        /// Преобзование из строки в GUID плоский
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public static bool string_to_GUID_flat(String str, Guid guid)
         {
             int i, j;
 
@@ -169,6 +218,13 @@ namespace _1STool1CD
             return res;
         }
 
+        /// <summary>
+        /// Преобразование двух шестнадцатеричных цифр в байт
+        /// </summary>
+        /// <param name="hi"></param>
+        /// <param name="lo"></param>
+        /// <param name="res"></param>
+        /// <returns></returns>
         public static bool two_hex_digits_to_byte(Char hi, Char lo, ref Char res)
         {
             if (hi >= '0' && hi <= '9') res = (Char)((hi - '0') << 4);
@@ -190,13 +246,25 @@ namespace _1STool1CD
             return true;
         }
 
+        /// <summary>
+        /// Преобразование строки 1С в дату
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="bytedate"></param>
+        /// <returns></returns>
         public static bool string1C_to_date(String str, DateTime bytedate)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(str, "yyyyMMddhhmmss");
             //bdd.write_to(bytedate);
             return true;
         }
-
+        
+        /// <summary>
+        /// Преобразование строки в дату
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="bytedate"></param>
+        /// <returns></returns>
         public static bool string_to_date(String str, DateTime bytedate)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(str);
@@ -204,12 +272,22 @@ namespace _1STool1CD
             return true;
         }
 
+        /// <summary>
+        /// Преобразование даты в строку 1С
+        /// </summary>
+        /// <param name="bytedate"></param>
+        /// <returns></returns>
         public static String date_to_string1C(DateTime bytedate)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(bytedate.ToString());
             return bdd.get_part(0, 14);
         }
 
+        /// <summary>
+        /// Преобразование даты в строку
+        /// </summary>
+        /// <param name="bytedate"></param>
+        /// <returns></returns>
         public static String date_to_string(DateTime bytedate)
         {
 
@@ -218,6 +296,12 @@ namespace _1STool1CD
             
         }
 
+        /// <summary>
+        /// Преобразование буфера в шестнадцатеричную строку
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static String hexstring(Char[] buf, int n)
         {
             int i;
@@ -241,6 +325,11 @@ namespace _1STool1CD
         	return s;
         }
 
+        /// <summary>
+        /// Преобразование из потока в шестнадцатеричную строку
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static String hexstring(Stream str)
         {
             String s = "";
@@ -263,6 +352,11 @@ namespace _1STool1CD
             
         }
 
+        /// <summary>
+        /// Преобразование строки с заменой недопустимых символов
+        /// </summary>
+        /// <param name="in_str"></param>
+        /// <returns></returns>
         public static String toXML(String in_str)
         {
             StringBuilder tmp_str = new StringBuilder(in_str);
@@ -274,6 +368,11 @@ namespace _1STool1CD
                           .Replace("\"", "&quot;").ToString();
         }
 
+        /// <summary>
+        /// Преобразование символа из шестнадцатеричной цифры
+        /// </summary>
+        /// <param name="digit"></param>
+        /// <returns></returns>
         public static Char from_hex_digit(Char digit)
         {
             if (digit >= '0' && digit <= '9') return (Char)(digit - '0');

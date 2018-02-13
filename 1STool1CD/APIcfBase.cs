@@ -304,7 +304,7 @@ namespace _1STool1CD
         /// <param name="_tmpFolder"></param>
         public static void ClearTempData(String tmpFolder = "", String _tmpFolder = "")
         {
-            if (!string.IsNullOrEmpty(tmpFolder))
+            if (!String.IsNullOrEmpty(tmpFolder))
             {
                 try
                 {
@@ -315,7 +315,7 @@ namespace _1STool1CD
                 }
             }
 
-            string V8FormatsTmp = string.Format("{0}V8Formats{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);
+            String V8FormatsTmp = String.Format("{0}V8Formats{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);
             if (Directory.Exists(V8FormatsTmp))
             {
                 string[] foundDirectories = Directory.GetDirectories(V8FormatsTmp);
@@ -344,13 +344,13 @@ namespace _1STool1CD
         public static long DirSize(DirectoryInfo d)
         {
             long Size = 0;
-            // Add file sizes.
+            // Добавляем размер файлов
             FileInfo[] fis = d.GetFiles();
             foreach (FileInfo fi in fis)
             {
                 Size += fi.Length;
             }
-            // Add subdirectory sizes.
+            // Добавляем размер подкаталогов
             DirectoryInfo[] dis = d.GetDirectories();
             foreach (DirectoryInfo di in dis)
             {
@@ -487,6 +487,12 @@ namespace _1STool1CD
 
         }
 
+        /// <summary>
+        /// Преобразование строки в байтовый массив
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <param name="enc"></param>
+        /// <returns></returns>
         public static Byte[] StringToByteArr(String instr, Encoding enc)
         {
             return enc.GetBytes(instr);

@@ -217,7 +217,19 @@ namespace _1STool1CD
             
         }
 
-        public bool is_open() { return true; }
+        /// <summary>
+        /// Проверка открытия файла базы 1CD
+        /// </summary>
+        /// <returns></returns>
+        public bool is_open()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Определение количества таблиц
+        /// </summary>
+        /// <returns></returns>
         UInt32 get_numtables() { return 100; }
         Table gettable(UInt32 numtable) { return (Table)null; }
         db_ver getversion() { return db_ver.ver8_2_14_0; }
