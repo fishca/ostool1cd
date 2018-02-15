@@ -217,13 +217,44 @@ namespace _1STool1CD
             
         }
 
+        public static tree get_treeFromV8file(v8file f)
+        {
+            //TBytesStream* sb;
+            
+            Encoding enc;
+            Byte[] bytes = new Byte[0x1000];
+            Int32 offset;
+            tree rt;
+
+            //MemoryStream sb = new MemoryStream(bytes);
+            MemoryTributary sb = new MemoryTributary(bytes);
+
+            //f.SaveToStream(sb);
+            f.SaveToStream(sb);
+
+            enc = null;
+            //offset = Encoding::GetBufferEncoding(sb->GetBytes(), enc);
+            offset = Encoding.g
+            if (offset == 0)
+            {
+                msreg_g.AddError("Ошибка определения кодировки файла контейнера",
+                    "Файл", f->GetFullName());
+                delete sb;
+                return nullptr;
+            }
+            bytes = TEncoding::Convert(enc, TEncoding::Unicode, sb->GetBytes(), offset, sb->GetSize() - offset);
+
+            rt = parse_1Ctext(String((WCHART*)&bytes[0], bytes.size() / 2), f->GetFullName());
+            delete sb;
+            return rt;
+        }
         /// <summary>
         /// Проверка открытия файла базы 1CD
         /// </summary>
         /// <returns></returns>
         public bool is_open()
         {
-            return true;
+            return fs != null;
         }
 
         /// <summary>
