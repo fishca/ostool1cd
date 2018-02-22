@@ -23,18 +23,25 @@ namespace _1STool1CD
 
         public enum node_type
         {
-            nd_empty = 0,		// пусто
-	        nd_string = 1,		// строка
-	        nd_number = 2,		// число
+            nd_empty      = 0,	// пусто
+	        nd_string     = 1,	// строка
+	        nd_number     = 2,	// число
 	        nd_number_exp = 3,	// число с показателем степени
-	        nd_guid = 4,		// уникальный идентификатор
-	        nd_list = 5,		// список
-	        nd_binary = 6,		// двоичные данные (с префиксом #base64:)
-	        nd_binary2 = 7,		// двоичные данные формата 8.2 (без префикса)
-	        nd_link = 8,		// ссылка
-	        nd_binary_d = 9,	// двоичные данные (с префиксом #data:)
+	        nd_guid       = 4,	// уникальный идентификатор
+	        nd_list       = 5,	// список
+	        nd_binary     = 6,	// двоичные данные (с префиксом #base64:)
+	        nd_binary2    = 7,	// двоичные данные формата 8.2 (без префикса)
+	        nd_link       = 8,	// ссылка
+	        nd_binary_d   = 9,	// двоичные данные (с префиксом #data:)
 	        nd_unknown          // неизвестный тип
         }
+                
+        /// <summary>
+        /// 0x7FFFFFFF - Обозначение последней страницы
+        /// </summary>
+        public static readonly Int32 LAST_PAGE = Int32.MaxValue; 
+        
+
 
     }
 }

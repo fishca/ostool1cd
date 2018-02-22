@@ -162,7 +162,7 @@ namespace _1STool1CD
 
 
         #region private
-        private T_1CD base_;
+        public T_1CD base_;
 
         private v8object descr_table; // объект с описанием структуры таблицы (только для версий с 8.0 до 8.2.14)
         private String description;
@@ -176,7 +176,7 @@ namespace _1STool1CD
         private bool recordlock;
         private v8object file_data;
         private v8object file_blob;
-        private v8object file_index;
+        public v8object file_index;
         private Int32 recordlen; // длина записи (в байтах)
         private bool issystem; // Признак системной таблицы (имя таблицы не начинается с подчеркивания)
         private Int32 lockinmemory; // счетчик блокировок в памяти
@@ -188,7 +188,7 @@ namespace _1STool1CD
         private UInt32 added_numrecords; // количество добавленных записей в режиме редактирования
 
         private UInt32 phys_numrecords; // физическое количество записей (вместе с удаленными)
-        private UInt32 log_numrecords; // логическое количество записей (только не удаленные)
+        public UInt32 log_numrecords; // логическое количество записей (только не удаленные)
 
         private void create_file_data() { } // создание файла file_data
         private void create_file_blob() { } // создание файла file_blob

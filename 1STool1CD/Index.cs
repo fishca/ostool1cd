@@ -70,17 +70,72 @@ namespace _1STool1CD
         public Int16 indexpage_is_root = 1; // Установленный флаг означает, что страница является корневой
         public Int16 indexpage_is_leaf = 2; // Установленный флаг означает, что страница является листом, иначе веткой
 
-        public Index(Table _base) { }
+        public Index(Table _base)
+        {
+            tbase = _base;
+            is_primary = false;
+            num_records = 0;
+            //records = nullptr;
+            start = 0;
+            rootblock = 0;
+            length = 0;
+            recordsindex_complete = false;
+            pagesize = tbase.base_.pagesize;
+            version = tbase.base_.version;
 
-        public String getname() { return " "; }
-        public bool get_is_primary() { return true; }
-        public Int32 get_num_records() { return 0; } // получить количество полей в индексе
-        public index_record get_records() { return new index_record(); }
+        }
 
-        public UInt32 get_numrecords() { return 0; } // получает количество записей, проиндексированных индексом
-        public UInt32 get_numrec(UInt32 num_record) { return 0; } // получает физический индекс записи по порядковому индексу
+        public String getname()
+        {
+            return name;
+        }
 
-        public void dump(String filename) { }
+        public bool get_is_primary()
+        {
+            return is_primary;
+        }
+
+        /// <summary>
+        /// получить количество полей в индексе
+        /// </summary>
+        /// <returns></returns>
+        public Int32 get_num_records()
+        {
+            return num_records;
+        } 
+
+        public index_record get_records()
+        {
+            return records;
+        }
+
+        /// <summary>
+        /// получает количество записей, проиндексированных индексом
+        /// </summary>
+        /// <returns></returns>
+        public UInt32 get_numrecords()
+        {
+            if (start != 0) return 0;
+            if (!recordsindex_complete) create_recordsindex();
+            return (UInt32)recordsindex.Capacity;
+        }
+
+        /// <summary>
+        /// получает физический индекс записи по порядковому индексу
+        /// </summary>
+        /// <param name="num_record"></param>
+        /// <returns></returns>
+        public UInt32 get_numrec(UInt32 num_record)
+        {
+            if (start != 0) return 0;
+            if (!recordsindex_complete) create_recordsindex();
+            return recordsindex[(int)num_record];
+        } 
+
+        public void dump(String filename)
+        {
+        }
+
         public void calcRecordIndex(byte[] rec, char[] indexBuf) { } // вычислить индекс записи rec и поместить в indexBuf. Длина буфера indexBuf должна быть не меньше length
 
         public UInt32 get_rootblock() { return 0; }
@@ -115,7 +170,75 @@ namespace _1STool1CD
 
         private List<UInt32> recordsindex; // динамический массив индексов записей по номеру (только не пустые записи)
         private bool recordsindex_complete; // признак заполнености recordsindex
-        private void create_recordsindex() { }
+
+        private void create_recordsindex()
+        {
+            //char* buf;
+            byte[] buf;
+            UInt32 curlen;
+            UInt64 curblock;
+            UInt32 mask;
+            v8object file_index;
+
+            if (start != 0) return;
+
+            //String readindex("Чтение индекса ");
+            //msreg_g.Status(readindex);
+
+            //buf = new char[pagesize];
+            buf = new byte[pagesize];
+
+            file_index = tbase.file_index;
+            file_index.getdata(buf, start, 8);
+
+            //rootblock = *(uint32_t*)buf;
+            rootblock = buf;
+            if (version >= db_ver::ver8_3_8_0) rootblock *= pagesize;
+            length = *(int16_t*)(buf + 4);
+
+            curblock = rootblock;
+
+            file_index->getdata(buf, curblock, pagesize);
+            curlen = *(int16_t*)(buf + 2);
+            if (curlen)
+            {
+                recordsindex.resize(tbase->file_data->getlen() / tbase->recordlen);
+                bool is_leaf = buf[0] & 0x2;
+                while (!is_leaf)
+                {
+                    curblock = *(uint32_t*)(buf + 16 + length);
+                    curblock = reverse_byte_order(curblock);
+                    if (version >= db_ver::ver8_3_8_0) curblock *= pagesize;
+                    file_index->getdata(buf, curblock, pagesize);
+
+                    is_leaf = buf[0] & 0x2;
+                }
+
+                unsigned curindex = 0;
+                while (true)
+                {
+                    curlen = *(int16_t*)(buf + 2);
+                    curblock = *(uint32_t*)(buf + 8);
+                    mask = *(uint32_t*)(buf + 14);
+                    int32_t rlen = *(int16_t*)(buf + 28);
+                    char* rbuf = buf + 30;
+                    for (int32_t i = 0; i < curlen; i++)
+                    {
+                        recordsindex[curindex++] = *(uint32_t*)rbuf & mask;
+                        rbuf += rlen;
+                        if (curindex % 10000 == 0) msreg_g.Status(readindex + curindex);
+                    }
+                    if (curblock == LAST_PAGE) break; // FIXME: разобраться LAST_PAGE == UINT_MAX, а тут uint64_t curblock
+                    if (version >= db_ver::ver8_3_8_0) curblock *= pagesize;
+                    file_index->getdata(buf, curblock, pagesize);
+                }
+                recordsindex.resize(curindex);
+            }
+
+            recordsindex_complete = true;
+            tbase.log_numrecords = (UInt32)recordsindex.Capacity;
+
+        }
 
         private void dump_recursive(v8object file_index, FileStream f, Int32 level, UInt64 curblock) { }
         private void delete_index(byte[] rec, UInt32 phys_numrec) { } // удаление индекса записи из файла index
