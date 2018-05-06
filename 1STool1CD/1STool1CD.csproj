@@ -33,17 +33,17 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptEngine, Version=1.0.19.105, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneScript.1.0.19\lib\net452\ScriptEngine.dll</HintPath>
+    <Reference Include="ScriptEngine, Version=1.0.20.107, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.1.0.20\lib\net452\ScriptEngine.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptEngine.HostedScript, Version=1.0.19.105, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneScript.StandardLibrary.1.0.19\lib\net452\ScriptEngine.HostedScript.dll</HintPath>
+    <Reference Include="ScriptEngine.HostedScript, Version=1.0.20.107, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.StandardLibrary.1.0.20\lib\net452\ScriptEngine.HostedScript.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -86,6 +86,7 @@
     <Compile Include="V8Object.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
