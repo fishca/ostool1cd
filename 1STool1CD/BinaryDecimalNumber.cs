@@ -17,8 +17,6 @@ namespace _1STool1CD
 
         public void push1(byte lo)
         {
-
-            //data.push_back(lo);
             data.Add(lo);
         }
 
