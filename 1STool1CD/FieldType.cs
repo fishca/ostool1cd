@@ -135,7 +135,7 @@ namespace _1STool1CD
             return "";
         }
 
-        public override int getSortKey(byte[] rec, byte[] SortKey, int maxlen)
+        public override uint getSortKey(byte[] rec, byte[] SortKey, int maxlen)
         {
             return 0;
         }
