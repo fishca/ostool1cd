@@ -115,25 +115,31 @@ namespace _1STool1CD
 		    return len;
 	    }
 
+        /*
         public override String get_presentation(byte[] rec, bool EmptyNull, Char Delimiter, bool ignore_showGUID, bool detailed)
         {
             return "";
         }
+        */
 
+        /*
         public override String get_fast_presentation(byte[] rec)
         {
             return "";
         }
+        */
 
         public override bool get_binary_value(byte[] buf, String value)
         {
             return true;
         }
 
+        /*
         public override String get_XML_presentation(byte rec, Table parent, bool ignore_showGUID)
         {
             return "";
         }
+        */
 
         public override uint getSortKey(byte[] rec, byte[] SortKey, int maxlen)
         {

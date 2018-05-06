@@ -236,8 +236,9 @@ namespace _1STool1CD
             f.SaveToStream(sb);
 
             enc = null;
+            /*
             //offset = Encoding::GetBufferEncoding(sb->GetBytes(), enc);
-            offset = Encoding.g
+            offset = Encoding.GetEncoding()
             if (offset == 0)
             {
                 msreg_g.AddError("Ошибка определения кодировки файла контейнера",
@@ -249,7 +250,8 @@ namespace _1STool1CD
 
             rt = parse_1Ctext(String((WCHART*)&bytes[0], bytes.size() / 2), f->GetFullName());
             delete sb;
-            return rt;
+            */
+            return null;
         }
         /// <summary>
         /// Проверка открытия файла базы 1CD
