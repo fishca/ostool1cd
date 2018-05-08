@@ -45,8 +45,14 @@ namespace _1STool1CD
     /// </summary>
     public struct objtab
     {
-        public UInt32 numblocks;
+        public Int32 numblocks;
         public UInt32[] blocks;
+        public objtab(Int32 _numblocks, UInt32[] _blocks)
+        {
+            numblocks = _numblocks;
+            blocks = _blocks;
+        }
+
     };
     
     public struct root_80
@@ -152,7 +158,7 @@ namespace _1STool1CD
     /// </summary>
     public struct table_file
     {
-        public Table t;
+        public V8Table t;
         public String name; // Имя, как оно хранится в таблице
         UInt32 maxpartno;
         table_blob_file addr;
@@ -180,31 +186,54 @@ namespace _1STool1CD
         public bool is_infobase; // признак информационной базы
         public bool is_depot;    // признак хранилища конфигурации
 
+        public Stream data1CD;
+
+        /// <summary>
+        /// Свойство, показывающее в каком режиме открыт файл БД
+        /// </summary>
+        public bool ReadOnly
+        {
+            get
+            {
+                return get_readonly();
+            }
+            set
+            {
+                _ReadOnly = value;
+            }
+        }
+
+
+        public bool get_readonly()
+        {
+            return _ReadOnly;
+        }
+
         // Таблицы информационной базы
-        public Table table_config;
-        public Table table_configsave;
-        public Table table_params;
-        public Table table_files;
-        public Table table_dbschema;
-        public Table table_configcas;
-        public Table table_configcassave;
-        public Table table__extensionsinfo;
+        public V8Table table_config;
+        public V8Table table_configsave;
+        public V8Table table_params;
+        public V8Table table_files;
+        public V8Table table_dbschema;
+        public V8Table table_configcas;
+        public V8Table table_configcassave;
+        public V8Table table__extensionsinfo;
 
         // таблицы - хранилища файлов
         ConfigStorageTableConfig cs_config;
         ConfigStorageTableConfigSave cs_configsave;
 
         // Таблицы хранилища конфигураций
-        public Table table_depot;
-        public Table table_users;
-        public Table table_objects;
-        public Table table_versions;
-        public Table table_labels;
-        public Table table_history;
-        public Table table_lastestversions;
-        public Table table_externals;
-        public Table table_selfrefs;
-        public Table table_outrefs;
+        public V8Table table_depot;
+        public V8Table table_users;
+        public V8Table table_objects;
+        public V8Table table_versions;
+        public V8Table table_labels;
+        public V8Table table_history;
+        public V8Table table_lastestversions;
+        public V8Table table_externals;
+        public V8Table table_selfrefs;
+        public V8Table table_outrefs;
 
         public String ver;
 
@@ -271,7 +300,7 @@ namespace _1STool1CD
             return (UInt32)num_tables;
         }
 
-        Table gettable(UInt32 numtable)
+        V8Table gettable(UInt32 numtable)
         {
             if (numtable >= num_tables)
             {
@@ -418,6 +447,7 @@ namespace _1STool1CD
             return res;
         }
 
+        /*
         public bool get_readonly()
         {
             return readonly_;
@@ -427,10 +457,11 @@ namespace _1STool1CD
         {
             readonly_ = ro;
         }
+        */
 
         public void flush()
         {
-            MemBlock.flush();
+            v8MemBlock.flush();
         }
 
         public bool test_stream_format() { return true; }
@@ -474,11 +505,11 @@ namespace _1STool1CD
 
         public void find_and_save_lost_objects(String lost_objects) { }
         public bool create_table(String path) { return true; } // создание таблицы из файлов импорта таблиц
-        public bool delete_table(Table tab) { return true; }
+        public bool delete_table(V8Table tab) { return true; }
         public bool delete_object(v8object ob) { return true; }
         public bool replaceTREF(String mapfile) { return true; } // замена значений полей ...TREF во всех таблицах базы
         public void find_and_create_lost_tables() { }
-        public void restore_DATA_allocation_table(Table tab) { }
+        public void restore_DATA_allocation_table(V8Table tab) { }
         public bool test_block_by_template(UInt32 testblock, char tt, UInt32 num, Int32 rlen, Int32 len) { return true; }
         public String getfilename() { return filename; }
         public UInt32 getpagesize() { return pagesize; }
@@ -497,9 +528,9 @@ namespace _1STool1CD
 
         private Int32 num_tables;     // количество таблиц
 
-        private Table[] tables;       // таблицы базы
+        private V8Table[] tables;       // таблицы базы
 
-        private bool readonly_;
+        private bool _ReadOnly;
 
         private pagemaprec[] pagemap;         // Массив длиной length
 
@@ -565,9 +596,49 @@ namespace _1STool1CD
         }
 
         private void init() { }
+
+        public byte[] getblock(UInt32 block_number)
+        {
+            if (data1CD == null)
+                return null;
+            if (block_number >= length)
+            {
+                Console.WriteLine($"Попытка чтения блока за пределами файла. Индекс блока {block_number}. Всего блоков {length}");
+                return null;
+            }
+
+            new v8MemBlock((FileStream)data1CD, block_number, false, true);
+            return v8MemBlock.getblock((FileStream)data1CD, block_number);
+        }
+
+        public bool getblock(ref byte[] buf, UInt32 block_number, Int32 blocklen = -1) // буфер принадлежит вызывающей процедуре
+        {
+            if (data1CD == null)
+                return false;
+
+            if (blocklen < 0)
+                blocklen = (Int32)pagesize;
+
+            if (block_number >= length)
+            {
+                Console.WriteLine($"Попытка чтения блока за пределами файла. Индекс блока {block_number}, всего блоков {length}");
+                return false;
+            }
+
+            //memcpy(buf, MemBlock::getblock(fs, block_number), blocklen);
+
+
+            v8MemBlock tmp_mem_block = new v8MemBlock((FileStream)data1CD, block_number, false, true);
+            byte[] tmp_buf = v8MemBlock.getblock((FileStream)data1CD, block_number);
+            Array.Copy(tmp_buf, buf, blocklen);
+            return true;
+
+        }
+
+
         public bool getblock(byte[] buf, UInt32 block_number, Int32 blocklen = -1) { return true; } // буфер принадлежит вызывающей процедуре
 
-        private char getblock(UInt32 block_number) { return ' '; }           // буфер не принадлежит вызывающей стороне (принадлежит memblock)
+        //private char getblock(UInt32 block_number) { return ' '; }           // буфер не принадлежит вызывающей стороне (принадлежит memblock)
         public Byte[] getblock_for_write(UInt32 block_number, bool read) { return new Byte[2]; } // буфер не принадлежит вызывающей стороне (принадлежит memblock)
 
         /// <summary>
@@ -590,8 +661,8 @@ namespace _1STool1CD
 
         private void add_supplier_config(table_file file) { }
 
-        private bool recursive_test_stream_format(Table t, UInt32 nrec) { return true; }
-        private bool recursive_test_stream_format2(Table t, UInt32 nrec) { return true; } // для DBSCHEMA
+        private bool recursive_test_stream_format(V8Table t, UInt32 nrec) { return true; }
+        private bool recursive_test_stream_format2(V8Table t, UInt32 nrec) { return true; } // для DBSCHEMA
         private bool recursive_test_stream_format(Stream str, String path, bool maybezipped2 = false) { return true; }
         private bool recursive_test_stream_format(v8catalog cat, String path) { return true; }
 
@@ -639,11 +710,11 @@ namespace _1STool1CD
             }
         }
 
-        private depot_ver get_depot_version(char[] record)
+        private depot_ver get_depot_version(byte[] record)
         {
             depot_ver depotVer = depot_ver.UnknownVer;
 
-            Field fldd_depotver = table_depot.get_field("DEPOTVER");
+            v8Field fldd_depotver = table_depot.get_field("DEPOTVER");
 
             if (fldd_depotver != null)
             {

@@ -253,7 +253,7 @@ namespace _1STool1CD
         /// <param name="text"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public tree parse_1Ctext(String text, String path)
+        public static tree parse_1Ctext(String text, String path)
         {
 
             StringBuilder __curvalue__ = new StringBuilder("");

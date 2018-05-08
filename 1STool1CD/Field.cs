@@ -19,7 +19,7 @@ namespace _1STool1CD
         /// Конструктор основной
         /// </summary>
         /// <param name="_parent"></param>
-        public Field(Table _parent)
+        public Field(V8Table _parent)
         {
             if (!null_index_initialized)
             {
@@ -111,12 +111,12 @@ namespace _1STool1CD
             return type_manager.get_binary_value(binary_value2, value);
         }
 
-        public Constants.type_fields gettype()
+        public type_fields gettype()
         {
             return type_manager.gettype();
         }
 
-        public Table getparent()
+        public V8Table getparent()
         {
             return parent;
         }
@@ -195,10 +195,10 @@ namespace _1STool1CD
             return 0;
         }
 
-        public static Field field_from_tree(tree field_tree, bool has_version, Table parent)
+        public static v8Field field_from_tree(tree field_tree, bool has_version, V8Table parent)
         {
 
-            Field fld = new Field(parent);
+            v8Field fld = new v8Field(parent);
 
             
 
@@ -247,7 +247,7 @@ namespace _1STool1CD
         private bool null_exists = false;
         private FieldType type_manager;
 
-        private Table parent;
+        private V8Table parent;
         private Int32 len; // длина поля в байтах
         private Int32 offset; // смещение поля в записи
         private static char[] buf;

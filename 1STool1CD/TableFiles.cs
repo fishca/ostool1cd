@@ -29,7 +29,7 @@ namespace _1STool1CD
 
     public class TableFiles
     {
-        private Table table;
+        private V8Table table;
         private SortedDictionary<String, table_file> allfiles;
 
         private char[] record;
@@ -37,12 +37,12 @@ namespace _1STool1CD
 
         private bool test_table() { return true; }
 
-        public TableFiles(Table t)
+        public TableFiles(V8Table t)
         { }
 
         public bool getready() { return ready; }
         //public table_file getfile(String name) { return null; }
-        public Table gettable() { return table; }
+        public V8Table gettable() { return table; }
         public SortedDictionary<String, table_file> files() { return null; }
         
 

@@ -62,9 +62,7 @@
     <Compile Include="ConfigStorage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DetailedException.cs" />
-    <Compile Include="Field.cs" />
     <Compile Include="FieldType.cs" />
-    <Compile Include="Index.cs" />
     <Compile Include="MemBlock.cs" />
     <Compile Include="MemoryTributary.cs" />
     <Compile Include="MessageRegistration.cs" />
@@ -82,7 +80,9 @@
     <Compile Include="TV8FileStream.cs" />
     <Compile Include="Utils1CD.cs" />
     <Compile Include="V8Catalog.cs" />
+    <Compile Include="V8Field.cs" />
     <Compile Include="V8File.cs" />
+    <Compile Include="V8Index.cs" />
     <Compile Include="V8Object.cs" />
   </ItemGroup>
   <ItemGroup>

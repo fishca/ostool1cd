@@ -164,6 +164,11 @@ namespace _1STool1CD
 
         public static readonly UInt32 DATAHASH_FIELD_LENGTH = 20;
 
+        public static readonly Int16 indexpage_is_root = 1; // Установленный флаг означает, что страница является корневой
+        public static readonly Int16 indexpage_is_leaf = 2; // Установленный флаг означает, что страница является листом, иначе веткой
+
+
+
         // Стили преобразования bynary16 в GUID
         //
         // Исходное значение
@@ -184,6 +189,11 @@ namespace _1STool1CD
 
         public static readonly String NODE_GENERAL = "9cd510cd-abfc-11d4-9434-004095e12fc7";
 
+        public static readonly Int32 PAGE4K  = 0x1000;
+        public static readonly Int32 PAGE8K  = 0x2000;
+        public static readonly Int32 PAGE16K = 0x4000;
+        public static readonly Int32 PAGE32K = 0x8000;
+        public static readonly Int32 PAGE64K = 0x10000;
 
 
 

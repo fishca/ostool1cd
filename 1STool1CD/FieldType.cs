@@ -9,7 +9,7 @@ namespace _1STool1CD
 {
     public struct field_type_declaration
     {
-        public Constants.type_fields type;
+        public type_fields type;
         public bool null_exists;
         public Int32 length;
         public Int32 precision;
@@ -20,7 +20,7 @@ namespace _1STool1CD
 
     public class FieldType
     {
-        public virtual Constants.type_fields gettype() { return Constants.type_fields.tf_binary; }
+        public virtual type_fields gettype() { return type_fields.tf_binary; }
         public virtual Int32 getlength() { return 0; }
         public virtual Int32 getlen() { return 0; }
         public virtual Int32 getprecision() { return 0; }
@@ -31,7 +31,7 @@ namespace _1STool1CD
 
         public virtual bool get_binary_value(byte[] buf, String value) { return true; }
 
-        public virtual String get_XML_presentation(byte[] rec, Table parent, bool ignore_showGUID) { return " "; }
+        public virtual String get_XML_presentation(byte[] rec, V8Table parent, bool ignore_showGUID) { return " "; }
 
         public virtual UInt32 getSortKey(byte[] rec, byte[] SortKey, Int32 maxlen) { return 0; }
 
@@ -52,7 +52,7 @@ namespace _1STool1CD
             //declaration.type = Constants.type_fields.
         }
 
-        public override Constants.type_fields gettype()
+        public override type_fields gettype()
 	    {
             return type;
 	    }
@@ -146,7 +146,7 @@ namespace _1STool1CD
             return 0;
         }
 
-        public Constants.type_fields type = Constants.type_fields.tf_binary;
+        public type_fields type = type_fields.tf_binary;
         int length = 0;
         int precision = 0;
         bool case_sensitive = false;
