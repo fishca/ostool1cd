@@ -12,26 +12,26 @@ namespace _1STool1CD
     {
         #region Константы
 
-        public static string str_cfu = ".cfu";
-        public static string str_cfe = ".cfe";
-        public static string str_cf = ".cf";
-        public static string str_epf = ".epf";
-        public static string str_erf = ".erf";
-        public static string str_backslash = "\\";
+        public static readonly string str_cfu = ".cfu";
+        public static readonly string str_cfe = ".cfe";
+        public static readonly string str_cf = ".cf";
+        public static readonly string str_epf = ".epf";
+        public static readonly string str_erf = ".erf";
+        public static readonly string str_backslash = "\\";
 
         // шаблон заголовка блока
-        public static string _BLOCK_HEADER_TEMPLATE  = "\r\n00000000 00000000 00000000 \r\n";
-        public static string _EMPTY_CATALOG_TEMPLATE = "FFFFFF7F020000000000";
+        public static readonly string _BLOCK_HEADER_TEMPLATE  = "\r\n00000000 00000000 00000000 \r\n";
+        public static readonly string _EMPTY_CATALOG_TEMPLATE = "FFFFFF7F020000000000";
 
-        public static Int32 LAST_BLOCK = 0x7FFFFFFF;
-        public static UInt32 LAST_BLOCK2 = 0x7FFFFFFF;
-        public static UInt32 BLOCK_HEADER_LEN   = 32U;
-        public static Int32 BLOCK_HEADER_LEN2 = 32;
-        public static UInt32 CATALOG_HEADER_LEN = 16U;
-        public static Int32 CATALOG_HEADER_LEN2 = 16;
+        public static readonly Int32  LAST_BLOCK  = 0x7FFFFFFF;
+        public static readonly UInt32 LAST_BLOCK2 = 0x7FFFFFFF;
+        public static readonly UInt32 BLOCK_HEADER_LEN    = 32U;
+        public static readonly Int32  BLOCK_HEADER_LEN2   = 32;
+        public static readonly UInt32 CATALOG_HEADER_LEN  = 16U;
+        public static readonly Int32  CATALOG_HEADER_LEN2 = 16;
 
-        public static Int64 EPOCH_START_WIN = 504911232000000;
-        public static Int32 HEX_INT_LEN = 2 * 2;
+        public static readonly Int64 EPOCH_START_WIN = 504911232000000;
+        public static readonly Int32 HEX_INT_LEN = 2 * 2;
 
         #endregion
 
