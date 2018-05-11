@@ -31,7 +31,7 @@ namespace _1STool1CD
     /// </summary>
     public struct container_file
     {
-        public table_file file;
+        public Table_file file;
         public String name; // Приведенное имя (очищенное от динамического обновления)
         public Stream stream;
         public Stream rstream; // raw stream (нераспакованный поток)
@@ -39,7 +39,7 @@ namespace _1STool1CD
         public table_file_packed packed;
         public int dynno; // Номер (индекс) динамического обновления (0, 1 и т.д.). Если без динамического обновления, то -1, если UID динамического обновления не найден, то -2. Для пропускаемых файлов -3.
 
-        public container_file(table_file _f, String _name)
+        public container_file(Table_file _f, String _name)
         {
             file = _f;
             name = _name;

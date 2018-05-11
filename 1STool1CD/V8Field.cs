@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static _1STool1CD.Constants;
 
 namespace _1STool1CD
 {
-    public class v8Field
+    public class V8Field
     {
         #region Конструктора
-        public v8Field(V8Table _parent)
+        public V8Field(V8Table _parent)
         {
             if (!null_index_initialized)
             {
@@ -24,10 +25,10 @@ namespace _1STool1CD
 
         }
 
-        static v8Field()
+        static V8Field()
         {
             null_index_initialized = false;
-            null_index = new byte[0x1000];
+            null_index = new byte[PAGE4K];
         }
         #endregion
 
@@ -35,22 +36,22 @@ namespace _1STool1CD
         /// возвращает длину поля в байтах
         /// </summary>
         /// <returns></returns>
-        public Int32 getlen() 
+        public Int32 Getlen() 
         {
-            return (null_exists ? 1 : 0) + type_manager.getlen();
+            return (null_exists ? 1 : 0) + type_manager.Getlen();
         }
 
-        public String getname()
+        public String Getname()
         {
             return name;
         }
 
-        public String get_presentation(byte[] rec, bool EmptyNull = false, char Delimiter = '0', bool ignore_showGUID = false, bool detailed = false)
+        public String Get_presentation(byte[] rec, bool EmptyNull = false, char Delimiter = '0', bool ignore_showGUID = false, bool detailed = false)
         {
             return "";
         }
 
-        public String get_XML_presentation(byte[] rec, bool ignore_showGUID = false)
+        public String Get_XML_presentation(byte[] rec, bool ignore_showGUID = false)
         {
             //const char* fr = rec + offset;
             byte[] fr = new byte[rec.Length];
@@ -64,10 +65,10 @@ namespace _1STool1CD
                 //fr++; // пока не очень понятно что с этим делать
             }
             byte[] fr_char = new byte[fr.Length];
-            return type_manager.get_XML_presentation(fr_char, parent, ignore_showGUID);
+            return type_manager.Get_XML_presentation(fr_char, parent, ignore_showGUID);
         }
 
-        public bool get_binary_value(byte[] binary_value, bool NULL, String value)
+        public bool Get_binary_value(byte[] binary_value, bool NULL, String value)
         {
             //memset(binary_value, 0, len);
             Array.Clear(binary_value, 0, len);
@@ -82,52 +83,52 @@ namespace _1STool1CD
                 binary_value[0] = 1;
                 //binary_value++; // пока не очень понятно что с этим делать
             }
-            return type_manager.get_binary_value(binary_value, value);
+            return type_manager.Get_binary_value(binary_value, value);
 
             
         }
 
-        public type_fields gettype()
+        public Type_fields Gettype()
         {
-            return type_manager.gettype();
+            return type_manager.Gettype();
         }
         
-        public V8Table getparent()
+        public V8Table Getparent()
         {
             return parent;
         }
 
-        public bool getnull_exists()
+        public bool Getnull_exists()
         {
             return null_exists;
         }
 
-        public Int32 getlength()
+        public Int32 Getlength()
         {
-            return type_manager.getlength();
+            return type_manager.Getlength();
         }
 
-        public Int32 getprecision()
+        public Int32 Getprecision()
         {
-            return type_manager.getprecision();
+            return type_manager.Getprecision();
         }
 
-        public bool getcase_sensitive()
+        public bool Getcase_sensitive()
         {
-            return type_manager.getcase_sensitive();
+            return type_manager.Getcase_sensitive();
         }
 
-        public Int32 getoffset()
+        public Int32 Getoffset()
         {
             return offset;
         }
 
-        public String get_presentation_type()
+        public String Get_presentation_type()
         {
-            return type_manager.get_presentation_type();
+            return type_manager.Get_presentation_type();
         }
 
-        public bool save_blob_to_file(byte[] rec, String filename, bool unpack)
+        public bool Save_blob_to_file(byte[] rec, String filename, bool unpack)
         {
             /*
 	        TStream* blob_stream;
@@ -353,7 +354,7 @@ namespace _1STool1CD
             return true;
         }
 
-        public UInt32 getSortKey(byte[] rec, byte[] SortKey, Int32 maxlen)
+        public UInt32 GetSortKey(byte[] rec, byte[] SortKey, Int32 maxlen)
         {
             //const char* fr = rec + offset;
             byte[] fr = new byte[rec.Length];
@@ -378,7 +379,7 @@ namespace _1STool1CD
 
             try
             {
-                return type_manager.getSortKey(fr, SortKey, maxlen);
+                return type_manager.GetSortKey(fr, SortKey, maxlen);
             }
             catch
             {
@@ -387,23 +388,23 @@ namespace _1STool1CD
             
         }
 
-        public static v8Field field_from_tree(tree field_tree, ref bool has_version, V8Table parent)
+        public static V8Field Field_from_tree(Tree field_tree, ref bool has_version, V8Table parent)
         {
-            v8Field fld = new v8Field(parent);
+            V8Field fld = new V8Field(parent);
 
-            if (field_tree.get_type() != node_type.nd_string)
+            if (field_tree.Get_type() != Node_type.nd_string)
             {
                 throw new Exception("Ошибка получения имени поля таблицы. Узел не является строкой.");
             }
-            fld.name = field_tree.get_value();
+            fld.name = field_tree.Get_value();
 
-            field_tree = field_tree.get_next();
+            field_tree = field_tree.Get_next();
 
-            field_type_declaration type_declaration;
+            Field_type_declaration type_declaration;
             try
             {
 
-                type_declaration = field_type_declaration.parse_tree(field_tree);
+                type_declaration = Field_type_declaration.Parse_tree(field_tree);
 
             }
             catch
@@ -413,9 +414,9 @@ namespace _1STool1CD
 
             fld.type = type_declaration.type;
             fld.null_exists = type_declaration.null_exists;
-            fld.type_manager = FieldType.create_type_manager(type_declaration);
+            fld.type_manager = FieldType.Create_type_manager(type_declaration);
 
-            if (fld.type == type_fields.tf_version)
+            if (fld.type == Type_fields.tf_version)
             {
                 has_version = true;
             }
@@ -424,7 +425,7 @@ namespace _1STool1CD
 
         public String name;
 
-        public type_fields type;
+        public Type_fields type;
         public bool null_exists = false;
         public FieldType type_manager;
 

@@ -8,13 +8,13 @@ namespace _1STool1CD
 {
     public static class Utils1CD
     {
-        public struct index_record
+        public struct Index_record
         {
-            public v8Field field;
+            public V8Field field;
             public Int32 len;
         }
 
-        struct unpack_index_record
+        public struct Unpack_index_record
         {
             UInt32 _record_number; // номер (индекс) записи в таблице записей
                                    //unsigned char _index[1]; // значение индекса записи. Реальная длина значения определяется полем length класса index
@@ -23,7 +23,7 @@ namespace _1STool1CD
         /// <summary>
         /// Версии формата базы 1С
         /// </summary>
-        public enum db_ver
+        public enum Db_ver
         {
             ver8_0_3_0  = 1,
         	ver8_0_5_0  = 2,
@@ -33,7 +33,7 @@ namespace _1STool1CD
 	        ver8_3_8_0  = 6
         }
 
-        public enum node_type
+        public enum Node_type
         {
             nd_empty      = 0,	// пусто
 	        nd_string     = 1,	// строка
@@ -53,7 +53,7 @@ namespace _1STool1CD
         /// </summary>
         public static readonly Int32 LAST_PAGE = Int32.MaxValue;
 
-        public struct leaf_page_header
+        public struct Leaf_page_header
         {
             public Int16 flags; // offset 0
             public UInt16 number_indexes; // offset 2
@@ -69,10 +69,10 @@ namespace _1STool1CD
             public UInt16 recbytes; // offset 28
         }
 
-        public static leaf_page_header ByteArrayToLeafPageHeader(byte[] src)
+        public static Leaf_page_header ByteArrayToLeafPageHeader(byte[] src)
         {
 
-            leaf_page_header Res;
+            Leaf_page_header Res;
 
             Res.flags = BitConverter.ToInt16(src, 0);
             Res.number_indexes = BitConverter.ToUInt16(src, 2);
@@ -90,9 +90,9 @@ namespace _1STool1CD
             return Res;
 
         }
-        public static objtab ByteArrayToObjtab(byte[] src)
+        public static Objtab ByteArrayToObjtab(byte[] src)
         {
-            objtab Res = new objtab(0, new UInt32[1023]);
+            Objtab Res = new Objtab(0, new UInt32[1023]);
 
             Res.numblocks = BitConverter.ToInt32(src, 0);
             Array.Copy(src, 4, Res.blocks, 0, Res.numblocks);
@@ -100,9 +100,9 @@ namespace _1STool1CD
             return Res;
         }
 
-        public static objtab838 ByteArrayToObjtab838(byte[] src)
+        public static Objtab838 ByteArrayToObjtab838(byte[] src)
         {
-            objtab838 Res;
+            Objtab838 Res;
 
             Res.blocks = new UInt32[1023];
             Array.Clear(Res.blocks, 0, Res.blocks.Length);
@@ -111,14 +111,14 @@ namespace _1STool1CD
             return Res;
         }
 
-        public static v8ob ByteArrayToV8ob(byte[] src)
+        public static V8ob ByteArrayToV8ob(byte[] src)
         {
             // public char[] sig; // сигнатура SIG_OBJ
             // public UInt32 len; // длина файла
             // public _version version;
             // public UInt32[] blocks; // 1018
 
-            v8ob Res;
+            V8ob Res;
 
             Res.sig = Encoding.UTF8.GetChars(src, 0, 8);
             Res.len = BitConverter.ToUInt32(src, 8);
@@ -132,7 +132,7 @@ namespace _1STool1CD
             return Res;
         }
 
-        public static v838ob_data ByteArrayTov838ob(byte[] src)
+        public static V838ob_data ByteArrayTov838ob(byte[] src)
         {
             // public char[] sig;       // сигнатура 0x1C 0xFD (1C File Data?)  sig[2];
             // public Int16 fatlevel;   // уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
@@ -140,7 +140,7 @@ namespace _1STool1CD
             // public UInt64 len;       // длина файла
             // public UInt32[] blocks;  // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)  blocks[1];
 
-            v838ob_data Res;
+            V838ob_data Res;
 
             //Res.sig = Encoding.UTF8.GetChars(src, 0, 2);
 
@@ -162,14 +162,14 @@ namespace _1STool1CD
 
         }
 
-        public static v838ob_free ByteArrayTov838ob_free(byte[] src)
+        public static V838ob_free ByteArrayTov838ob_free(byte[] src)
         {
             // public char[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
             // public Int16 fatlevel; // 0x0000 пока! но может ... уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
             // public UInt32 version;        // ??? предположительно...
             // public UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
 
-            v838ob_free Res;
+            V838ob_free Res;
 
             //Res.sig = Encoding.UTF8.GetChars(src, 0, 2);
             Res.sig = new byte[2];

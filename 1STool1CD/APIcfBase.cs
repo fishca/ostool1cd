@@ -51,7 +51,7 @@ namespace _1STool1CD
             public Int32 zero;        // всегда ноль?
         }
 
-        public enum block_header : int
+        public enum Block_header : int
         {
             doc_len   = 2,
 	        block_len = 11,
@@ -365,7 +365,7 @@ namespace _1STool1CD
         /// установка текущего времени
         /// </summary>
         /// <param name="v8t"></param>
-        public static void setCurrentTime(Int64 v8t)
+        public static void SetCurrentTime(Int64 v8t)
         {
             //SYSTEMTIME st;
             //FILETIME ft;
@@ -387,7 +387,7 @@ namespace _1STool1CD
         /// <param name="start"></param>
         /// <param name="stream_to"></param>
         /// <returns></returns>
-        Stream read_block(Stream stream_from, int start, Stream stream_to = null)
+        Stream Read_block(Stream stream_from, int start, Stream stream_to = null)
         {
             //std::array<char, BLOCK_HEADER_LEN> temp_buf;
             //Char[] temp_buf = new Char[BLOCK_HEADER_LEN];
@@ -416,7 +416,7 @@ namespace _1STool1CD
 
             int indxdest = ahex_len.Length-1;
 
-            Array.Copy(temp_buf, (int)block_header.doc_len, ahex_len, indxdest, HEX_INT_LEN);
+            Array.Copy(temp_buf, (int)Block_header.doc_len, ahex_len, indxdest, HEX_INT_LEN);
 
             len = HexStringToInt(hex_len);
 
@@ -429,7 +429,7 @@ namespace _1STool1CD
 
             int indxdest_curlen = ahex_curlen.Length - 1;
 
-            Array.Copy(temp_buf, (int)block_header.block_len, ahex_curlen, indxdest_curlen, HEX_INT_LEN);
+            Array.Copy(temp_buf, (int)Block_header.block_len, ahex_curlen, indxdest_curlen, HEX_INT_LEN);
 
             curlen = HexStringToInt(ahex_curlen.ToString());
                         
@@ -439,7 +439,7 @@ namespace _1STool1CD
 
             int indxdest_hex_start = ahex_start.Length - 1;
 
-            Array.Copy(temp_buf, (int)block_header.nextblock, ahex_start, indxdest_hex_start, HEX_INT_LEN);
+            Array.Copy(temp_buf, (int)Block_header.nextblock, ahex_start, indxdest_hex_start, HEX_INT_LEN);
 
             start = HexStringToInt(ahex_start.ToString());
 
@@ -461,7 +461,7 @@ namespace _1STool1CD
 
                 int indxdest_curlen1 = ahex_curlen1.Length - 1;
 
-                Array.Copy(temp_buf, (int)block_header.block_len, ahex_curlen1, indxdest_curlen1, HEX_INT_LEN);
+                Array.Copy(temp_buf, (int)Block_header.block_len, ahex_curlen1, indxdest_curlen1, HEX_INT_LEN);
 
                 curlen = HexStringToInt(ahex_curlen1.ToString());
 
@@ -471,7 +471,7 @@ namespace _1STool1CD
 
                 int indxdest_hex_start1 = ahex_start.Length - 1;
 
-                Array.Copy(temp_buf, (int)block_header.nextblock, ahex_start1, indxdest_hex_start1, HEX_INT_LEN);
+                Array.Copy(temp_buf, (int)Block_header.nextblock, ahex_start1, indxdest_hex_start1, HEX_INT_LEN);
 
                 start = HexStringToInt(ahex_start1.ToString());
 

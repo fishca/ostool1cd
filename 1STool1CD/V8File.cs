@@ -174,7 +174,7 @@ namespace _1STool1CD
             if (iscatalog == FileIsCatalog.unknown)
             {
                 // эмпирический метод?
-                if (!try_open())
+                if (!Try_open())
                 {
                     return false;
                 }
@@ -254,7 +254,7 @@ namespace _1STool1CD
         {
             Int64 ret = 0;
             
-            if (!try_open())
+            if (!Try_open())
             {
                 return ret;
             }
@@ -270,7 +270,7 @@ namespace _1STool1CD
 
             Int64 ret = 0;
             
-            if (!try_open())
+            if (!Try_open())
             {
                 return ret;
             }
@@ -293,11 +293,11 @@ namespace _1STool1CD
         {
             Int64 ret = 0;
 
-            if (!try_open())
+            if (!Try_open())
             {
                 return ret;
             }
-            setCurrentTime(time_modify);
+            SetCurrentTime(time_modify);
             is_headermodified = true;
             is_datamodified   = true;
             data.Seek(Start, SeekOrigin.Begin);
@@ -317,11 +317,11 @@ namespace _1STool1CD
         {
             Int64 ret = 0;
             
-            if (!try_open())
+            if (!Try_open())
             {
                 return ret;
             }
-            setCurrentTime(time_modify);
+            SetCurrentTime(time_modify);
             is_headermodified = true;
             is_datamodified   = true;
             if (data.Length > Length)
@@ -344,11 +344,11 @@ namespace _1STool1CD
         public Int64 Write(MemoryTributary Stream_, int Start, int Length)
         {
             Int64 ret = 0;
-            if (!try_open())
+            if (!Try_open())
             {
                 return ret;
             }
-            setCurrentTime(time_modify);
+            SetCurrentTime(time_modify);
             is_headermodified = true;
             is_datamodified   = true;
             data.Seek(Start, SeekOrigin.Begin);
@@ -366,11 +366,11 @@ namespace _1STool1CD
         public Int64 Write(MemoryTributary Stream_)
         {
             Int64 ret = 0;
-            if (!try_open())
+            if (!Try_open())
             {
                 return ret;
             }
-            setCurrentTime(time_modify);
+            SetCurrentTime(time_modify);
             is_headermodified = true;
             is_datamodified   = true;
             if (data.Length > Stream_.Length)
@@ -541,7 +541,7 @@ namespace _1STool1CD
             Int32 _4bzero = 0;
 
             
-            if (!try_open())
+            if (!Try_open())
             {
                 return 0;
             }
@@ -625,7 +625,7 @@ namespace _1STool1CD
 
             #endif // _MSC_VER
             */
-            if (!try_open())
+            if (!Try_open())
             {
                 return;
             }
@@ -663,7 +663,7 @@ namespace _1STool1CD
     
         public void SaveToStream(MemoryTributary stream)
         {
-            if (!try_open())
+            if (!Try_open())
             {
                 return;
             }
@@ -671,7 +671,7 @@ namespace _1STool1CD
             data.CopyTo(stream);
         }
 
-        public TV8FileStream get_stream(bool own = false)
+        public TV8FileStream Get_stream(bool own = false)
         {
             return new TV8FileStream(this, own);
         }
@@ -736,7 +736,7 @@ namespace _1STool1CD
             flushed = false;
         }
 
-        public bool try_open()
+        public bool Try_open()
         {
             return (is_opened ? true : Open());
         }

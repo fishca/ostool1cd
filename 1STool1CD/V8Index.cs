@@ -10,10 +10,10 @@ using static _1STool1CD.Utils1CD;
 namespace _1STool1CD
 {
 
-    public class v8Index
+    public class V8Index
     {
 
-        public v8Index(V8Table _base)
+        public V8Index(V8Table _base)
         {
             tbase = _base;
             is_primary = false;
@@ -24,7 +24,7 @@ namespace _1STool1CD
             length = 0;
             recordsindex_complete = false;
             pagesize = tbase.base_.pagesize;
-            version = (db_ver)tbase.base_.version;
+            version = (Db_ver)tbase.base_.version;
 
         }
 
@@ -32,44 +32,44 @@ namespace _1STool1CD
         public String name;
         public bool is_primary;
 
-        public String getname()
+        public String Getname()
         {
             return name;
         }
 
-        public bool get_is_primary()
+        public bool Get_is_primary()
         {
             return is_primary;
         }
 
-        public Int32 get_num_records() // получить количество полей в индексе
+        public Int32 Get_num_records() // получить количество полей в индексе
         {
             return num_records;
         }
 
-        public index_record[] get_records()
+        public Index_record[] Get_records()
         {
             return records;
         }
 
-        public UInt32 get_numrecords() // получает количество записей, проиндексированных индексом
+        public UInt32 Get_numrecords() // получает количество записей, проиндексированных индексом
         {
             return (UInt32)num_records;
         }
 
-        public UInt32 get_numrec(UInt32 num_record) // получает физический индекс записи по порядковому индексу
+        public UInt32 Get_numrec(UInt32 num_record) // получает физический индекс записи по порядковому индексу
         {
             if (start == 0) return 0;
             if (!recordsindex_complete)
-                create_recordsindex();
+                Create_recordsindex();
             return 
                 recordsindex[(Int32)num_record];
         }
 
-        public void dump(String _filename)
+        public void Dump(String _filename)
         {
             FileStream f;
-            v8object file_index;
+            V8object file_index;
             String s;
 
             f = new FileStream(_filename, FileMode.Create);
@@ -88,12 +88,12 @@ namespace _1STool1CD
             {
                 //char buf[8];
                 byte[] buf = new byte[8];
-                file_index.getdata(buf, start, 8);
+                file_index.Getdata(buf, start, 8);
 
                     //rootblock = *(UInt32*)buf;
                     rootblock = buf[0]; // скорее всего не правильно
 
-                if (version >= db_ver.ver8_3_8_0)
+                if (version >= Db_ver.ver8_3_8_0)
                     rootblock *= pagesize;
 
                 //length = *(int16_t*)(buf + 4); 
@@ -106,13 +106,13 @@ namespace _1STool1CD
             //f->Write(s.c_str(), s.GetLength());
             f.Write(Encoding.UTF8.GetBytes(s), 0, s.Length);
 
-            dump_recursive(file_index, f, 0, rootblock);
+            Dump_recursive(file_index, f, 0, rootblock);
 
             
             f.Dispose();
         }
 
-        public void calcRecordIndex(byte[] rec, byte[] indexBuf) // вычислить индекс записи rec и поместить в indexBuf. Длина буфера indexBuf должна быть не меньше length
+        public void CalcRecordIndex(byte[] rec, byte[] indexBuf) // вычислить индекс записи rec и поместить в indexBuf. Длина буфера indexBuf должна быть не меньше length
         {
             UInt32 i, j, k;
 
@@ -121,7 +121,7 @@ namespace _1STool1CD
             for (i = 0; i < num_records; i++)
             {
                 //k = records[i].field->getSortKey(rec, (unsigned char *)indexBuf, j);
-                k = records[i].field.getSortKey(rec, indexBuf, (Int32)j);
+                k = records[i].field.GetSortKey(rec, indexBuf, (Int32)j);
                 // с этим не очень понятно что делать
                 //indexBuf += k;
 
@@ -133,7 +133,7 @@ namespace _1STool1CD
 
         }
 
-        public UInt32 get_rootblock()
+        public UInt32 Get_rootblock()
         {
             if (start == 0) return 0;
 
@@ -142,19 +142,19 @@ namespace _1STool1CD
                 //char buf[8];
                 byte[] buf = new byte[8];
 
-                tbase.file_index.getdata(buf, start, 8);
+                tbase.file_index.Getdata(buf, start, 8);
 
                 //rootblock = *(uint32_t*)buf;
                 rootblock = buf[0]; // не понятно что с этим делать
 
-                if (version >= db_ver.ver8_3_8_0)
+                if (version >= Db_ver.ver8_3_8_0)
                     rootblock *= pagesize;
                 
             }
             return (UInt32)rootblock;
         }
 
-        public UInt32 get_length()
+        public UInt32 Get_length()
         {
             if (start == 0) return 0;
 
@@ -162,7 +162,7 @@ namespace _1STool1CD
             {
                 //char buf[8];
                 byte[] buf = new byte[8];
-                tbase.file_index.getdata(buf, start, 8);
+                tbase.file_index.Getdata(buf, start, 8);
 
                 //length = *(int16_t*)(buf + 4);
                 length = buf[4];
@@ -174,7 +174,7 @@ namespace _1STool1CD
         
         // распаковывает одну страницу-лист индексов
         // возвращает массив структур unpack_index_record. Количество элементов массива возвращается в number_indexes
-        public byte[] unpack_leafpage(UInt64 page_offset, ref UInt32 number_indexes)
+        public byte[] Unpack_leafpage(UInt64 page_offset, ref UInt32 number_indexes)
         {
             byte[] buf = new byte[pagesize]; 
             byte[] ret;
@@ -184,9 +184,9 @@ namespace _1STool1CD
 
             //buf = new char[pagesize];
 
-            tbase.file_index.getdata(buf, page_offset, pagesize);
+            tbase.file_index.Getdata(buf, page_offset, pagesize);
 
-            ret = unpack_leafpage(buf, ref number_indexes);
+            ret = Unpack_leafpage(buf, ref number_indexes);
 
             buf = null;
 
@@ -196,13 +196,13 @@ namespace _1STool1CD
 
         // распаковывает одну страницу-лист индексов
         // возвращает массив структур unpack_index_record. Количество элементов массива возвращается в number_indexes
-        public byte[] unpack_leafpage(byte[] page, ref UInt32 number_indexes)
+        public byte[] Unpack_leafpage(byte[] page, ref UInt32 number_indexes)
         {
             byte[] outbuf;
             byte[] rbuf = new byte[page.Length];
             byte[] ibuf = new byte[page.Length];
             byte[] obuf = new byte[number_indexes * (length + 4)];
-            leaf_page_header header;
+            Leaf_page_header header;
 
             UInt32 i, j, step;
 
@@ -275,16 +275,16 @@ namespace _1STool1CD
 
         // упаковывает одну страницу-лист индексов.
         // возвращвет истина, если упаковка произведена, и ложь, если упаковка невозможна.
-        public bool pack_leafpage(byte[] unpack_index, UInt32 number_indexes, byte[] page_buf)
+        public bool Pack_leafpage(byte[] unpack_index, UInt32 number_indexes, byte[] page_buf)
         {
             return true;
         }
 
         public V8Table tbase;
-        public db_ver version; // версия базы
+        public Db_ver version; // версия базы
         public UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
-        public index_record[] records;
+        public Index_record[] records;
 
         public UInt64 start; // Смещение в файле индексов блока описания индекса
         public UInt64 rootblock; // Смещение в файле индексов корневого блока индекса
@@ -293,35 +293,35 @@ namespace _1STool1CD
         public List<UInt32> recordsindex;
         public bool recordsindex_complete; // признак заполнености recordsindex
 
-        public void create_recordsindex()
+        public void Create_recordsindex()
         {
 
         }
 
-        public void dump_recursive(v8object file_index, FileStream f, Int32 level, UInt64 curblock)
+        public void Dump_recursive(V8object file_index, FileStream f, Int32 level, UInt64 curblock)
         {
         }
 
-        public void delete_index(byte[] rec, UInt32 phys_numrec) // удаление индекса записи из файла index
+        public void Delete_index(byte[] rec, UInt32 phys_numrec) // удаление индекса записи из файла index
         {
             byte[] index_buf = new byte[length];
-            calcRecordIndex(rec, index_buf);
-            delete_index_record(index_buf, phys_numrec);
+            CalcRecordIndex(rec, index_buf);
+            Delete_index_record(index_buf, phys_numrec);
             index_buf = null;
 
         }
 
-        public void delete_index_record(byte[] index_buf, UInt32 phys_numrec) // удаление одного индекса из файла index
+        public void Delete_index_record(byte[] index_buf, UInt32 phys_numrec) // удаление одного индекса из файла index
         {
             bool is_last_record = false, page_is_empty = false; // заглушки для вызова рекурсивной функции
             UInt32 new_last_phys_num = 0; // заглушки для вызова рекурсивной функции
             byte[] new_last_index_buf = new byte[length]; // заглушки для вызова рекурсивной функции
-            delete_index_record(index_buf, phys_numrec, rootblock, ref is_last_record, ref page_is_empty, new_last_index_buf, ref new_last_phys_num);
+            Delete_index_record(index_buf, phys_numrec, rootblock, ref is_last_record, ref page_is_empty, new_last_index_buf, ref new_last_phys_num);
             new_last_index_buf = null;
 
         }
 
-        public void delete_index_record(byte[] index_buf, UInt32 phys_numrec, UInt64 block, ref bool is_last_record, ref bool page_is_empty, byte[] new_last_index_buf, ref UInt32 new_last_phys_num) // рекурсивное удаление одного индекса из блока файла index
+        public void Delete_index_record(byte[] index_buf, UInt32 phys_numrec, UInt64 block, ref bool is_last_record, ref bool page_is_empty, byte[] new_last_index_buf, ref UInt32 new_last_phys_num) // рекурсивное удаление одного индекса из блока файла index
         {
             /*
             byte[] page = new byte[pagesize]; 
@@ -466,15 +466,15 @@ namespace _1STool1CD
             */
         }
 
-        public void write_index(UInt32 phys_numrecord, byte[] rec) // запись индекса записи
+        public void Write_index(UInt32 phys_numrecord, byte[] rec) // запись индекса записи
         {
         }
 
-        public void write_index_record(UInt32 phys_numrecord, byte[] index_buf) // запись индекса
+        public void Write_index_record(UInt32 phys_numrecord, byte[] index_buf) // запись индекса
         {
         }
 
-        public void write_index_record(UInt32 phys_numrecord, byte[] index_buf, UInt64 block, ref Int32 result, byte[] new_last_index_buf, ref UInt32 new_last_phys_num, byte[] new_last_index_buf2, ref UInt32 new_last_phys_num2, ref UInt64 new_last_block2) // рекурсивная запись индекса
+        public void Write_index_record(UInt32 phys_numrecord, byte[] index_buf, UInt64 block, ref Int32 result, byte[] new_last_index_buf, ref UInt32 new_last_phys_num, byte[] new_last_index_buf2, ref UInt32 new_last_phys_num2, ref UInt64 new_last_block2) // рекурсивная запись индекса
         {
         }
 

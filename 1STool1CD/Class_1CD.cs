@@ -15,7 +15,7 @@ namespace _1STool1CD
     /// <summary>
     /// Cтруктура первой страницы контейнера
     /// </summary>
-    public struct v8con
+    public struct V8con
     {
         // восемь символов
         char[] sig; // сигнатура SIG_CON
@@ -43,11 +43,11 @@ namespace _1STool1CD
     /// <summary>
     /// Структура страницы размещения уровня 1 версий от 8.0 до 8.2.14
     /// </summary>
-    public struct objtab
+    public struct Objtab
     {
         public Int32 numblocks;
         public UInt32[] blocks;
-        public objtab(Int32 _numblocks, UInt32[] _blocks)
+        public Objtab(Int32 _numblocks, UInt32[] _blocks)
         {
             numblocks = _numblocks;
             blocks = _blocks;
@@ -55,14 +55,14 @@ namespace _1STool1CD
 
     };
     
-    public struct root_80
+    public struct Root_80
     {
         public char[] lang; // 8
         public UInt32 numblocks;
         public UInt32[] blocks;
     };
 
-    public struct root_81
+    public struct Root_81
     {
         public char[] lang; //32
         public UInt32 numblocks;
@@ -72,7 +72,7 @@ namespace _1STool1CD
     /// <summary>
     /// Типы страниц
     /// </summary>
-    public enum pagetype
+    public enum Pagetype
     {
         lost,          // потерянная страница (не относится ни к одному объекту)
 	    root,          // корневая страница (страница 0)
@@ -99,12 +99,12 @@ namespace _1STool1CD
     /// <summary>
     /// Структура принадлежности страницы
     /// </summary>
-    public struct pagemaprec
+    public struct Pagemaprec
     {
         public Int32 tab;     // Индекс в T_1CD::tables, -1 - страница не относится к таблицам
-        public pagetype type; // тип страницы
+        public Pagetype type; // тип страницы
         public UInt32 number; // номер страницы в своем типе
-        public pagemaprec(Int32 _tab = -1, pagetype _type = pagetype.lost, UInt32 _number = 0)
+        public Pagemaprec(Int32 _tab = -1, Pagetype _type = Pagetype.lost, UInt32 _number = 0)
         {
             tab = -1;
             type = _type;
@@ -115,7 +115,7 @@ namespace _1STool1CD
     /// <summary>
     /// Версии файлов shapshot
     /// </summary>
-    public enum snapshot_version
+    public enum Snapshot_version
     {
         Ver1 = 1,
 	    Ver2 = 2
@@ -124,7 +124,7 @@ namespace _1STool1CD
     /// <summary>
     /// Известные версии хранилища конфигурации
     /// </summary>
-    enum depot_ver
+    public enum Depot_ver
     {
         UnknownVer = 0,
 	    Ver3 = 3, // 0300000000000000
@@ -136,7 +136,7 @@ namespace _1STool1CD
     // класс конфигурации поставщика
     public class SupplierConfig
     {
-	    public table_file file;
+	    public Table_file file;
         public String name;     // имя конфигурация поставщика
         public String supplier; // синоним конфигурация поставщика
         public String version;  // версия конфигурация поставщика
@@ -156,7 +156,7 @@ namespace _1STool1CD
     /// <summary>
     /// Структура файла таблицы контейнера файлов
     /// </summary>
-    public struct table_file
+    public struct Table_file
     {
         public V8Table t;
         public String name; // Имя, как оно хранится в таблице
@@ -195,7 +195,7 @@ namespace _1STool1CD
         {
             get
             {
-                return get_readonly();
+                return Get_readonly();
             }
             set
             {
@@ -204,7 +204,7 @@ namespace _1STool1CD
         }
 
 
-        public bool get_readonly()
+        public bool Get_readonly()
         {
             return _ReadOnly;
         }
@@ -249,14 +249,14 @@ namespace _1STool1CD
             
         }
 
-        public static tree get_treeFromV8file(v8file f)
+        public static Tree Get_treeFromV8file(v8file f)
         {
             //TBytesStream* sb;
             
             Encoding enc;
             Byte[] bytes = new Byte[0x1000];
             Int32 offset;
-            tree rt;
+            Tree rt;
 
             //MemoryStream sb = new MemoryStream(bytes);
             MemoryTributary sb = new MemoryTributary(bytes);
@@ -282,11 +282,12 @@ namespace _1STool1CD
             */
             return null;
         }
+        
         /// <summary>
         /// Проверка открытия файла базы 1CD
         /// </summary>
         /// <returns></returns>
-        public bool is_open()
+        public bool Is_open()
         {
             return fs != null;
         }
@@ -295,12 +296,12 @@ namespace _1STool1CD
         /// Определение количества таблиц
         /// </summary>
         /// <returns></returns>
-        UInt32 get_numtables()
+        UInt32 Get_numtables()
         {
             return (UInt32)num_tables;
         }
 
-        V8Table gettable(UInt32 numtable)
+        V8Table Gettable(UInt32 numtable)
         {
             if (numtable >= num_tables)
             {
@@ -315,15 +316,15 @@ namespace _1STool1CD
             return tables[numtable];
         }
 
-        db_ver getversion()
+        Db_ver Getversion()
         {
-            return db_ver.ver8_2_14_0;
+            return Db_ver.ver8_2_14_0;
         }
 
-        public bool save_config(String filename)
+        public bool Save_config(String filename)
         {
             if (cs_config != null)
-                cs_config = new ConfigStorageTableConfig(get_files_config());
+                cs_config = new ConfigStorageTableConfig(Get_files_config());
 
             if (cs_config.getready())
                 return false;
@@ -331,10 +332,10 @@ namespace _1STool1CD
             return cs_config.save_config(filename);
         }
 
-        public bool save_configsave(String filename)
+        public bool Save_configsave(String filename)
         {
             if (cs_configsave != null)
-                cs_configsave = new ConfigStorageTableConfigSave(get_files_config(), get_files_configsave());
+                cs_configsave = new ConfigStorageTableConfigSave(Get_files_config(), Get_files_configsave());
 
             if (cs_configsave.getready())
                 return false;
@@ -342,7 +343,7 @@ namespace _1STool1CD
             return cs_configsave.save_config(filename);
         }
 
-        public void find_supplier_configs()
+        public void Find_supplier_configs()
         {
             /*
              	std::map<String,table_file*>::iterator p;
@@ -360,11 +361,11 @@ namespace _1STool1CD
              */
         }
 
-        public bool save_supplier_configs(UInt32 numcon, String filename)
+        public bool Save_supplier_configs(UInt32 numcon, String filename)
         {
             FileStream _fs = null;
             container_file f;
-            table_file tf;
+            Table_file tf;
 
             if (numcon >= supplier_configs.Capacity)
                 return false;
@@ -407,21 +408,21 @@ namespace _1STool1CD
             return true;
             }
 
-        public bool save_depot_config(String _filename, UInt32 ver = 0)
+        public bool Save_depot_config(String _filename, UInt32 ver = 0)
         {
             return true;
         }
 
-        public bool save_part_depot_config(String _filename, Int32 ver_begin, Int32 ver_end) { return true; }
+        public bool Save_part_depot_config(String _filename, Int32 ver_begin, Int32 ver_end) { return true; }
 
-	    public Int32 get_ver_depot_config(Int32 ver) { return 100; } // Получение номера версии конфигурации (0 - последняя, -1 - предпоследняя и т.д.)
+	    public Int32 Get_ver_depot_config(Int32 ver) { return 100; } // Получение номера версии конфигурации (0 - последняя, -1 - предпоследняя и т.д.)
 
-        public bool save_config_ext(String _filename, String uid, String hashname)
+        public bool Save_config_ext(String _filename, String uid, String hashname)
         {
             
             bool res;
 
-            ConfigStorageTableConfigCasSave cs = new ConfigStorageTableConfigCasSave(get_files_configcas(), get_files_configcassave(), new Guid(uid), hashname);
+            ConfigStorageTableConfigCasSave cs = new ConfigStorageTableConfigCasSave(Get_files_configcas(), Get_files_configcassave(), new Guid(uid), hashname);
             if (!cs.getready())
             {
                 res = false;
@@ -434,11 +435,11 @@ namespace _1STool1CD
             return res;
         }
 
-        public bool save_config_ext_db(String _filename, String hashname)
+        public bool Save_config_ext_db(String _filename, String hashname)
         {
             bool res;
 
-            ConfigStorageTableConfigCas cs = new ConfigStorageTableConfigCas(get_files_configcas(), hashname);
+            ConfigStorageTableConfigCas cs = new ConfigStorageTableConfigCas(Get_files_configcas(), hashname);
             if (!cs.getready())
                 res = false;
             else
@@ -459,32 +460,32 @@ namespace _1STool1CD
         }
         */
 
-        public void flush()
+        public void Flush()
         {
-            v8MemBlock.flush();
+            V8MemBlock.Flush();
         }
 
-        public bool test_stream_format() { return true; }
-        public bool test_list_of_tables() { return true; } // проверка списка таблиц (по DBNames)
+        public bool Test_stream_format() { return true; }
+        public bool Test_list_of_tables() { return true; } // проверка списка таблиц (по DBNames)
 
-        public void find_lost_objects()
+        public void Find_lost_objects()
         {
             UInt32 i;
             Byte[] buf = new Byte[8];
-            v8object v8obj;
+            V8object v8obj;
             bool block_is_find;
 
             for (i = 1; i < length; i++)
             {
-                getblock(buf, i, 8);
+                Getblock(buf, i, 8);
                 //if (buf.Contains(SIG_OBJ))
                 if (Array.IndexOf(buf, SIG_OBJ) == 0)
                 //if (memcmp(buf, SIG_OBJ, 8) == 0)
                 {
                     block_is_find = false;
-                    for (v8obj = v8object.get_first(); v8obj != null; v8obj = v8obj.get_next())
+                    for (v8obj = V8object.Get_first(); v8obj != null; v8obj = v8obj.Get_next())
                     {
-                        if (v8obj.get_block_number() == i)
+                        if (v8obj.Get_block_number() == i)
                         {
                             block_is_find = true;
                             break;
@@ -503,28 +504,28 @@ namespace _1STool1CD
         }
 
 
-        public void find_and_save_lost_objects(String lost_objects) { }
-        public bool create_table(String path) { return true; } // создание таблицы из файлов импорта таблиц
-        public bool delete_table(V8Table tab) { return true; }
-        public bool delete_object(v8object ob) { return true; }
-        public bool replaceTREF(String mapfile) { return true; } // замена значений полей ...TREF во всех таблицах базы
-        public void find_and_create_lost_tables() { }
-        public void restore_DATA_allocation_table(V8Table tab) { }
-        public bool test_block_by_template(UInt32 testblock, char tt, UInt32 num, Int32 rlen, Int32 len) { return true; }
-        public String getfilename() { return filename; }
-        public UInt32 getpagesize() { return pagesize; }
+        public void Find_and_save_lost_objects(String lost_objects) { }
+        public bool Create_table(String path) { return true; } // создание таблицы из файлов импорта таблиц
+        public bool Delete_table(V8Table tab) { return true; }
+        public bool Delete_object(V8object ob) { return true; }
+        public bool ReplaceTREF(String mapfile) { return true; } // замена значений полей ...TREF во всех таблицах базы
+        public void Find_and_create_lost_tables() { }
+        public void Restore_DATA_allocation_table(V8Table tab) { }
+        public bool Test_block_by_template(UInt32 testblock, char tt, UInt32 num, Int32 rlen, Int32 len) { return true; }
+        public String Getfilename() { return filename; }
+        public UInt32 Getpagesize() { return pagesize; }
 
         private String filename;
         public UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
         FileStream fs;
         
-        public db_ver version;
+        public Db_ver version;
 
         private UInt32 length;        // длина базы в блоках
 
-        private v8object free_blocks; // свободные блоки
-        private v8object root_object; // корневой объект
+        private V8object free_blocks; // свободные блоки
+        private V8object root_object; // корневой объект
 
         private Int32 num_tables;     // количество таблиц
 
@@ -532,7 +533,7 @@ namespace _1STool1CD
 
         private bool _ReadOnly;
 
-        private pagemaprec[] pagemap;         // Массив длиной length
+        private Pagemaprec[] pagemap;         // Массив длиной length
 
         private TableFiles _files_config;
         private TableFiles _files_configsave;
@@ -541,7 +542,7 @@ namespace _1STool1CD
         private TableFiles _files_configcas;
         private TableFiles _files_configcassave;
 
-        private TableFiles get_files_config()
+        private TableFiles Get_files_config()
         {
             if (_files_config != null)
             {
@@ -550,7 +551,7 @@ namespace _1STool1CD
             return _files_config;
         }
 
-        private TableFiles get_files_configsave()
+        private TableFiles Get_files_configsave()
         {
             if (_files_configsave != null)
             {
@@ -559,7 +560,7 @@ namespace _1STool1CD
             return _files_configsave;
         }
 
-        private TableFiles get_files_params()
+        private TableFiles Get_files_params()
         {
             if (_files_params != null)
             {
@@ -568,7 +569,7 @@ namespace _1STool1CD
             return _files_params;
         }
 
-        private TableFiles get_files_files()
+        private TableFiles Get_files_files()
         {
             if (_files_files != null)
             {
@@ -577,7 +578,7 @@ namespace _1STool1CD
             return _files_files;
         }
 
-        private TableFiles get_files_configcas()
+        private TableFiles Get_files_configcas()
         {
             if (_files_configcas != null)
             {
@@ -586,7 +587,7 @@ namespace _1STool1CD
             return _files_configcas;
         }
 
-        private TableFiles get_files_configcassave()
+        private TableFiles Get_files_configcassave()
         {
             if (_files_configcassave != null) 
             {
@@ -595,9 +596,9 @@ namespace _1STool1CD
             return _files_configcassave;
         }
 
-        private void init() { }
+        private void Init() { }
 
-        public byte[] getblock(UInt32 block_number)
+        public byte[] Getblock(UInt32 block_number)
         {
             if (data1CD == null)
                 return null;
@@ -607,11 +608,11 @@ namespace _1STool1CD
                 return null;
             }
 
-            new v8MemBlock((FileStream)data1CD, block_number, false, true);
-            return v8MemBlock.getblock((FileStream)data1CD, block_number);
+            new V8MemBlock((FileStream)data1CD, block_number, false, true);
+            return V8MemBlock.Getblock((FileStream)data1CD, block_number);
         }
 
-        public bool getblock(ref byte[] buf, UInt32 block_number, Int32 blocklen = -1) // буфер принадлежит вызывающей процедуре
+        public bool Getblock(ref byte[] buf, UInt32 block_number, Int32 blocklen = -1) // буфер принадлежит вызывающей процедуре
         {
             if (data1CD == null)
                 return false;
@@ -628,122 +629,123 @@ namespace _1STool1CD
             //memcpy(buf, MemBlock::getblock(fs, block_number), blocklen);
 
 
-            v8MemBlock tmp_mem_block = new v8MemBlock((FileStream)data1CD, block_number, false, true);
-            byte[] tmp_buf = v8MemBlock.getblock((FileStream)data1CD, block_number);
+            V8MemBlock tmp_mem_block = new V8MemBlock((FileStream)data1CD, block_number, false, true);
+            byte[] tmp_buf = V8MemBlock.Getblock((FileStream)data1CD, block_number);
             Array.Copy(tmp_buf, buf, blocklen);
             return true;
 
         }
 
 
-        public bool getblock(byte[] buf, UInt32 block_number, Int32 blocklen = -1) { return true; } // буфер принадлежит вызывающей процедуре
+        public bool Getblock(byte[] buf, UInt32 block_number, Int32 blocklen = -1) { return true; } // буфер принадлежит вызывающей процедуре
 
         //private char getblock(UInt32 block_number) { return ' '; }           // буфер не принадлежит вызывающей стороне (принадлежит memblock)
-        public Byte[] getblock_for_write(UInt32 block_number, bool read) { return new Byte[2]; } // буфер не принадлежит вызывающей стороне (принадлежит memblock)
+        public Byte[] Getblock_for_write(UInt32 block_number, bool read) { return new Byte[2]; } // буфер не принадлежит вызывающей стороне (принадлежит memblock)
 
         /// <summary>
         /// Пометить блок как свободный
         /// </summary>
         /// <param name="block_number"></param>
-        public void set_block_as_free(UInt32 block_number)
+        public void Set_block_as_free(UInt32 block_number)
         {
-            free_blocks.set_block_as_free(block_number);
+            free_blocks.Set_block_as_free(block_number);
         }
 
         /// <summary>
         /// Получить номер свободного блока (и пометить как занятый)
         /// </summary>
         /// <returns></returns>
-        public UInt32 get_free_block()
+        public UInt32 Get_free_block()
         {
-            return free_blocks.get_free_block();
+            return free_blocks.Get_free_block();
         } 
 
-        private void add_supplier_config(table_file file) { }
+        private void Add_supplier_config(Table_file file) { }
 
-        private bool recursive_test_stream_format(V8Table t, UInt32 nrec) { return true; }
-        private bool recursive_test_stream_format2(V8Table t, UInt32 nrec) { return true; } // для DBSCHEMA
-        private bool recursive_test_stream_format(Stream str, String path, bool maybezipped2 = false) { return true; }
-        private bool recursive_test_stream_format(v8catalog cat, String path) { return true; }
+        private bool Recursive_test_stream_format(V8Table t, UInt32 nrec) { return true; }
+        private bool Recursive_test_stream_format2(V8Table t, UInt32 nrec) { return true; } // для DBSCHEMA
+        private bool Recursive_test_stream_format(Stream str, String path, bool maybezipped2 = false) { return true; }
+        private bool Recursive_test_stream_format(v8catalog cat, String path) { return true; }
 
-        private void pagemapfill()
+        private void Pagemapfill()
         {
             if (pagemap != null)
             {
                 //delete[] pagemap;
                 pagemap = null;
             }
-            pagemap = new pagemaprec[length];
+            pagemap = new Pagemaprec[length];
 
-            pagemap[0].type = pagetype.root;
-            pagemap[1].type = pagetype.freeroot;
-            pagemap[2].type = pagetype.rootfileroot;
+            pagemap[0].type = Pagetype.root;
+            pagemap[1].type = Pagetype.freeroot;
+            pagemap[2].type = Pagetype.rootfileroot;
 
         }
-        private String pagemaprec_presentation(pagemaprec pmr)
+
+        private String Pagemaprec_presentation(Pagemaprec pmr)
         {
             switch (pmr.type)
             {
-                case pagetype.lost:          return ("потерянная страница");
-                case pagetype.root:          return ("корневая страница базы");
-                case pagetype.freeroot:      return ("корневая страница таблицы свободных блоков");
-                case pagetype.freealloc:     return ("страница размещения таблицы свободных блоков номер ") + pmr.number;
-                case pagetype.free:          return ("свободная страница номер ")                           + pmr.number;
-                case pagetype.rootfileroot:  return ("корневая страница корневого файла");                  
-                case pagetype.rootfilealloc: return ("страница размещения корневого файла номер ")          + pmr.number;
-                case pagetype.rootfile:      return ("страница данных корневого файла номер ")              + pmr.number;
-                case pagetype.descrroot:     return ("корневая страница файла descr таблицы ")              + tables[pmr.tab].getname();
-                case pagetype.descralloc:    return ("страница размещения файла descr таблицы ")            + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.descr:         return ("страница данных файла descr таблицы ")                + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.dataroot:      return ("корневая страница файла data таблицы ")               + tables[pmr.tab].getname();
-                case pagetype.dataalloc:     return ("страница размещения файла data таблицы ")             + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.data:          return ("страница данных файла data таблицы ")                 + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.indexroot:     return ("корневая страница файла index таблицы ")              + tables[pmr.tab].getname();
-                case pagetype.indexalloc:    return ("страница размещения файла index таблицы ")            + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.index:         return ("страница данных файла index таблицы ")                + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.blobroot:      return ("корневая страница файла blob таблицы ")               + tables[pmr.tab].getname();
-                case pagetype.bloballoc:     return ("страница размещения файла blob таблицы ")             + tables[pmr.tab].getname() + " номер " + pmr.number;
-                case pagetype.blob:          return ("страница данных файла blob таблицы ")                 + tables[pmr.tab].getname() + " номер " + pmr.number;
+                case Pagetype.lost:          return ("потерянная страница");
+                case Pagetype.root:          return ("корневая страница базы");
+                case Pagetype.freeroot:      return ("корневая страница таблицы свободных блоков");
+                case Pagetype.freealloc:     return ("страница размещения таблицы свободных блоков номер ") + pmr.number;
+                case Pagetype.free:          return ("свободная страница номер ")                           + pmr.number;
+                case Pagetype.rootfileroot:  return ("корневая страница корневого файла");                  
+                case Pagetype.rootfilealloc: return ("страница размещения корневого файла номер ")          + pmr.number;
+                case Pagetype.rootfile:      return ("страница данных корневого файла номер ")              + pmr.number;
+                case Pagetype.descrroot:     return ("корневая страница файла descr таблицы ")              + tables[pmr.tab].Getname();
+                case Pagetype.descralloc:    return ("страница размещения файла descr таблицы ")            + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.descr:         return ("страница данных файла descr таблицы ")                + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.dataroot:      return ("корневая страница файла data таблицы ")               + tables[pmr.tab].Getname();
+                case Pagetype.dataalloc:     return ("страница размещения файла data таблицы ")             + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.data:          return ("страница данных файла data таблицы ")                 + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.indexroot:     return ("корневая страница файла index таблицы ")              + tables[pmr.tab].Getname();
+                case Pagetype.indexalloc:    return ("страница размещения файла index таблицы ")            + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.index:         return ("страница данных файла index таблицы ")                + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.blobroot:      return ("корневая страница файла blob таблицы ")               + tables[pmr.tab].Getname();
+                case Pagetype.bloballoc:     return ("страница размещения файла blob таблицы ")             + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.blob:          return ("страница данных файла blob таблицы ")                 + tables[pmr.tab].Getname() + " номер " + pmr.number;
 
                 default:
                     return ("??? неизвестный тип страницы ???");
             }
         }
 
-        private depot_ver get_depot_version(byte[] record)
+        private Depot_ver Get_depot_version(byte[] record)
         {
-            depot_ver depotVer = depot_ver.UnknownVer;
+            Depot_ver depotVer = Depot_ver.UnknownVer;
 
-            v8Field fldd_depotver = table_depot.get_field("DEPOTVER");
+            V8Field fldd_depotver = table_depot.Get_field("DEPOTVER");
 
             if (fldd_depotver != null)
             {
                 return depotVer;
             }
 
-            String Ver = fldd_depotver.get_presentation(record, true);
+            String Ver = fldd_depotver.Get_presentation(record, true);
 
             
 
             if (String.Compare(Ver, "0300000000000000") == 0)
             {
-                depotVer = depot_ver.Ver3;
+                depotVer = Depot_ver.Ver3;
             }
             else if (String.Compare(Ver, "0500000000000000") == 0)
             {
-                depotVer = depot_ver.Ver5;
+                depotVer = Depot_ver.Ver5;
             }
             else if (String.Compare(Ver, "0600000000000000") == 0)
             {
-                depotVer = depot_ver.Ver6;
+                depotVer = Depot_ver.Ver6;
             }
             else if (String.Compare(Ver, "0700000000000000") == 0)
             {
-                depotVer = depot_ver.Ver7;
+                depotVer = Depot_ver.Ver7;
             }
             else
             {
-                depotVer = depot_ver.UnknownVer;
+                depotVer = Depot_ver.UnknownVer;
 
                 //msreg_m.AddMessage_("Неизвестная версия хранилища", MessageState::Error, "Версия хранилища", Ver);
                 Console.WriteLine("Неизвестная версия хранилища");

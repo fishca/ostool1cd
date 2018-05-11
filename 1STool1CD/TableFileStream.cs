@@ -14,7 +14,7 @@ namespace _1STool1CD
     {
         #region public
 
-        public TableFileStream(table_file tf) : base(" ", FileMode.Open) { }
+        public TableFileStream(Table_file tf) : base(" ", FileMode.Open) { }
 
         public virtual Int64 Read(byte[] Buffer, Int64 Count) { return 0; }
 	    public override Int32 Read(byte[] Buffer, Int32 Offset, Int32 Count) { return 0; }
@@ -27,7 +27,7 @@ namespace _1STool1CD
 
         #region private
         private Int64 curoffset;
-        private table_file tablefile;
+        private Table_file tablefile;
         private Stream streams;
         #endregion
 

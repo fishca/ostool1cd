@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static _1STool1CD.Constants;
 
 namespace _1STool1CD
 {
@@ -12,11 +13,11 @@ namespace _1STool1CD
     ///  первый в цепочке кешированный блок - тот, к которому наиболее давно обращались
     ///  последний в цепочке - с самым последним обращением
     /// </summary>
-    public class v8MemBlock
+    public class V8MemBlock
     {
         public static UInt32 count; // текущее количество кешированных блоков
 
-        public v8MemBlock(FileStream fs, UInt32 _numblock, bool for_write, bool read)
+        public V8MemBlock(FileStream fs, UInt32 _numblock, bool for_write, bool read)
         {
             numblock = _numblock;
 
@@ -45,8 +46,6 @@ namespace _1STool1CD
                 UInt32 fnumblocks = (UInt32)fs.Length / pagesize;
                 if (fnumblocks <= numblock)
                 {
-
-
                     Array.Clear(buf, 0, (int)pagesize);
                     fs.Seek(numblock * pagesize, SeekOrigin.Begin);
                     fs.Write(buf, 0, (int)pagesize);
@@ -82,44 +81,44 @@ namespace _1STool1CD
             memblocks[numblock] = this;
         }
 
-        public static void garbage()
+        public static void Garbage()
         {
 
         }
 
-        public static byte[] getblock(FileStream fs, UInt32 _numblock)
+        public static byte[] Getblock(FileStream fs, UInt32 _numblock)
         {
             if (_numblock >= numblocks)
                 return null;
             if (memblocks[_numblock] != null)
-                new v8MemBlock(fs, _numblock, false, true);
+                new V8MemBlock(fs, _numblock, false, true);
             return
-                memblocks[_numblock].getblock(false);
+                memblocks[_numblock].Getblock(false);
         }
 
-        public static byte[] getblock_for_write(FileStream fs, UInt32 _numblock, bool read)
+        public static byte[] Getblock_for_write(FileStream fs, UInt32 _numblock, bool read)
         {
             if (_numblock > numblocks)
                 return null;
             if (_numblock == numblocks)
-                add_block();
+                Add_block();
             if (memblocks[_numblock] != null)
-                new v8MemBlock(fs, _numblock, true, read);
+                new V8MemBlock(fs, _numblock, true, read);
             else
                 memblocks[_numblock].is_changed = true;
             return
-                memblocks[_numblock].getblock(true);
+                memblocks[_numblock].Getblock(true);
         }
 
-        public static void create_memblocks(UInt32 _numblocks)
+        public static void Create_memblocks(UInt32 _numblocks)
         {
             numblocks = _numblocks;
             array_numblocks = (numblocks / delta + 1) * delta;
-            memblocks = new v8MemBlock[array_numblocks];
+            memblocks = new V8MemBlock[array_numblocks];
             //memset(memblocks, 0, array_numblocks * sizeof(MemBlock*));
         }
 
-        public static void delete_memblocks()
+        public static void Delete_memblocks()
         {
             while (first != null)
                 first = null;
@@ -131,17 +130,17 @@ namespace _1STool1CD
             array_numblocks = 0;
         }
 
-        public static UInt64 get_numblocks()
+        public static UInt64 Get_numblocks()
         {
             return numblocks;
         }
 
-        public static void flush()
+        public static void Flush()
         {
-            v8MemBlock cur;
+            V8MemBlock cur;
             for (cur = first; cur != null; cur = cur.next)
                 if (cur.is_changed)
-                    cur.write();
+                    cur.Write();
         }
 
 
@@ -150,17 +149,17 @@ namespace _1STool1CD
 
         public FileStream file; // файл, которому принадлежит блок
 
-        public static UInt32 pagesize = 0x1000; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
+        public static UInt32 pagesize = (UInt32)PAGE4K; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
         public UInt32 numblock;
 
-        public v8MemBlock next;
-        public v8MemBlock prev;
+        public V8MemBlock next;
+        public V8MemBlock prev;
 
         public bool is_changed; // признак, что блок изменен (требует записи)
 
-        public static v8MemBlock first;
-        public static v8MemBlock last;
+        public static V8MemBlock first;
+        public static V8MemBlock last;
 
         public static UInt32 maxcount;    // максимальное количество кешированных блоков
         public static UInt32 numblocks;   // количество значащих элементов в массиве memblocks (равно количеству блоков в файле *.1CD)
@@ -170,13 +169,13 @@ namespace _1STool1CD
 
         //static MemBlock** memblocks; // указатель на массив указателей MemBlock (количество равно количеству блоков в файле *.1CD)
         //public List<v8MemBlock> memblocks;
-        public static v8MemBlock[] memblocks;
+        public static V8MemBlock[] memblocks;
 
 
         public UInt32 lastdataget; // время (Windows time, в миллисекундах) последнего обращения к данным объекта (data)
 
         //char* getblock(bool for_write); // получить блок для чтения или для записи
-        public byte[] getblock(bool for_write) // получить блок для чтения или для записи
+        public byte[] Getblock(bool for_write) // получить блок для чтения или для записи
         {
             // удаляем себя из текущего положения цепочки...
             if (prev != null)
@@ -207,14 +206,14 @@ namespace _1STool1CD
             //return new byte[0x1000];
         }
 
-        public static void add_block()
+        public static void Add_block()
         {
 
             if (numblocks < array_numblocks)
                 memblocks[numblocks++] = null;
             else
             {
-                v8MemBlock[] mb = new v8MemBlock[array_numblocks + delta];
+                V8MemBlock[] mb = new V8MemBlock[array_numblocks + delta];
                 for (uint i = 0; i < array_numblocks; i++)
                     mb[i] = memblocks[i];
 
@@ -230,7 +229,7 @@ namespace _1STool1CD
 
         }
 
-        public void write()
+        public void Write()
         {
             if (!is_changed)
                 return;

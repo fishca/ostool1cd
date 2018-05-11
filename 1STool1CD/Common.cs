@@ -24,7 +24,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="ft"></param>
         /// <param name="time1CD"></param>
-        public static void time1CD_to_FileTime(ref DateTime ft, String time1CD)
+        public static void Time1CD_to_FileTime(ref DateTime ft, String time1CD)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(time1CD);
             ft = DateTime.Parse(time1CD);
@@ -36,7 +36,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static UInt32 reverse_byte_order(UInt32 value)
+        public static UInt32 Reverse_byte_order(UInt32 value)
         {
 
             var bytes = BitConverter.GetBytes(value);
@@ -90,7 +90,7 @@ namespace _1STool1CD
         /// <param name="str"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public static bool string_to_GUID(String str, Guid guid)
+        public static bool String_to_GUID(String str, Guid guid)
         {
             int i, j;
 
@@ -111,7 +111,7 @@ namespace _1STool1CD
                     hi = str[j++];
                     lo = str[j++];
                     tmp_char = g[i];
-                    res = res && two_hex_digits_to_byte(hi, lo, ref tmp_char);
+                    res = res && Two_hex_digits_to_byte(hi, lo, ref tmp_char);
                 }
                 res = res && (str[j++] == '-');
                 for (i = 10; i < 12; i++)
@@ -119,7 +119,7 @@ namespace _1STool1CD
                     hi = str[j++];
                     lo = str[j++];
                     tmp_char = g[i];
-                    res = res && two_hex_digits_to_byte(hi, lo, ref tmp_char);
+                    res = res && Two_hex_digits_to_byte(hi, lo, ref tmp_char);
                 }
                 res = res && (str[j++] == '-');
                 for (i = 8; i < 10; i++)
@@ -127,7 +127,7 @@ namespace _1STool1CD
                     hi = str[j++];
                     lo = str[j++];
                     tmp_char = g[i];
-                    res = res && two_hex_digits_to_byte(hi, lo, ref tmp_char);
+                    res = res && Two_hex_digits_to_byte(hi, lo, ref tmp_char);
                 }
                 res = res && (str[j++] == '-');
                 for (i = 0; i < 2; i++)
@@ -135,7 +135,7 @@ namespace _1STool1CD
                     hi = str[j++];
                     lo = str[j++];
                     tmp_char = g[i];
-                    res = res && two_hex_digits_to_byte(hi, lo, ref tmp_char);
+                    res = res && Two_hex_digits_to_byte(hi, lo, ref tmp_char);
                 }
                 res = res && (str[j++] == '-');
                 for (i = 2; i < 8; i++)
@@ -143,7 +143,7 @@ namespace _1STool1CD
                     hi = str[j++];
                     lo = str[j++];
                     tmp_char = g[i];
-                    res = res && two_hex_digits_to_byte(hi, lo, ref tmp_char);
+                    res = res && Two_hex_digits_to_byte(hi, lo, ref tmp_char);
                 }
 
             }
@@ -191,7 +191,7 @@ namespace _1STool1CD
         /// <param name="str"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public static bool string_to_GUID_flat(String str, Guid guid)
+        public static bool String_to_GUID_flat(String str, Guid guid)
         {
             int i, j;
 
@@ -211,7 +211,7 @@ namespace _1STool1CD
                     hi = str[j++];
                     lo = str[j++];
                     cur_char = g[i];
-                    res = res || two_hex_digits_to_byte(hi, lo, ref cur_char);
+                    res = res || Two_hex_digits_to_byte(hi, lo, ref cur_char);
                 }
             }
 
@@ -225,7 +225,7 @@ namespace _1STool1CD
         /// <param name="lo"></param>
         /// <param name="res"></param>
         /// <returns></returns>
-        public static bool two_hex_digits_to_byte(Char hi, Char lo, ref Char res)
+        public static bool Two_hex_digits_to_byte(Char hi, Char lo, ref Char res)
         {
             if (hi >= '0' && hi <= '9') res = (Char)((hi - '0') << 4);
         	else if (hi >= 'a' && hi <= 'f') res = (Char)((hi - ('a' - 0xa)) << 4);
@@ -252,7 +252,7 @@ namespace _1STool1CD
         /// <param name="str"></param>
         /// <param name="bytedate"></param>
         /// <returns></returns>
-        public static bool string1C_to_date(String str, DateTime bytedate)
+        public static bool String1C_to_date(String str, DateTime bytedate)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(str, "yyyyMMddhhmmss");
             //bdd.write_to(bytedate);
@@ -265,7 +265,7 @@ namespace _1STool1CD
         /// <param name="str"></param>
         /// <param name="bytedate"></param>
         /// <returns></returns>
-        public static bool string_to_date(String str, DateTime bytedate)
+        public static bool String_to_date(String str, DateTime bytedate)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(str);
             //bdd.write_to(bytedate);
@@ -277,7 +277,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="bytedate"></param>
         /// <returns></returns>
-        public static String date_to_string1C(DateTime bytedate)
+        public static String Date_to_string1C(DateTime bytedate)
         {
             BinaryDecimalDate bdd = new BinaryDecimalDate(bytedate.ToString());
             return bdd.get_part(0, 14);
@@ -288,7 +288,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="bytedate"></param>
         /// <returns></returns>
-        public static String date_to_string(DateTime bytedate)
+        public static String Date_to_string(DateTime bytedate)
         {
 
             BinaryDecimalDate bdd = new BinaryDecimalDate(bytedate.ToString());
@@ -302,7 +302,7 @@ namespace _1STool1CD
         /// <param name="buf"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        public static String hexstring(Char[] buf, int n)
+        public static String Hexstring(Char[] buf, int n)
         {
             int i;
             String s = "";
@@ -330,7 +330,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static String hexstring(Stream str)
+        public static String Hexstring(Stream str)
         {
             String s = "";
             Char b;
@@ -357,7 +357,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="in_str"></param>
         /// <returns></returns>
-        public static String toXML(String in_str)
+        public static String ToXML(String in_str)
         {
             StringBuilder tmp_str = new StringBuilder(in_str);
 
@@ -373,7 +373,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="digit"></param>
         /// <returns></returns>
-        public static Char from_hex_digit(Char digit)
+        public static Char From_hex_digit(Char digit)
         {
             if (digit >= '0' && digit <= '9') return (Char)(digit - '0');
             if (digit >= 'a' && digit <= 'f') return (Char)(digit - 'a' + 10);

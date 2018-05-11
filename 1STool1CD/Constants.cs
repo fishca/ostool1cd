@@ -136,7 +136,7 @@ namespace _1STool1CD
         };
         #endregion
 
-        public enum type_fields
+        public enum Type_fields
         {
             tf_binary,   // B   // длина = length
 	        tf_bool,     // L   // длина = 1

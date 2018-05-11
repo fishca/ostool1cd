@@ -11,7 +11,7 @@ namespace _1STool1CD
     {
     }
 
-    public enum node_type
+    public enum Node_type
     {
         nd_empty = 0,       // пусто
         nd_string = 1,      // строка
@@ -37,7 +37,7 @@ namespace _1STool1CD
 
 
 
-    public class tree
+    public class Tree
     {
         public static readonly String exp_number     = "^-?\\d+$"; // exp_number
         public static readonly String exp_number_exp = "^-?\\d+(\\.?\\d*)?((e|E)-?\\d+)?$";
@@ -48,13 +48,13 @@ namespace _1STool1CD
         public static readonly String exp_binary_d   = "^#data:[0-9a-zA-Z\\+=\\r\\n\\/]*$";
 
         public String value;
-        public node_type type;
+        public Node_type type;
         public int num_subnode; // количество подчиненных
-        public tree parent;     // +1
-        public tree next;       // 0
-        public tree prev;       // 0
-        public tree first;      // -1
-        public tree last;       // -1
+        public Tree parent;     // +1
+        public Tree next;       // 0
+        public Tree prev;       // 0
+        public Tree first;      // -1
+        public Tree last;       // -1
         public uint index;
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace _1STool1CD
         /// <param name="_value"></param>
         /// <param name="_type"></param>
         /// <param name="_parent"></param>
-        public tree(String _value, node_type _type, tree _parent)
+        public Tree(String _value, Node_type _type, Tree _parent)
         {
             value  = _value;
             type   = _type;
@@ -95,42 +95,42 @@ namespace _1STool1CD
             last  = null;
         }
 
-        public tree add_child(String _value, node_type _type)
+        public Tree Add_child(String _value, Node_type _type)
         {
-            return new tree(_value, _type, this);
+            return new Tree(_value, _type, this);
         }
 
-        public tree add_child()
+        public Tree Add_child()
         {
-            return new tree("", node_type.nd_empty, this);
+            return new Tree("", Node_type.nd_empty, this);
         }
 
-        public tree add_node()
+        public Tree Add_node()
         {
-            return new tree("", node_type.nd_empty, this.parent);
+            return new Tree("", Node_type.nd_empty, this.parent);
         }
 
-        public String get_value()
+        public String Get_value()
         {
             return value;
         }
 
-        public node_type get_type()
+        public Node_type Get_type()
         {
             return type;
         }
 
-        public int get_num_subnode()
+        public int Get_num_subnode()
         {
             return num_subnode;
         }
 
-        public tree get_subnode(int _index)
+        public Tree Get_subnode(int _index)
         {
             if (_index >= num_subnode)
                 return null;
 
-            tree t = first;
+            Tree t = first;
 
             while (_index != 0)
             {
@@ -140,9 +140,9 @@ namespace _1STool1CD
             return t;
         }
 
-        public tree get_subnode(String node_name)
+        public Tree Get_subnode(String node_name)
         {
-            tree t = first;
+            Tree t = first;
             while (t != null)
             {
                 if (t.value == node_name)
@@ -153,22 +153,22 @@ namespace _1STool1CD
             return null;
         }
 
-        public tree get_next()
+        public Tree Get_next()
         {
             return next;
         }
 
-        public tree get_parent()
+        public Tree Get_parent()
         {
             return parent;
         }
 
-        public tree get_first()
+        public Tree Get_first()
         {
             return first;
         }
 
-        public tree get_last()
+        public Tree Get_last()
         {
             return last;
         }
@@ -177,15 +177,15 @@ namespace _1STool1CD
         //public tree operator [] (int _index);
 
 
-        public void set_value(String v, node_type t)
+        public void Set_value(String v, Node_type t)
         {
             value = v;
             type = t;
         }
 
-        public void outtext(ref String text)
+        public void Outtext(ref String text)
         {
-            node_type lt = node_type.nd_unknown;
+            Node_type lt = Node_type.nd_unknown;
 
             if (num_subnode != 0)
             {
@@ -193,16 +193,16 @@ namespace _1STool1CD
                     text += "\r\n";
 
                 text += "{";
-                tree t = first;
+                Tree t = first;
                 while (t != null)
                 {
-                    t.outtext(ref text);
+                    t.Outtext(ref text);
                     lt = t.type;
                     t = t.next;
                     if (t != null)
                         text += ",";
                 }
-                if (lt == node_type.nd_list)
+                if (lt == Node_type.nd_list)
                     text += "\r\n";
                 text += "}";
             }
@@ -210,19 +210,19 @@ namespace _1STool1CD
             {
                 switch (type)
                 {
-                    case node_type.nd_string:
+                    case Node_type.nd_string:
                         text += "\"";
                         text += text.Replace("\"", "\"\"");
                         text += "\"";
                         break;
-                    case node_type.nd_number:
-                    case node_type.nd_number_exp:
-                    case node_type.nd_guid:
-                    case node_type.nd_list:
-                    case node_type.nd_binary:
-                    case node_type.nd_binary2:
-                    case node_type.nd_link:
-                    case node_type.nd_binary_d:
+                    case Node_type.nd_number:
+                    case Node_type.nd_number_exp:
+                    case Node_type.nd_guid:
+                    case Node_type.nd_list:
+                    case Node_type.nd_binary:
+                    case Node_type.nd_binary2:
+                    case Node_type.nd_link:
+                    case Node_type.nd_binary_d:
                         text += value;
                         break;
                     default:
@@ -231,10 +231,11 @@ namespace _1STool1CD
             }
 
         }
-        public String path()
+
+        public String Path()
         {
             String p = "";
-            tree t;
+            Tree t;
 
             if (this == null)
                 return ":??"; //-V704
@@ -253,18 +254,18 @@ namespace _1STool1CD
         /// <param name="text"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static tree parse_1Ctext(String text, String path)
+        public static Tree Parse_1Ctext(String text, String path)
         {
 
             StringBuilder __curvalue__ = new StringBuilder("");
 
             String curvalue = "";
-            tree ret = new tree("", node_type.nd_list, null);
-            tree t = ret;
+            Tree ret = new Tree("", Node_type.nd_list, null);
+            Tree t = ret;
             int len = text.Length;
             int i = 0;
             char sym = '0';
-            node_type nt = node_type.nd_unknown;
+            Node_type nt = Node_type.nd_unknown;
 
             _state state = _state.s_value;
 
@@ -293,15 +294,15 @@ namespace _1STool1CD
 
                             case '{':
 
-                                t = new tree("", node_type.nd_list, t);
+                                t = new Tree("", Node_type.nd_list, t);
                                 break;
 
                             case '}':
 
-                                if (t.get_first() != null)
-                                    t.add_child("", node_type.nd_empty);
+                                if (t.Get_first() != null)
+                                    t.Add_child("", Node_type.nd_empty);
 
-                                t = t.get_parent();
+                                t = t.Get_parent();
 
                                 if (t == null)
                                 {
@@ -317,7 +318,7 @@ namespace _1STool1CD
 
                             case ',':
 
-                                t.add_child("", node_type.nd_empty);
+                                t.Add_child("", Node_type.nd_empty);
                                 break;
 
                             default:
@@ -341,7 +342,7 @@ namespace _1STool1CD
                                 state = _state.s_value;
                                 break;
                             case '}':
-                                t = t.get_parent();
+                                t = t.Get_parent();
                                 if (t == null)
                                 {
                                     /*
@@ -382,7 +383,7 @@ namespace _1STool1CD
                         }
                         else
                         {
-                            t.add_child(__curvalue__.ToString(), node_type.nd_string);
+                            t.Add_child(__curvalue__.ToString(), Node_type.nd_string);
                             switch (sym)
                             {
                                 case ' ': // space
@@ -395,7 +396,7 @@ namespace _1STool1CD
                                     state = _state.s_value;
                                     break;
                                 case '}':
-                                    t = t.get_parent();
+                                    t = t.Get_parent();
                                     if (t == null)
                                     {
                                         /*
@@ -427,8 +428,8 @@ namespace _1STool1CD
                         {
                             case ',':
                                 curvalue = __curvalue__.ToString();
-                                nt = classification_value(curvalue);
-                                if (nt == node_type.nd_unknown)
+                                nt = Classification_value(curvalue);
+                                if (nt == Node_type.nd_unknown)
                                 {
                                     /*
                                     if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
@@ -437,21 +438,21 @@ namespace _1STool1CD
                                       */
                                     Console.WriteLine($"Ошибка формата потока. Неизвестный тип значения. Значение: { curvalue }, путь: {path}");
                                 }
-                                t.add_child(curvalue, nt);
+                                t.Add_child(curvalue, nt);
                                 state = _state.s_value;
                                 break;
                             case '}':
                                 curvalue = __curvalue__.ToString();
 
-                                nt = classification_value(curvalue);
+                                nt = Classification_value(curvalue);
 
-                                if (nt == node_type.nd_unknown)
+                                if (nt == Node_type.nd_unknown)
                                 {
                                     //if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.", "Значение", curvalue, "Путь", path);
                                     Console.WriteLine($"Ошибка формата потока. Неизвестный тип значения. Значение: { curvalue }, путь: {path}");
                                 }
-                                t.add_child(curvalue, nt);
-                                t = t.get_parent();
+                                t.Add_child(curvalue, nt);
+                                t = t.Get_parent();
                                 if (t == null)
                                 {
                                     /*
@@ -486,8 +487,8 @@ namespace _1STool1CD
             if (state == _state.s_nonstring)
             {
                 curvalue = __curvalue__.ToString();
-                nt = classification_value(curvalue);
-                if (nt == node_type.nd_unknown)
+                nt = Classification_value(curvalue);
+                if (nt == Node_type.nd_unknown)
                 { 
                     /*
                     if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
@@ -496,11 +497,11 @@ namespace _1STool1CD
                       */
                     Console.WriteLine($"Ошибка формата потока. Неизвестный тип значения. Значение: { curvalue }, путь: {path}");
                 }
-                t.add_child(curvalue, nt);
+                t.Add_child(curvalue, nt);
             }
             else
                 if (state == _state.s_quote_or_endstring)
-                t.add_child(__curvalue__.ToString(), node_type.nd_string);
+                t.Add_child(__curvalue__.ToString(), Node_type.nd_string);
             else
                 if (state != _state.s_delimitier)
             {
@@ -535,18 +536,18 @@ namespace _1STool1CD
         /// <param name="str"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public tree parse_1Cstream(Stream str, String path)
+        public Tree Parse_1Cstream(Stream str, String path)
         {
             StringBuilder __curvalue__ = new StringBuilder("");
 
             String curvalue = "";
-            tree ret = new tree("", node_type.nd_list, null);
-            tree t = ret;
+            Tree ret = new Tree("", Node_type.nd_list, null);
+            Tree t = ret;
 
             int i = 0;
             char sym = '0';
             int _sym = 0;
-            node_type nt = node_type.nd_unknown;
+            Node_type nt = Node_type.nd_unknown;
 
             StreamReader reader = new StreamReader(str, true);
             _state state = _state.s_nonstring;
@@ -575,15 +576,15 @@ namespace _1STool1CD
 
                             case '{':
 
-                                t = new tree("", node_type.nd_list, t);
+                                t = new Tree("", Node_type.nd_list, t);
                                 break;
 
                             case '}':
 
-                                if (t.get_first() != null)
-                                    t.add_child("", node_type.nd_empty);
+                                if (t.Get_first() != null)
+                                    t.Add_child("", Node_type.nd_empty);
 
-                                t = t.get_parent();
+                                t = t.Get_parent();
 
                                 if (t == null)
                                 {
@@ -597,7 +598,7 @@ namespace _1STool1CD
 
                             case ',':
 
-                                t.add_child("", node_type.nd_empty);
+                                t.Add_child("", Node_type.nd_empty);
                                 break;
 
                             default:
@@ -621,7 +622,7 @@ namespace _1STool1CD
                                 state = _state.s_value;
                                 break;
                             case '}':
-                                t = t.get_parent();
+                                t = t.Get_parent();
                                 if (t == null)
                                 {
                                     /*
@@ -660,7 +661,7 @@ namespace _1STool1CD
                         }
                         else
                         {
-                            t.add_child(__curvalue__.ToString(), node_type.nd_string);
+                            t.Add_child(__curvalue__.ToString(), Node_type.nd_string);
                             switch (sym)
                             {
                                 case ' ': // space
@@ -673,7 +674,7 @@ namespace _1STool1CD
                                     state = _state.s_value;
                                     break;
                                 case '}':
-                                    t = t.get_parent();
+                                    t = t.Get_parent();
                                     if (t == null)
                                     {
                                         /*
@@ -704,8 +705,8 @@ namespace _1STool1CD
                         {
                             case ',':
                                 curvalue = __curvalue__.ToString();
-                                nt = classification_value(curvalue);
-                                if (nt == node_type.nd_unknown)
+                                nt = Classification_value(curvalue);
+                                if (nt == Node_type.nd_unknown)
                                 {
                                     /*
                                     if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
@@ -713,20 +714,20 @@ namespace _1STool1CD
                                       "Путь", path);
                                       */
                                 }
-                                t.add_child(curvalue, nt);
+                                t.Add_child(curvalue, nt);
                                 state = _state.s_value;
                                 break;
                             case '}':
                                 curvalue = __curvalue__.ToString();
 
-                                nt = classification_value(curvalue);
+                                nt = Classification_value(curvalue);
 
-                                if (nt == node_type.nd_unknown)
+                                if (nt == Node_type.nd_unknown)
                                 {
                                     //if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.", "Значение", curvalue, "Путь", path);
                                 }
-                                t.add_child(curvalue, nt);
-                                t = t.get_parent();
+                                t.Add_child(curvalue, nt);
+                                t = t.Get_parent();
                                 if (t == null)
                                 {
                                     /*
@@ -758,18 +759,18 @@ namespace _1STool1CD
             if (state == _state.s_nonstring)
             {
                 curvalue = __curvalue__.ToString();
-                nt = classification_value(curvalue);
-                if (nt == node_type.nd_unknown)
+                nt = Classification_value(curvalue);
+                if (nt == Node_type.nd_unknown)
                     /*
                     if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
                       "Значение", curvalue,
                       "Путь", path);
                       */
-                    t.add_child(curvalue, nt);
+                    t.Add_child(curvalue, nt);
             }
             else
                 if (state == _state.s_quote_or_endstring)
-                t.add_child(__curvalue__.ToString(), node_type.nd_string);
+                t.Add_child(__curvalue__.ToString(), Node_type.nd_string);
             else
                 if (state != _state.s_delimitier)
             {
@@ -801,7 +802,7 @@ namespace _1STool1CD
         /// <param name="str"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool test_parse_1Ctext(Stream str, String path)
+        public static bool Test_parse_1Ctext(Stream str, String path)
         {
 
             int i = 0;
@@ -812,7 +813,7 @@ namespace _1STool1CD
             char sym;
             int _sym;
 
-            node_type nt = node_type.nd_unknown;
+            Node_type nt = Node_type.nd_unknown;
 
             bool ret = true;
 
@@ -953,8 +954,8 @@ namespace _1STool1CD
                         {
                             case ',':
                                 curvalue = __curvalue__.ToString();
-                                nt = classification_value(curvalue);
-                                if (nt == node_type.nd_unknown)
+                                nt = Classification_value(curvalue);
+                                if (nt == Node_type.nd_unknown)
                                 {
                                     /*
                         if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
@@ -968,8 +969,8 @@ namespace _1STool1CD
 
                             case '}':
                                 curvalue = __curvalue__.ToString();
-                                nt = classification_value(curvalue);
-                                if (nt == node_type.nd_unknown)
+                                nt = Classification_value(curvalue);
+                                if (nt == Node_type.nd_unknown)
                                 {
                                     /*
                         if (msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
@@ -1009,8 +1010,8 @@ namespace _1STool1CD
             if (state == _state.s_nonstring)
             {
                 curvalue = __curvalue__.ToString();
-                nt = classification_value(curvalue);
-                if (nt == node_type.nd_unknown)
+                nt = Classification_value(curvalue);
+                if (nt == Node_type.nd_unknown)
                 {
                     /*
             if(msreg) msreg->AddError("Ошибка формата потока. Неизвестный тип значения.",
@@ -1049,31 +1050,31 @@ namespace _1STool1CD
 
         }
 
-        public String outtext(tree t)
+        public String Outtext(Tree t)
         {
             String text = "";
 
             if (t != null)
-                if (t.get_first() != null)
-                    t.get_first().outtext(ref text);
+                if (t.Get_first() != null)
+                    t.Get_first().Outtext(ref text);
 
             return text;
         }
 
-        public static node_type classification_value(String value)
+        public static Node_type Classification_value(String value)
         {
 
-            if (String.IsNullOrEmpty(value)) return node_type.nd_empty;
+            if (String.IsNullOrEmpty(value)) return Node_type.nd_empty;
 
-            if (Regex.IsMatch(value, exp_number))     return node_type.nd_number;
-            if (Regex.IsMatch(value, exp_number_exp)) return node_type.nd_number_exp;
-            if (Regex.IsMatch(value, exp_guid))       return node_type.nd_guid;
-            if (Regex.IsMatch(value, exp_binary))     return node_type.nd_binary;
-            if (Regex.IsMatch(value, exp_link))       return node_type.nd_link;
-            if (Regex.IsMatch(value, exp_binary2))    return node_type.nd_binary2;
-            if (Regex.IsMatch(value, exp_binary_d))   return node_type.nd_binary_d;
+            if (Regex.IsMatch(value, exp_number))     return Node_type.nd_number;
+            if (Regex.IsMatch(value, exp_number_exp)) return Node_type.nd_number_exp;
+            if (Regex.IsMatch(value, exp_guid))       return Node_type.nd_guid;
+            if (Regex.IsMatch(value, exp_binary))     return Node_type.nd_binary;
+            if (Regex.IsMatch(value, exp_link))       return Node_type.nd_link;
+            if (Regex.IsMatch(value, exp_binary2))    return Node_type.nd_binary2;
+            if (Regex.IsMatch(value, exp_binary_d))   return Node_type.nd_binary_d;
 
-            return node_type.nd_unknown;
+            return Node_type.nd_unknown;
         }
 
 

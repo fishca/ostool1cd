@@ -26,9 +26,9 @@ namespace _1STool1CD
 
     }
 
-    public class Tree
+    public class Treee
     {
-        public Tree()
+        public Treee()
         {
 
         }

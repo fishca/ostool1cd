@@ -7,36 +7,36 @@ using static _1STool1CD.Constants;
 
 namespace _1STool1CD
 {
-    public struct field_type_declaration
+    public struct Field_type_declaration
     {
-        public type_fields type;
+        public Type_fields type;
         public bool null_exists;
         public Int32 length;
         public Int32 precision;
         public bool case_sensitive;
 
-        public static field_type_declaration parse_tree(tree field_tree) { return new field_type_declaration(); }
+        public static Field_type_declaration Parse_tree(Tree field_tree) { return new Field_type_declaration(); }
     }
 
     public class FieldType
     {
-        public virtual type_fields gettype() { return type_fields.tf_binary; }
-        public virtual Int32 getlength() { return 0; }
-        public virtual Int32 getlen() { return 0; }
-        public virtual Int32 getprecision() { return 0; }
-        public virtual bool getcase_sensitive() { return true; }
-        public virtual String get_presentation_type() { return " "; }
+        public virtual Type_fields Gettype() { return Type_fields.tf_binary; }
+        public virtual Int32 Getlength() { return 0; }
+        public virtual Int32 Getlen() { return 0; }
+        public virtual Int32 Getprecision() { return 0; }
+        public virtual bool Getcase_sensitive() { return true; }
+        public virtual String Get_presentation_type() { return " "; }
 
-        public virtual String get_presentation(char[] rec, bool EmptyNull, char Delimiter, bool ignore_showGUID, bool detailed) { return " "; }
+        public virtual String Get_presentation(char[] rec, bool EmptyNull, char Delimiter, bool ignore_showGUID, bool detailed) { return " "; }
 
-        public virtual bool get_binary_value(byte[] buf, String value) { return true; }
+        public virtual bool Get_binary_value(byte[] buf, String value) { return true; }
 
-        public virtual String get_XML_presentation(byte[] rec, V8Table parent, bool ignore_showGUID) { return " "; }
+        public virtual String Get_XML_presentation(byte[] rec, V8Table parent, bool ignore_showGUID) { return " "; }
 
-        public virtual UInt32 getSortKey(byte[] rec, byte[] SortKey, Int32 maxlen) { return 0; }
+        public virtual UInt32 GetSortKey(byte[] rec, byte[] SortKey, Int32 maxlen) { return 0; }
 
 
-        public static FieldType create_type_manager(field_type_declaration type_declaration) { return (FieldType)null; }
+        public static FieldType Create_type_manager(Field_type_declaration type_declaration) { return (FieldType)null; }
         public static FieldType Version8() { return (FieldType)null; }
 
         // TODO: убрать это куда-нибудь
@@ -47,70 +47,70 @@ namespace _1STool1CD
 
     public class CommonFieldType : FieldType
     {
-        public CommonFieldType(field_type_declaration declaration) 
+        public CommonFieldType(Field_type_declaration declaration) 
         {
             //declaration.type = Constants.type_fields.
         }
 
-        public override type_fields gettype()
+        public override Type_fields Gettype()
 	    {
             return type;
 	    }
 
-        public override int getlength() 
+        public override int Getlength() 
 	    {
 		    return length;
 	    }
 
-        public override int getprecision()
+        public override int Getprecision()
 	    {
 		    return precision;
 	    }
 
-        public override bool getcase_sensitive()
+        public override bool Getcase_sensitive()
 	    {
 		    return case_sensitive;
 	    }
 
-        public override String get_presentation_type()
+        public override String Get_presentation_type()
 	    {
 		    switch(type)
 		    {
-			case type_fields.tf_binary:    return "binary";
-			case type_fields.tf_bool:      return "bool";
-			case type_fields.tf_numeric:   return "number";
-			case type_fields.tf_char:      return "fixed string";
-			case type_fields.tf_varchar:   return "string";
-			case type_fields.tf_version:   return "version";
-			case type_fields.tf_string:    return "memo";
-			case type_fields.tf_text:      return "text";
-			case type_fields.tf_image:     return "image";
-			case type_fields.tf_datetime:  return "datetime";
-			case type_fields.tf_version8:  return "hidden version";
-			case type_fields.tf_varbinary: return "var binary";
+			case Type_fields.tf_binary:    return "binary";
+			case Type_fields.tf_bool:      return "bool";
+			case Type_fields.tf_numeric:   return "number";
+			case Type_fields.tf_char:      return "fixed string";
+			case Type_fields.tf_varchar:   return "string";
+			case Type_fields.tf_version:   return "version";
+			case Type_fields.tf_string:    return "memo";
+			case Type_fields.tf_text:      return "text";
+			case Type_fields.tf_image:     return "image";
+			case Type_fields.tf_datetime:  return "datetime";
+			case Type_fields.tf_version8:  return "hidden version";
+			case Type_fields.tf_varbinary: return "var binary";
 		}
 		return "{?}";
 	}
         //---------------------------------------------------------------------------
-        public override int getlen()
+        public override int Getlen()
 	    {
 
             if (len != 0) return len;
 
 		    switch(type)
 		    {
-			    case type_fields.tf_binary:    len += length;            break;
-			    case type_fields.tf_bool:      len += 1;                 break;
-			    case type_fields.tf_numeric:   len += (length + 2) >> 1; break;
-			    case type_fields.tf_char:      len += length* 2;         break;
-			    case type_fields.tf_varchar:   len += length* 2 + 2;     break;
-			    case type_fields.tf_version:   len += 16;                break;
-			    case type_fields.tf_string:    len += 8;                 break;
-			    case type_fields.tf_text:      len += 8;                 break;
-			    case type_fields.tf_image:     len += 8;                 break;
-			    case type_fields.tf_datetime:  len += 7;                 break;
-			    case type_fields.tf_version8:  len += 8;                 break;
-			    case type_fields.tf_varbinary: len += length + 2;        break;
+			    case Type_fields.tf_binary:    len += length;            break;
+			    case Type_fields.tf_bool:      len += 1;                 break;
+			    case Type_fields.tf_numeric:   len += (length + 2) >> 1; break;
+			    case Type_fields.tf_char:      len += length* 2;         break;
+			    case Type_fields.tf_varchar:   len += length* 2 + 2;     break;
+			    case Type_fields.tf_version:   len += 16;                break;
+			    case Type_fields.tf_string:    len += 8;                 break;
+			    case Type_fields.tf_text:      len += 8;                 break;
+			    case Type_fields.tf_image:     len += 8;                 break;
+			    case Type_fields.tf_datetime:  len += 7;                 break;
+			    case Type_fields.tf_version8:  len += 8;                 break;
+			    case Type_fields.tf_varbinary: len += length + 2;        break;
 		    }
 		    return len;
 	    }
@@ -129,7 +129,7 @@ namespace _1STool1CD
         }
         */
 
-        public override bool get_binary_value(byte[] buf, String value)
+        public override bool Get_binary_value(byte[] buf, String value)
         {
             return true;
         }
@@ -141,12 +141,12 @@ namespace _1STool1CD
         }
         */
 
-        public override uint getSortKey(byte[] rec, byte[] SortKey, int maxlen)
+        public override uint GetSortKey(byte[] rec, byte[] SortKey, int maxlen)
         {
             return 0;
         }
 
-        public type_fields type = type_fields.tf_binary;
+        public Type_fields type = Type_fields.tf_binary;
         int length = 0;
         int precision = 0;
         bool case_sensitive = false;

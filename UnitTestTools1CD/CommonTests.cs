@@ -19,7 +19,7 @@ namespace _1STool1CD.Tests
             // dd.MM.yyyy hh:mm:ss
             DateTime ft = new DateTime(2019, 2, 12, 10, 25, 0);
             DateTime ft_res = new DateTime(2000, 2, 12, 10, 25, 0);
-            time1CD_to_FileTime(ref ft_res, "12.02.2019 10:25:00");
+            Time1CD_to_FileTime(ref ft_res, "12.02.2019 10:25:00");
 
             bool res = (ft_res == ft);
             Assert.IsTrue(res,
@@ -35,7 +35,7 @@ namespace _1STool1CD.Tests
             UInt32 test_res = 0;
 
             // 1144201745
-            test_res = reverse_byte_order(test_val);
+            test_res = Reverse_byte_order(test_val);
             bool res = (test_res == 0x44332211);
             Assert.IsTrue(res, 
                 String.Format("Исходное число test_val = '{0}': 0x11223344; Преобразованное должно быть 0x44332211, а оно: {1}", 

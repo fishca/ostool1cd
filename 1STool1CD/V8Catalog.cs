@@ -327,7 +327,7 @@ namespace _1STool1CD
             f = GetFile(FileName);
             if ( f != null)
             {
-                setCurrentTime(v8t);
+                SetCurrentTime(v8t);
                 f = new v8file(this, FileName, last, 0, 0, v8t, v8t);
                 f.selfzipped = _selfzipped;
                 last = f;
