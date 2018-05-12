@@ -29,6 +29,7 @@ namespace _1STool1CD
         public static readonly UInt32[] SIG_ZIP = { 0x53, 0x4b, 0x6f, 0xf4, 0x88, 0x8d, 0xc1, 0x4e, 0xa0, 0xd5, 0xeb, 0xb6, 0xbd, 0xa0, 0xa7, 0x0d };
 
         #region Непонятные массивы
+        /*
         public static readonly uint[] NUM_TEST_TEMPLATE = {
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
@@ -142,6 +143,7 @@ namespace _1STool1CD
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
+        */
         #endregion
 
         public enum Type_fields
