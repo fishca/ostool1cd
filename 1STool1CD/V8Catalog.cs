@@ -146,7 +146,7 @@ namespace _1STool1CD
             {
                 FileStream data = new FileStream(name, FileMode.Create);
                 data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
-                data = null;
+                data.Dispose();
             }
             data = new FileStream(name, FileMode.Append);
             file = null;
