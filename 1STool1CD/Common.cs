@@ -200,9 +200,12 @@ namespace _1STool1CD
 
             Char cur_char = '0';
 
-            bool res = true;
+            bool res = false;
+
             if (str.Length != 32)
+            {
                 res = false;
+            }
             else
             {
                 j = 1;

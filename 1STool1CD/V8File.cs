@@ -459,7 +459,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public bool Open()
         {
-            if (parent != null)
+            if (parent == null)
                 return false;
             
             if (is_opened)

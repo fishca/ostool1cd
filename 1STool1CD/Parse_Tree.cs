@@ -237,8 +237,8 @@ namespace _1STool1CD
             String p = "";
             Tree t;
 
-            if (this == null)
-                return ":??"; //-V704
+            //if (this == null)
+            //    return ":??"; //-V704
 
             for (t = this; t.parent != null; t = t.parent)
             {
