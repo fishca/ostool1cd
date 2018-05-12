@@ -143,7 +143,7 @@ namespace _1STool1CD
                             if (tf == Type_fields.tf_image || tf == Type_fields.tf_string || tf == Type_fields.tf_text)
                             {
                                 //b = *(TStream**)(rec + f.getoffset() + (f.getnull_exists() ? 1 : 0));
-                                b.Dispose();
+                                // b.Dispose(); - что-то непонятное здесь
                             }
                         }
 

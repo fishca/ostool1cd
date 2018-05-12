@@ -385,7 +385,9 @@ namespace _1STool1CD
                     f.DeleteFile();
                     f = null;
                 }
-                f = f.next;
+
+                if (f != null)
+                    f = f.next;
             }
         }
 
@@ -396,10 +398,13 @@ namespace _1STool1CD
         public V8catalog GetParentCatalog()
         {
             if (file != null)
+            {
+                return file.parent;
+            }
+            else
+            {
                 return null;
-            return 
-                file.parent;
-            
+            }
         }
 
         /// <summary>

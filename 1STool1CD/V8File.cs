@@ -459,14 +459,18 @@ namespace _1STool1CD
         /// <returns></returns>
         public bool Open()
         {
-            if (parent != null) return false;
+            if (parent != null)
+                return false;
             
             if (is_opened)
             {
                 return true;
             }
-            data = parent.read_datablock(start_data);
-            is_opened = true;
+            if (parent != null)
+            {
+                data = parent.read_datablock(start_data);
+                is_opened = true;
+            }
             return true;
         }
 
@@ -488,39 +492,42 @@ namespace _1STool1CD
 
             self = null;
 
-            if (parent.data != null)
+            if (parent != null)
             {
-                if (is_datamodified || is_headermodified)
+                if (parent.data != null)
                 {
-                    
-                    if (is_datamodified)
+                    if (is_datamodified || is_headermodified)
                     {
-                        start_data = parent.write_datablock(this.data, start_data, selfzipped);
-                    }
-                    if (is_headermodified)
-                    {
-                        // TODO: Что-то с этим надо делать
-                        /*
-                        TMemoryStream* hs = new TMemoryStream();
-                        hs->Write(&time_create, 8);
-                        hs->Write(&time_modify, 8);
-                        hs->Write(&_t, 4);
-                        # ifndef _DELPHI_STRING_UNICODE // FIXME: определится используем WCHART или char
-                        int ws = name.WideCharBufSize();
-                        char* tb = new char[ws];
-                        name.WideChar((WCHART*)tb, ws);
-                        hs->Write((char*)tb, ws);
-                        delete[] tb;
-                        #else
-                        hs->Write(name.c_str(), name.Length() * 2);
-                        #endif
-                        hs->Write(&_t, 4);
 
-                        start_header = parent->write_block(hs, start_header, false);
-                        delete hs;
-                        */
+                        if (is_datamodified)
+                        {
+                            start_data = parent.write_datablock(this.data, start_data, selfzipped);
+                        }
+                        if (is_headermodified)
+                        {
+                            // TODO: Что-то с этим надо делать
+                            /*
+                            TMemoryStream* hs = new TMemoryStream();
+                            hs->Write(&time_create, 8);
+                            hs->Write(&time_modify, 8);
+                            hs->Write(&_t, 4);
+                            # ifndef _DELPHI_STRING_UNICODE // FIXME: определится используем WCHART или char
+                            int ws = name.WideCharBufSize();
+                            char* tb = new char[ws];
+                            name.WideChar((WCHART*)tb, ws);
+                            hs->Write((char*)tb, ws);
+                            delete[] tb;
+                            #else
+                            hs->Write(name.c_str(), name.Length() * 2);
+                            #endif
+                            hs->Write(&_t, 4);
+
+                            start_header = parent->write_block(hs, start_header, false);
+                            delete hs;
+                            */
+                        }
+
                     }
-                    
                 }
             }
             data = null;
@@ -556,26 +563,29 @@ namespace _1STool1CD
 
             data = null;
 
-            if (parent.data != null)
+            if (parent != null)
             {
-                /* TODO: Что-то с этим надо сделать
-                 * 
-                int name_size = name.WideCharBufSize();
-                WCHART* wname = new WCHART[name_size];
-                name.WideChar(wname, name.Length());
+                if (parent.data != null)
+                {
+                    /* TODO: Что-то с этим надо сделать
+                     * 
+                    int name_size = name.WideCharBufSize();
+                    WCHART* wname = new WCHART[name_size];
+                    name.WideChar(wname, name.Length());
 
-                parent->Lock->Acquire();
-                start_data = parent->write_datablock(Stream, start_data, selfzipped, Length);
-                TMemoryStream hs;
-                hs.Write(&time_create, 8);
-                hs.Write(&time_modify, 8);
-                hs.Write(&_4bzero, 4);
-                hs.Write(wname, name.Length() * sizeof(WCHART));
-                hs.Write(&_4bzero, 4);
-                start_header = parent->write_block(&hs, start_header, false);
-                parent->Lock->Release();
-                delete[] wname;
-                */
+                    parent->Lock->Acquire();
+                    start_data = parent->write_datablock(Stream, start_data, selfzipped, Length);
+                    TMemoryStream hs;
+                    hs.Write(&time_create, 8);
+                    hs.Write(&time_modify, 8);
+                    hs.Write(&_4bzero, 4);
+                    hs.Write(wname, name.Length() * sizeof(WCHART));
+                    hs.Write(&_4bzero, 4);
+                    start_header = parent->write_block(&hs, start_header, false);
+                    parent->Lock->Release();
+                    delete[] wname;
+                    */
+                }
             }
             iscatalog = FileIsCatalog.unknown;
             is_opened         = false;
@@ -697,39 +707,42 @@ namespace _1STool1CD
             flushed = true;
             if (self != null) self.Flush();
 
-            if ( parent.data != null )
+            if (parent != null)
             {
-                if (is_datamodified || is_headermodified)
+                if (parent.data != null)
                 {
-                    
-                    if (is_datamodified)
+                    if (is_datamodified || is_headermodified)
                     {
-                        start_data = parent.write_datablock(data, start_data, selfzipped);
-                        is_datamodified = false;
-                    }
-                    if (is_headermodified)
-                    {
-                        // TODO: Что-то надо делать с этим...
-                        /*
-                        TMemoryStream* hs = new TMemoryStream();
-                        hs->Write(&time_create, 8);
-                        hs->Write(&time_modify, 8);
-                        hs->Write(&_t, 4);
-                        # ifndef _DELPHI_STRING_UNICODE
-                        int ws = name.WideCharBufSize();
-                        char* tb = new char[ws];
-                        name.WideChar((WCHART*)tb, ws);
-                        hs->Write((char*)tb, ws);
-                        delete[] tb;
-                        #else
-                        hs->Write(name.c_str(), name.Length() * 2);
-                        #endif
-                        hs->Write(&_t, 4);
 
-                        start_header = parent->write_block(hs, start_header, false);
-                        delete hs;
-                        is_headermodified = false;
-                        */
+                        if (is_datamodified)
+                        {
+                            start_data = parent.write_datablock(data, start_data, selfzipped);
+                            is_datamodified = false;
+                        }
+                        if (is_headermodified)
+                        {
+                            // TODO: Что-то надо делать с этим...
+                            /*
+                            TMemoryStream* hs = new TMemoryStream();
+                            hs->Write(&time_create, 8);
+                            hs->Write(&time_modify, 8);
+                            hs->Write(&_t, 4);
+                            # ifndef _DELPHI_STRING_UNICODE
+                            int ws = name.WideCharBufSize();
+                            char* tb = new char[ws];
+                            name.WideChar((WCHART*)tb, ws);
+                            hs->Write((char*)tb, ws);
+                            delete[] tb;
+                            #else
+                            hs->Write(name.c_str(), name.Length() * 2);
+                            #endif
+                            hs->Write(&_t, 4);
+
+                            start_header = parent->write_block(hs, start_header, false);
+                            delete hs;
+                            is_headermodified = false;
+                            */
+                        }
                     }
                 }
             }

@@ -329,8 +329,16 @@ namespace _1STool1CD
             if (cs_config != null)
                 if (cs_config.getready())
                     return false;
+            if (cs_config != null)
+            {
+                return cs_config.save_config(filename);
+            }
+            else
+            {
+                return false;
+            }
 
-            return cs_config.save_config(filename);
+
         }
 
         public bool Save_configsave(String filename)
@@ -341,8 +349,14 @@ namespace _1STool1CD
             if (cs_configsave != null)
                 if (cs_configsave.getready())
                     return false;
-
-            return cs_configsave.save_config(filename);
+            if (cs_configsave != null)
+            {
+                return cs_configsave.save_config(filename);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Find_supplier_configs()
@@ -723,11 +737,6 @@ namespace _1STool1CD
 
             if (fldd_depotver != null)
             {
-                return depotVer;
-            }
-
-            if (fldd_depotver != null)
-            {
                 String Ver = fldd_depotver.Get_presentation(record, true);
 
                 if (String.Compare(Ver, "0300000000000000") == 0)
@@ -754,6 +763,7 @@ namespace _1STool1CD
                     Console.WriteLine("Неизвестная версия хранилища");
                 }
 
+                return depotVer;
             }
 
             return depotVer;

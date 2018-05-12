@@ -91,7 +91,9 @@ namespace _1STool1CD
             if (_numblock >= numblocks)
                 return null;
             if (memblocks[_numblock] != null)
-                new V8MemBlock(fs, _numblock, false, true);
+            {
+                V8MemBlock tmpV8Mem = new V8MemBlock(fs, _numblock, false, true);
+            }
             return
                 memblocks[_numblock].Getblock(false);
         }
@@ -103,9 +105,12 @@ namespace _1STool1CD
             if (_numblock == numblocks)
                 Add_block();
             if (memblocks[_numblock] != null)
-                new V8MemBlock(fs, _numblock, true, read);
+            {
+                V8MemBlock tmpV8Mem = new V8MemBlock(fs, _numblock, true, read);
+            }
             else
                 memblocks[_numblock].is_changed = true;
+
             return
                 memblocks[_numblock].Getblock(true);
         }
