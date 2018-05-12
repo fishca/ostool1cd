@@ -481,7 +481,7 @@ namespace _1STool1CD
         {
             int _t = 0;
 
-            if (parent != null) return;
+            if (parent == null) return;
             
             if (!is_opened) return;
 
@@ -553,7 +553,7 @@ namespace _1STool1CD
                 return 0;
             }
 
-            if (parent != null)
+            if (parent == null)
             {
                 return 0;
             }
@@ -695,7 +695,7 @@ namespace _1STool1CD
                 return;
             }
 
-            if ( parent != null )
+            if ( parent == null )
             {
                 return;
             }
