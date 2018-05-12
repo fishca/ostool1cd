@@ -125,7 +125,7 @@ namespace _1STool1CD
         /// <param name="_start_header"></param>
         /// <param name="_time_create"></param>
         /// <param name="_time_modify"></param>
-        public v8file(v8catalog _parent, String _name, v8file _previous, int _start_data, int _start_header, Int64 _time_create, Int64 _time_modify)
+        public v8file(V8catalog _parent, String _name, v8file _previous, int _start_data, int _start_header, Int64 _time_create, Int64 _time_modify)
         {
             is_destructed = false;
             flushed       = false;
@@ -232,15 +232,15 @@ namespace _1STool1CD
 
         }
 
-        public v8catalog GetCatalog()
+        public V8catalog GetCatalog()
         {
-            v8catalog ret;
+            V8catalog ret;
             
             if (IsCatalog())
             {
                 if (self != null)
                 {
-                    self = new v8catalog(this);
+                    self = new V8catalog(this);
                 }
                 ret = self;
             }
@@ -408,7 +408,7 @@ namespace _1STool1CD
             is_headermodified = true;
         }
 
-        public v8catalog GetParentCatalog() { return parent; }
+        public V8catalog GetParentCatalog() { return parent; }
 
         public void DeleteFile()
         {
@@ -746,10 +746,10 @@ namespace _1STool1CD
         private Int64 time_modify;
         
         public MemoryTributary data;
-        public v8catalog parent;
+        public V8catalog parent;
         private FileIsCatalog iscatalog;
 
-        public v8catalog self;          // указатель на каталог, если файл является каталогом
+        public V8catalog self;          // указатель на каталог, если файл является каталогом
         public v8file next;            // следующий файл в каталоге
         private v8file previous;        // предыдущий файл в каталоге
         private bool is_opened;         // признак открытого файла (инициализирован поток data)

@@ -326,8 +326,9 @@ namespace _1STool1CD
             if (cs_config != null)
                 cs_config = new ConfigStorageTableConfig(Get_files_config());
 
-            if (cs_config.getready())
-                return false;
+            if (cs_config != null)
+                if (cs_config.getready())
+                    return false;
 
             return cs_config.save_config(filename);
         }
@@ -337,8 +338,9 @@ namespace _1STool1CD
             if (cs_configsave != null)
                 cs_configsave = new ConfigStorageTableConfigSave(Get_files_config(), Get_files_configsave());
 
-            if (cs_configsave.getready())
-                return false;
+            if (cs_configsave != null)
+                if (cs_configsave.getready())
+                    return false;
 
             return cs_configsave.save_config(filename);
         }
@@ -600,6 +602,7 @@ namespace _1STool1CD
 
         public byte[] Getblock(UInt32 block_number)
         {
+            
             if (data1CD == null)
                 return null;
             if (block_number >= length)
@@ -608,7 +611,7 @@ namespace _1STool1CD
                 return null;
             }
 
-            new V8MemBlock((FileStream)data1CD, block_number, false, true);
+            V8MemBlock tmpV8MemBlock = new V8MemBlock((FileStream)data1CD, block_number, false, true);
             return V8MemBlock.Getblock((FileStream)data1CD, block_number);
         }
 
@@ -665,7 +668,7 @@ namespace _1STool1CD
         private bool Recursive_test_stream_format(V8Table t, UInt32 nrec) { return true; }
         private bool Recursive_test_stream_format2(V8Table t, UInt32 nrec) { return true; } // для DBSCHEMA
         private bool Recursive_test_stream_format(Stream str, String path, bool maybezipped2 = false) { return true; }
-        private bool Recursive_test_stream_format(v8catalog cat, String path) { return true; }
+        private bool Recursive_test_stream_format(V8catalog cat, String path) { return true; }
 
         private void Pagemapfill()
         {
@@ -723,32 +726,34 @@ namespace _1STool1CD
                 return depotVer;
             }
 
-            String Ver = fldd_depotver.Get_presentation(record, true);
+            if (fldd_depotver != null)
+            {
+                String Ver = fldd_depotver.Get_presentation(record, true);
 
-            
+                if (String.Compare(Ver, "0300000000000000") == 0)
+                {
+                    depotVer = Depot_ver.Ver3;
+                }
+                else if (String.Compare(Ver, "0500000000000000") == 0)
+                {
+                    depotVer = Depot_ver.Ver5;
+                }
+                else if (String.Compare(Ver, "0600000000000000") == 0)
+                {
+                    depotVer = Depot_ver.Ver6;
+                }
+                else if (String.Compare(Ver, "0700000000000000") == 0)
+                {
+                    depotVer = Depot_ver.Ver7;
+                }
+                else
+                {
+                    depotVer = Depot_ver.UnknownVer;
 
-            if (String.Compare(Ver, "0300000000000000") == 0)
-            {
-                depotVer = Depot_ver.Ver3;
-            }
-            else if (String.Compare(Ver, "0500000000000000") == 0)
-            {
-                depotVer = Depot_ver.Ver5;
-            }
-            else if (String.Compare(Ver, "0600000000000000") == 0)
-            {
-                depotVer = Depot_ver.Ver6;
-            }
-            else if (String.Compare(Ver, "0700000000000000") == 0)
-            {
-                depotVer = Depot_ver.Ver7;
-            }
-            else
-            {
-                depotVer = Depot_ver.UnknownVer;
+                    //msreg_m.AddMessage_("Неизвестная версия хранилища", MessageState::Error, "Версия хранилища", Ver);
+                    Console.WriteLine("Неизвестная версия хранилища");
+                }
 
-                //msreg_m.AddMessage_("Неизвестная версия хранилища", MessageState::Error, "Версия хранилища", Ver);
-                Console.WriteLine("Неизвестная версия хранилища");
             }
 
             return depotVer;

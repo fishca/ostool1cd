@@ -35,7 +35,7 @@ namespace _1STool1CD
         public String name; // Приведенное имя (очищенное от динамического обновления)
         public Stream stream;
         public Stream rstream; // raw stream (нераспакованный поток)
-        public v8catalog cat;
+        public V8catalog cat;
         public table_file_packed packed;
         public int dynno; // Номер (индекс) динамического обновления (0, 1 и т.д.). Если без динамического обновления, то -1, если UID динамического обновления не найден, то -2. Для пропускаемых файлов -3.
 
@@ -98,7 +98,7 @@ namespace _1STool1CD
     {
     
 	    private String filename;
-        private v8catalog cat;
+        private V8catalog cat;
 
         public ConfigStorageCFFile(String fname) { }
 

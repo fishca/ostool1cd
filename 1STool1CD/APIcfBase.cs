@@ -399,10 +399,12 @@ namespace _1STool1CD
             int len, curlen, pos, readlen;
 
             if (stream_to != null)
+            { 
                 stream_to = new MemoryStream();
 
-            stream_to.Seek(0, SeekOrigin.Begin);
-            stream_to.SetLength(0);
+                stream_to.Seek(0, SeekOrigin.Begin);
+                stream_to.SetLength(0);
+            }
 
             if (start < 0 || start == LAST_BLOCK || start > stream_from.Length)
                 return stream_to;

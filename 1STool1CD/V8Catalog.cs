@@ -12,7 +12,7 @@ namespace _1STool1CD
     /// <summary>
     /// Структура заголовка
     /// </summary>
-    public struct fat_item
+    public struct Fat_item
     {
         public UInt32 header_start;
         public UInt32 data_start;
@@ -22,7 +22,7 @@ namespace _1STool1CD
     /// <summary>
     /// Класс v8catalog  
     /// </summary>
-    public class v8catalog
+    public class V8catalog
     {
         #region public
 
@@ -31,7 +31,7 @@ namespace _1STool1CD
         /// создать каталог из файла
         /// </summary>
         /// <param name="f"></param>
-        public v8catalog(v8file f)
+        public V8catalog(v8file f)
         {
             is_cfu = false;
             iscatalogdefined = false;
@@ -66,7 +66,7 @@ namespace _1STool1CD
         /// создать каталог из физического файла (cf, epf, erf, hbk, cfu)
         /// </summary>
         /// <param name="name"></param>
-        public v8catalog(String name)
+        public V8catalog(String name)
         {
 
             
@@ -100,7 +100,8 @@ namespace _1STool1CD
                 {
                     FileStream data1 = new FileStream(name, FileMode.Create);
                     data1.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
-                    data1 = null;
+                    //data1 = null;
+                    data1.Dispose();
                 }
                 data = new FileStream(name, FileMode.Append);
             }
@@ -125,6 +126,7 @@ namespace _1STool1CD
             }
 
             cfu.Dispose();
+            data.Dispose();
 
         } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
 
@@ -133,7 +135,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="name"></param>
         /// <param name="_zipped"></param>
-        public v8catalog(String name, bool _zipped)
+        public V8catalog(String name, bool _zipped)
         {
             
             iscatalogdefined = false;
@@ -174,7 +176,7 @@ namespace _1STool1CD
         /// <param name="stream"></param>
         /// <param name="_zipped"></param>
         /// <param name="leave_stream"></param>
-        public v8catalog(Stream stream, bool _zipped, bool leave_stream = false)
+        public V8catalog(Stream stream, bool _zipped, bool leave_stream = false)
         {
             
             is_cfu = false;
@@ -346,9 +348,9 @@ namespace _1STool1CD
         /// <param name="FileName"></param>
         /// <param name="_selfzipped"></param>
         /// <returns></returns>
-        public v8catalog CreateCatalog(String FileName, bool _selfzipped = false)
+        public V8catalog CreateCatalog(String FileName, bool _selfzipped = false)
         {
-            v8catalog ret;
+            V8catalog ret;
             
             v8file f = createFile(FileName, _selfzipped);
             if (f.GetFileLength() > 0)
@@ -389,7 +391,7 @@ namespace _1STool1CD
         /// Получить родительский каталог
         /// </summary>
         /// <returns></returns>
-        public v8catalog GetParentCatalog()
+        public V8catalog GetParentCatalog()
         {
             if (file != null)
                 return null;
@@ -464,7 +466,7 @@ namespace _1STool1CD
         /// </summary>
         public void Flush()
         {
-            fat_item fi;
+            Fat_item fi;
             v8file f;
 
             
