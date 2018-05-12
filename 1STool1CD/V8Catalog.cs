@@ -168,6 +168,8 @@ namespace _1STool1CD
                 leave_data = false;
             }
 
+            data.Dispose();
+
         } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
 
         /// <summary>

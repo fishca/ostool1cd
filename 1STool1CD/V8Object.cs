@@ -1494,6 +1494,7 @@ namespace _1STool1CD
                 remain_size -= pagesize;
             }
             buf = null;
+            fs.Dispose();
         }
 
         #region Не используемые пока
