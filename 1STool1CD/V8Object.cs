@@ -401,7 +401,8 @@ namespace _1STool1CD
             {
                 //memcpy(((v8ob*)b)->sig, SIG_OBJ, 8);
 
-                Array.Copy(SIG_OBJ, ByteArrayToV8ob(b).sig, 8);
+                
+                Array.Copy(SIG_OBJ.ToCharArray(), ByteArrayToV8ob(b).sig, 8);
             }
             else
             {

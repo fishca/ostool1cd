@@ -11,12 +11,20 @@ namespace _1STool1CD
         public static readonly UInt32 LIVE_CASH = 5; // время жизни кешированных данных в минутах
 
         #region Сигнатура файла 1CD
+        /*
         public static readonly char[] SIG_CON      = { '1', 'C', 'D', 'B', 'M', 'S', 'V', '8' };
         public static readonly char[] SIG_OBJ      = { '1', 'C', 'D', 'B', 'O', 'B', 'V', '8' };
         public static readonly char[] SIG_MOXCEL   = { 'M', 'O', 'X', 'C', 'E', 'L', '0' };
         public static readonly char[] SIG_SKD      = { '0', '0', '0', '0', '1', '0', '0', '0' };
         public static readonly char[] SIG_TABDESCR = { '{', '0', '\"', '0' };
+        */
+
+        public static readonly String SIG_CON = "1CDBMSV8";
+        public static readonly String SIG_OBJ = "1CDBOBV8";
+
         #endregion
+
+
 
         public static readonly UInt32[] SIG_ZIP = { 0x53, 0x4b, 0x6f, 0xf4, 0x88, 0x8d, 0xc1, 0x4e, 0xa0, 0xd5, 0xeb, 0xb6, 0xbd, 0xa0, 0xa7, 0x0d };
 
