@@ -38,17 +38,26 @@ namespace _1STool1CD
         #region Struct
         public struct V8header_struct
         {
-            public Int64 time_create;
-            public Int64 time_modify;
-            public Int64 zero;
+            private Int64 time_create;
+            private Int64 time_modify;
+            private Int64 zero;
+
+            public long Time_create { get => time_create; set => time_create = value; }
+            public long Time_modify { get => time_modify; set => time_modify = value; }
+            public long Zero { get => zero; set => zero = value; }
         }
 
         public struct Catalog_header
         {
-            public Int32 start_empty; // начало первого пустого блока
-            public Int32 page_size;   // размер страницы по умолчанию
-            public Int32 version;     // версия
-            public Int32 zero;        // всегда ноль?
+            private Int32 start_empty; // начало первого пустого блока
+            private Int32 page_size;   // размер страницы по умолчанию
+            private Int32 version;     // версия
+            private Int32 zero;        // всегда ноль?
+
+            public int Start_empty { get => start_empty; set => start_empty = value; }
+            public int Page_size { get => page_size; set => page_size = value; }
+            public int Version { get => version; set => version = value; }
+            public int Zero { get => zero; set => zero = value; }
         }
 
         public enum Block_header : int
