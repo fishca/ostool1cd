@@ -42,9 +42,22 @@ namespace _1STool1CD
             private Int64 time_modify;
             private Int64 zero;
 
-            public long Time_create { get => time_create; set => time_create = value; }
-            public long Time_modify { get => time_modify; set => time_modify = value; }
-            public long Zero { get => zero; set => zero = value; }
+            public long Time_create
+            {
+                get { return time_create; }
+                set { time_create = value; }
+            }
+            public long Time_modify
+            {
+                get { return time_modify;  }
+                set { time_modify = value; }
+            }
+            public long Zero
+            {
+                get { return zero;  }
+                set { zero = value; }
+
+            }
         }
 
         public struct Catalog_header
@@ -54,10 +67,26 @@ namespace _1STool1CD
             private Int32 version;     // версия
             private Int32 zero;        // всегда ноль?
 
-            public int Start_empty { get => start_empty; set => start_empty = value; }
-            public int Page_size { get => page_size; set => page_size = value; }
-            public int Version { get => version; set => version = value; }
-            public int Zero { get => zero; set => zero = value; }
+            public int Start_empty
+            {
+                get { return start_empty; }
+                set { start_empty = value; }
+            }
+            public int Page_size
+            {
+                get { return page_size; }
+                set { page_size = value; }
+            }
+            public int Version
+            {
+                get { return version; }
+                set { version = value; }
+            }
+            public int Zero
+            {
+                get { return zero; }
+                set { zero = value; }
+            }
         }
 
         public enum Block_header : int
