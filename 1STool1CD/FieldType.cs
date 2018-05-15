@@ -9,11 +9,21 @@ namespace _1STool1CD
 {
     public struct Field_type_declaration
     {
-        public Type_fields type;
-        public bool null_exists;
-        public Int32 length;
-        public Int32 precision;
-        public bool case_sensitive;
+        private Type_fields type;
+        private bool null_exists;
+        private Int32 length;
+        private Int32 precision;
+        private bool case_sensitive;
+
+        public Type_fields Type { get { return type; } set { type = value; } }
+
+        public bool Null_exists { get { return null_exists; } set { null_exists = value; } }
+
+        public int Length { get { return length; } set { length = value; } }
+
+        public int Precision { get { return precision; } set { precision = value; } }
+
+        public bool Case_sensitive { get { return case_sensitive; } set { case_sensitive = value; } }
 
         public static Field_type_declaration Parse_tree(Tree field_tree) { return new Field_type_declaration(); }
     }
@@ -40,9 +50,12 @@ namespace _1STool1CD
         public static FieldType Version8() { return (FieldType)null; }
 
         // TODO: убрать это куда-нибудь
-        public static bool showGUIDasMS; // Признак, что GUID надо преобразовывать по стилю MS (иначе по стилю 1С)
-        public static bool showGUID;
+        private static bool showGUIDasMS; // Признак, что GUID надо преобразовывать по стилю MS (иначе по стилю 1С)
+        private static bool showGUID;
 
+        public static bool ShowGUIDasMS { get { return showGUIDasMS; } set { showGUIDasMS = value; } }
+
+        public static bool ShowGUID { get { return showGUID; } set { showGUID = value; } }
     }
 
     public class CommonFieldType : FieldType
@@ -54,7 +67,7 @@ namespace _1STool1CD
 
         public override Type_fields Gettype()
 	    {
-            return type;
+            return Type;
 	    }
 
         public override int Getlength() 
@@ -74,7 +87,7 @@ namespace _1STool1CD
 
         public override String Get_presentation_type()
 	    {
-		    switch(type)
+		    switch(Type)
 		    {
 			case Type_fields.tf_binary:    return "binary";
 			case Type_fields.tf_bool:      return "bool";
@@ -97,7 +110,7 @@ namespace _1STool1CD
 
             if (len != 0) return len;
 
-		    switch(type)
+		    switch(Type)
 		    {
 			    case Type_fields.tf_binary:    len += length;            break;
 			    case Type_fields.tf_bool:      len += 1;                 break;
@@ -146,12 +159,13 @@ namespace _1STool1CD
             return 0;
         }
 
-        public Type_fields type = Type_fields.tf_binary;
+        private Type_fields type = Type_fields.tf_binary;
         int length = 0;
         int precision = 0;
         bool case_sensitive = false;
 
         int len = 0;
 
+        public Type_fields Type { get { return type; } set { type = value; } }
     }
 }

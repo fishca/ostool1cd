@@ -8,16 +8,22 @@ namespace _1STool1CD
 {
     public class BinaryDecimalBuilder
     {
-        public List<int> data;
+        private List<int> data;
 
         public BinaryDecimalBuilder(List<int> data)
         { 
-            this.data = data;
+            this.Data = data;
+        }
+
+        public List<int> Data
+        {
+            get { return data; }
+            set { data = value; }
         }
 
         public void push1(byte lo)
         {
-            data.Add(lo);
+            Data.Add(lo);
         }
 
         public void push2(byte hilo)
@@ -36,13 +42,13 @@ namespace _1STool1CD
 
         public BinaryDecimalNumber(byte raw_data, int length, int precision, bool has_sign_flag)
         {
-            this.has_sing_flag = has_sign_flag;
-            this.precision = precision;
-            this.sign = 1;
+            this.Has_sing_flag = has_sign_flag;
+            this.Precision = precision;
+            this.Sign = 1;
 
-            this.data.Clear();
+            this.Data.Clear();
 
-            BinaryDecimalBuilder builder = new BinaryDecimalBuilder(data);
+            BinaryDecimalBuilder builder = new BinaryDecimalBuilder(Data);
 
             byte byte_data = raw_data;
             byte first_byte = byte_data;
@@ -51,11 +57,11 @@ namespace _1STool1CD
             {
                 if (first_byte >> 4 != 0)
                 {
-                    sign = 1;
+                    Sign = 1;
                 }
                 else
                 {
-                    sign = -1;
+                    Sign = -1;
                 }
                 builder.push1((byte)(first_byte & 0x0f));
             }
@@ -85,9 +91,9 @@ namespace _1STool1CD
 
         public BinaryDecimalNumber(String presentation, bool has_sign = false, int length = 0, int precision = 0)
         {
-            this.has_sing_flag = has_sign;
-            this.precision = precision;
-            this.sign = 1;
+            this.Has_sing_flag = has_sign;
+            this.Precision = precision;
+            this.Sign = 1;
             int INT_PART = 0;
             int FRAC_PART = 1;
 
@@ -126,14 +132,14 @@ namespace _1STool1CD
             }
             while (add_length-- != 0)
             {
-                data.Add(0);
+                Data.Add(0);
             }
 
             foreach (var part in parts)
             {
                 foreach (var num in part)
                 {
-                    data.Add(num);
+                    Data.Add(num);
                 }
             }
 
@@ -172,17 +178,17 @@ namespace _1STool1CD
         public virtual String get_presentation()
         {
             String result = "";
-            if (has_sing_flag)
+            if (Has_sing_flag)
             {
-                if (sign == -1)
+                if (Sign == -1)
                 {
                     result += "-";
                 }
             }
-            int int_size = data.Count - precision;
+            int int_size = Data.Count - Precision;
             {
                 int i = 0;
-                while (i < int_size && data[i] == 0)
+                while (i < int_size && Data[i] == 0)
                 {
                     i++;
                 }
@@ -190,7 +196,7 @@ namespace _1STool1CD
                 {
                     while (i < int_size)
                     {
-                        result += '0' + data[i];
+                        result += '0' + Data[i];
                         i++;
                     }
                 }
@@ -199,14 +205,14 @@ namespace _1STool1CD
                     result += '0';
                 }
             }
-            if (precision != 0)
+            if (Precision != 0)
             {
                 String frac = ".";
                 bool has_significant_digits = false;
-                int max_significant_size = data.Count;
+                int max_significant_size = Data.Count;
                 while (max_significant_size > int_size)
                 {
-                    if (data[max_significant_size - 1] == 0)
+                    if (Data[max_significant_size - 1] == 0)
                     {
                         max_significant_size--;
                     }
@@ -217,11 +223,11 @@ namespace _1STool1CD
                 }
                 for (int i = int_size; i < max_significant_size; i++)
                 {
-                    if (data[i] != 0)
+                    if (Data[i] != 0)
                     {
                         has_significant_digits = true;
                     }
-                    frac += '0' + data[i];
+                    frac += '0' + Data[i];
                 }
                 if (has_significant_digits)
                 {
@@ -234,9 +240,9 @@ namespace _1STool1CD
         public String get_part(int startIndex, int count)
         {
             String result = "";
-            for (int i = startIndex; i < data.Count && count != 0; count--, i++)
+            for (int i = startIndex; i < Data.Count && count != 0; count--, i++)
             {
-                result += (data[i] + '0');
+                result += (Data[i] + '0');
             }
             return result;
         }
@@ -245,7 +251,7 @@ namespace _1STool1CD
         {
             List<int> result;
 
-            result = data.GetRange(0, data.Count - precision);
+            result = Data.GetRange(0, Data.Count - Precision);
 
             return result;
             
@@ -255,17 +261,40 @@ namespace _1STool1CD
         {
             List<int> result;
 
-            result = data.GetRange(data.Count - precision, data.Count);
+            result = Data.GetRange(Data.Count - Precision, Data.Count);
             
             return result;
         }
 
 
-        public bool has_sing_flag = false;
-        public int precision = 0;
-        public List<int> data;
-        public int sign;
+        private bool has_sing_flag = false;
+        private int precision = 0;
+        private List<int> data;
+        private int sign;
 
+        public bool Has_sing_flag
+        {
+            get { return has_sing_flag;  }
+            set { has_sing_flag = value; }
+        }
+
+        public int Precision
+        {
+            get { return precision; }
+            set { precision = value; }
+        }
+
+        public List<int> Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
+
+        public int Sign
+        {
+            get { return sign; }
+            set { sign = value; }
+        }
     }
 
     public class BinaryDecimalDate : BinaryDecimalNumber {
@@ -294,11 +323,11 @@ namespace _1STool1CD
                 {
                     if (i < presentation.Length)
                     {
-                        data.Add(presentation[i] - '0');
+                        Data.Add(presentation[i] - '0');
                     }
                     else
                     {
-                        data.Add(0);
+                        Data.Add(0);
                     }
                 }
             }
@@ -324,32 +353,32 @@ namespace _1STool1CD
 
         public int get_year()
         {
-            return data[0] * 1000 + data[1] * 100 + data[2] * 10 + data[3]; 
+            return Data[0] * 1000 + Data[1] * 100 + Data[2] * 10 + Data[3]; 
         }
 
         public int get_month()
         {
-            return data[4] * 10 + data[5];
+            return Data[4] * 10 + Data[5];
         }
 
         public int get_day()
         {
-            return data[6] * 10 + data[7];
+            return Data[6] * 10 + Data[7];
         }
 
         public int get_hour()
         {
-            return data[8] * 10 + data[9];
+            return Data[8] * 10 + Data[9];
         }
 
         public int get_minute()
         {
-            return data[10] * 10 + data[11];
+            return Data[10] * 10 + Data[11];
         }
 
         public int get_second()
         {
-            return data[12] * 10 + data[13];
+            return Data[12] * 10 + Data[13];
         }
     }
 }

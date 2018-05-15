@@ -47,15 +47,29 @@ namespace _1STool1CD
         public static readonly String exp_link       = "^[0-9]+:[0-9a-fA-F]{32}$";
         public static readonly String exp_binary_d   = "^#data:[0-9a-zA-Z\\+=\\r\\n\\/]*$";
 
-        public String value;
-        public Node_type type;
-        public int num_subnode; // количество подчиненных
-        public Tree parent;     // +1
-        public Tree next;       // 0
-        public Tree prev;       // 0
-        public Tree first;      // -1
-        public Tree last;       // -1
-        public uint index;
+        private String value;
+        private Node_type type;
+        private int num_subnode; // количество подчиненных
+        private Tree parent;     // +1
+        private Tree next;       // 0
+        private Tree prev;       // 0
+        private Tree first;      // -1
+        private Tree last;       // -1
+        private uint index;
+
+        public string Value { get { return value; } set { this.value = value; } }
+
+        public Node_type Type { get { return type; } set { type = value; } }
+
+        public int Num_subnode { get { return num_subnode; } set { num_subnode = value; } }
+
+        public Tree Parent { get { return parent; } set { parent = value; } }
+
+        public Tree Next { get { return next; } set { next = value; } }
+        public Tree Prev { get { return prev; } set { prev = value; } }
+        public Tree First { get { return first; } set { first = value; } }
+        public Tree Last { get { return last; } set { last = value; } }
+        public uint Index { get { return index; } set { index = value; } }
 
         /// <summary>
         /// Конструктор
@@ -65,34 +79,34 @@ namespace _1STool1CD
         /// <param name="_parent"></param>
         public Tree(String _value, Node_type _type, Tree _parent)
         {
-            value  = _value;
-            type   = _type;
-            parent = _parent;
+            Value  = _value;
+            Type   = _type;
+            Parent = _parent;
 
-            num_subnode = 0;
-            index = 0;
+            Num_subnode = 0;
+            Index = 0;
 
-            if (parent != null)
+            if (Parent != null)
             {
-                parent.num_subnode++;
-                prev = parent.last;
+                Parent.Num_subnode++;
+                Prev = Parent.Last;
 
-                if (prev != null)
+                if (Prev != null)
                 {
-                    prev.next = this;
-                    index = prev.index + 1;
+                    Prev.Next = this;
+                    Index = Prev.Index + 1;
                 }
                 else
-                    parent.first = this;
+                    Parent.First = this;
 
-                parent.last = this;
+                Parent.Last = this;
             }
             else
-                prev = null;
+                Prev = null;
 
-            next  = null;
-            first = null;
-            last  = null;
+            Next  = null;
+            First = null;
+            Last  = null;
         }
 
         public Tree Add_child(String _value, Node_type _type)
@@ -107,34 +121,34 @@ namespace _1STool1CD
 
         public Tree Add_node()
         {
-            return new Tree("", Node_type.nd_empty, this.parent);
+            return new Tree("", Node_type.nd_empty, this.Parent);
         }
 
         public String Get_value()
         {
-            return value;
+            return Value;
         }
 
         public Node_type Get_type()
         {
-            return type;
+            return Type;
         }
 
         public int Get_num_subnode()
         {
-            return num_subnode;
+            return Num_subnode;
         }
 
         public Tree Get_subnode(int _index)
         {
-            if (_index >= num_subnode)
+            if (_index >= Num_subnode)
                 return null;
 
-            Tree t = first;
+            Tree t = First;
 
             while (_index != 0)
             {
-                t = t.next;
+                t = t.Next;
                 --_index;
             }
             return t;
@@ -142,35 +156,35 @@ namespace _1STool1CD
 
         public Tree Get_subnode(String node_name)
         {
-            Tree t = first;
+            Tree t = First;
             while (t != null)
             {
-                if (t.value == node_name)
+                if (t.Value == node_name)
                     return t;
 
-                t = t.next;
+                t = t.Next;
             }
             return null;
         }
 
         public Tree Get_next()
         {
-            return next;
+            return Next;
         }
 
         public Tree Get_parent()
         {
-            return parent;
+            return Parent;
         }
 
         public Tree Get_first()
         {
-            return first;
+            return First;
         }
 
         public Tree Get_last()
         {
-            return last;
+            return Last;
         }
 
 
@@ -179,26 +193,26 @@ namespace _1STool1CD
 
         public void Set_value(String v, Node_type t)
         {
-            value = v;
-            type = t;
+            Value = v;
+            Type = t;
         }
 
         public void Outtext(ref String text)
         {
             Node_type lt = Node_type.nd_unknown;
 
-            if (num_subnode != 0)
+            if (Num_subnode != 0)
             {
                 if (text.Length != 0)
                     text += "\r\n";
 
                 text += "{";
-                Tree t = first;
+                Tree t = First;
                 while (t != null)
                 {
                     t.Outtext(ref text);
-                    lt = t.type;
-                    t = t.next;
+                    lt = t.Type;
+                    t = t.Next;
                     if (t != null)
                         text += ",";
                 }
@@ -208,7 +222,7 @@ namespace _1STool1CD
             }
             else
             {
-                switch (type)
+                switch (Type)
                 {
                     case Node_type.nd_string:
                         text += "\"";
@@ -223,7 +237,7 @@ namespace _1STool1CD
                     case Node_type.nd_binary2:
                     case Node_type.nd_link:
                     case Node_type.nd_binary_d:
-                        text += value;
+                        text += Value;
                         break;
                     default:
                         break;
@@ -240,10 +254,10 @@ namespace _1STool1CD
             //if (this == null)
             //    return ":??"; //-V704
 
-            for (t = this; t.parent != null; t = t.parent)
+            for (t = this; t.Parent != null; t = t.Parent)
             {
                 //p = String(":") + t->index + p;
-                p = ":" + t.index + p;
+                p = ":" + t.Index + p;
             }
             return p;
         }

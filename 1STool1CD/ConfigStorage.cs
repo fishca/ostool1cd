@@ -12,8 +12,12 @@ namespace _1STool1CD
     /// </summary>
     public struct ConfigFile
     {
-        public Stream str;
-        public char[] addin;
+        private Stream str;
+        private char[] addin;
+
+        public Stream Str { get { return str; } set { str = value; } }
+
+        public char[] Addin { get { return addin; } set { addin = value; } }
     }
 
     /// <summary>
@@ -29,25 +33,39 @@ namespace _1STool1CD
     /// <summary>
     /// Структура файла контейнера файлов
     /// </summary>
-    public struct container_file
+    public class Container_file
     {
-        public Table_file file;
-        public String name; // Приведенное имя (очищенное от динамического обновления)
-        public Stream stream;
-        public Stream rstream; // raw stream (нераспакованный поток)
-        public V8catalog cat;
-        public table_file_packed packed;
-        public int dynno; // Номер (индекс) динамического обновления (0, 1 и т.д.). Если без динамического обновления, то -1, если UID динамического обновления не найден, то -2. Для пропускаемых файлов -3.
+        private Table_file file;
+        private String name; // Приведенное имя (очищенное от динамического обновления)
+        private Stream stream;
+        private Stream rstream; // raw stream (нераспакованный поток)
+        private V8catalog cat;
+        private table_file_packed packed;
+        private int dynno; // Номер (индекс) динамического обновления (0, 1 и т.д.). Если без динамического обновления, то -1, если UID динамического обновления не найден, то -2. Для пропускаемых файлов -3.
 
-        public container_file(Table_file _f, String _name)
+        public Table_file File { get { return file; } set { file = value; } }
+
+        public string Name { get { return name; } set { name = value; } }
+
+        public Stream Stream { get { return stream; } set { stream = value; } }
+
+        public Stream Rstream { get { return rstream; } set { rstream = value; } }
+
+        public V8catalog Cat { get { return cat; } set { cat = value; } }
+
+        public table_file_packed Packed { get { return packed; } set { packed = value; } }
+
+        public int Dynno { get { return dynno; } set { dynno = value; } }
+
+        public Container_file(Table_file _f, String _name)
         {
-            file = _f;
-            name = _name;
-            stream = null;
-            rstream = null;
-            cat = null;
-            packed = table_file_packed.unknown;
-            dynno = -3;
+            File = _f;
+            Name = _name;
+            Stream = null;
+            Rstream = null;
+            Cat = null;
+            Packed = table_file_packed.unknown;
+            Dynno = -3;
         }
 
         public bool open() { return true; }
@@ -131,7 +149,7 @@ namespace _1STool1CD
         public override bool fileexists(String path) { return true; }
 
 
-        protected SortedDictionary<String, container_file> files;
+        protected SortedDictionary<String, Container_file> files;
 
         protected bool ready = false;
 

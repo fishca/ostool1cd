@@ -94,8 +94,8 @@ namespace _1STool1CD
         {
             Objtab Res = new Objtab(0, new UInt32[1023]);
 
-            Res.numblocks = BitConverter.ToInt32(src, 0);
-            Array.Copy(src, 4, Res.blocks, 0, Res.numblocks);
+            Res.Numblocks = BitConverter.ToInt32(src, 0);
+            Array.Copy(src, 4, Res.Blocks, 0, Res.Numblocks);
 
             return Res;
         }

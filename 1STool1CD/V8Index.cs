@@ -23,8 +23,8 @@ namespace _1STool1CD
             rootblock = 0;
             length = 0;
             recordsindex_complete = false;
-            pagesize = tbase.base_.pagesize;
-            version = (Db_ver)tbase.base_.version;
+            pagesize = tbase.Base_.Pagesize;
+            version = (Db_ver)tbase.Base_.Version;
 
         }
 
@@ -80,7 +80,7 @@ namespace _1STool1CD
                 return;
             }
 
-            file_index = tbase.file_index;
+            file_index = tbase.File_index;
 
             
             
@@ -142,7 +142,7 @@ namespace _1STool1CD
                 //char buf[8];
                 byte[] buf = new byte[8];
 
-                tbase.file_index.Getdata(buf, start, 8);
+                tbase.File_index.Getdata(buf, start, 8);
 
                 //rootblock = *(uint32_t*)buf;
                 rootblock = buf[0]; // не понятно что с этим делать
@@ -162,7 +162,7 @@ namespace _1STool1CD
             {
                 //char buf[8];
                 byte[] buf = new byte[8];
-                tbase.file_index.Getdata(buf, start, 8);
+                tbase.File_index.Getdata(buf, start, 8);
 
                 //length = *(int16_t*)(buf + 4);
                 length = buf[4];
@@ -179,12 +179,12 @@ namespace _1STool1CD
             byte[] buf = new byte[pagesize]; 
             byte[] ret;
 
-            if (tbase.file_index == null)
+            if (tbase.File_index == null)
                 return null;
 
             //buf = new char[pagesize];
 
-            tbase.file_index.Getdata(buf, page_offset, pagesize);
+            tbase.File_index.Getdata(buf, page_offset, pagesize);
 
             ret = Unpack_leafpage(buf, ref number_indexes);
 
@@ -216,7 +216,7 @@ namespace _1STool1CD
 
             if (header.flags == 0 && indexpage_is_leaf == 0)
             {
-                Console.WriteLine($"Попытка распаковки страницы индекса не являющейся листом. Таблица {tbase.name} Индекс {name}");
+                Console.WriteLine($"Попытка распаковки страницы индекса не являющейся листом. Таблица {tbase.Name} Индекс {name}");
                 number_indexes = 0;
                 return null;
             }

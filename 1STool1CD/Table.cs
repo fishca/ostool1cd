@@ -48,27 +48,52 @@ namespace _1STool1CD
     // структура одного блока в файле file_blob
     public struct Blob_block
     {
-        public UInt32 nextblock;
-        public Int16 length;
+        private UInt32 nextblock;
+        private Int16 length;
         //public char[] data[BLOB_RECORD_DATA_LEN];
-        public char[] data;
+        private char[] data;
+
+        public uint Nextblock { get { return nextblock; } set { nextblock = value; } }
+
+        public short Length { get { return length; } set { length = value; } }
+
+        public char[] Data { get { return data; } set { data = value; } }
     };
 
     // структура root файла экспорта/импорта таблиц
     public struct Export_import_table_root
     {
-        public bool has_data;
-        public bool has_blob;
-        public bool has_index;
-        public bool has_descr;
-        public Int32 data_version_1; // версия реструктуризации
-        public Int32 data_version_2; // версия изменения
-        public Int32 blob_version_1; // версия реструктуризации
-        public Int32 blob_version_2; // версия изменения
-        public Int32 index_version_1; // версия реструктуризации
-        public Int32 index_version_2; // версия изменения
-        public Int32 descr_version_1; // версия реструктуризации
-        public Int32 descr_version_2; // версия изменения
+        private bool has_data;
+        private bool has_blob;
+        private bool has_index;
+        private bool has_descr;
+        private Int32 data_version_1; // версия реструктуризации
+        private Int32 data_version_2; // версия изменения
+        private Int32 blob_version_1; // версия реструктуризации
+        private Int32 blob_version_2; // версия изменения
+        private Int32 index_version_1; // версия реструктуризации
+        private Int32 index_version_2; // версия изменения
+        private Int32 descr_version_1; // версия реструктуризации
+        private Int32 descr_version_2; // версия изменения
+
+        public bool Has_data { get { return has_data; } set { has_data = value; } }
+        public bool Has_blob { get { return has_blob; } set { has_blob = value; } }
+
+        public bool Has_index { get { return has_index; } set { has_index = value; } }
+
+        public bool Has_descr { get { return has_descr; } set { has_descr = value; } }
+
+        public int Data_version_1 { get { return data_version_1; } set { data_version_1 = value; } }
+        public int Data_version_2 { get { return data_version_2; } set { data_version_2 = value; } }
+
+        public int Blob_version_1 { get { return blob_version_1; } set { blob_version_1 = value; } }
+        public int Blob_version_2 { get { return blob_version_2; } set { blob_version_2 = value; } }
+
+        public int Index_version_1 { get { return index_version_1; } set { index_version_1 = value; } }
+        public int Index_version_2 { get { return index_version_2; } set { index_version_2 = value; } }
+
+        public int Descr_version_1 { get { return descr_version_1; } set { descr_version_1 = value; } }
+        public int Descr_version_2 { get { return descr_version_2; } set { descr_version_2 = value; } }
     };
 
 
@@ -85,45 +110,57 @@ namespace _1STool1CD
         {
 
             // владелец
-            public V8Table parent;
+            private V8Table parent;
 
             // физический номер записи (для добавленных записей нумерация начинается с phys_numrecords)
-            public UInt32 numrec;
+            private UInt32 numrec;
 
             // тип изменения записи (изменена, добавлена, удалена)
-            public Changed_rec_type changed_type;
+            private Changed_rec_type changed_type;
 
             // следующая измененная запись в списке измененных записей
-            public Changed_rec next;
+            private Changed_rec next;
 
             // массив признаков изменения поля (по одному байту на каждое поле, всего num_fields байт)
-            public char[] fields;
+            private char[] fields;
 
             // измененная запись. Для типов полей tf_text (TEXT), tf_string (MEMO) и tf_image (BLOB), если соответствующий признак в fields установлен,
             // содержит указатель на TStream с содержимым поля (или NULL)
-            public char[] rec;
+            private char[] rec;
+
+            public V8Table Parent { get { return parent; } set { parent = value; } }
+
+            public uint Numrec { get { return numrec; } set { numrec = value; } }
+
+            public Changed_rec_type Changed_type { get { return changed_type; } set { changed_type = value; } }
+
+            public Changed_rec Next { get { return next; } set { next = value; } }
+
+            public char[] Fields { get { return fields; } set { fields = value; } }
+
+            public char[] Rec { get { return rec; } set { rec = value; } }
 
             public Changed_rec(V8Table _parent, Changed_rec_type crt, UInt32 phys_numrecord)
             {
-                parent = _parent;
-                numrec = phys_numrecord;
-                changed_type = crt;
+                Parent = _parent;
+                Numrec = phys_numrecord;
+                Changed_type = crt;
                 if (crt == Changed_rec_type.deleted)
                 {
-                    fields = null;
-                    rec = null;
+                    Fields = null;
+                    Rec = null;
                 }
                 else
                 {
-                    fields = new char[parent.num_fields];
+                    Fields = new char[Parent.num_fields];
                     //memset(fields, 0, parent.num_fields);
-                    Array.Clear(fields, 0, fields.Length);
-                    rec = new char[parent.recordlen];
+                    Array.Clear(Fields, 0, Fields.Length);
+                    Rec = new char[Parent.recordlen];
                     //memset(rec, 0, parent.recordlen);
-                    Array.Clear(rec, 0, rec.Length);
+                    Array.Clear(Rec, 0, Rec.Length);
                 }
-                next = parent.ch_rec;
-                parent.ch_rec = this;
+                Next = Parent.ch_rec;
+                Parent.ch_rec = this;
 
             }
 
@@ -134,11 +171,11 @@ namespace _1STool1CD
                 Type_fields tf;
                 Stream b = null;
 
-                if (rec != null && fields != null)
-                    for (i = 0; i < parent.num_fields; i++)
-                        if (!String.IsNullOrEmpty(fields[i].ToString()))
+                if (Rec != null && Fields != null)
+                    for (i = 0; i < Parent.num_fields; i++)
+                        if (!String.IsNullOrEmpty(Fields[i].ToString()))
                         {
-                            f = parent.fields[i];
+                            f = Parent.fields[i];
                             tf = f.Gettype();
                             if (tf == Type_fields.tf_image || tf == Type_fields.tf_string || tf == Type_fields.tf_text)
                             {
@@ -153,10 +190,27 @@ namespace _1STool1CD
 
         #region Поддержка динамического построения таблицы записей
 
-        public UInt32[] recordsindex;      // массив индексов записей по номеру (только не пустые записи)
-        public bool recordsindex_complete; // признак заполнености recordsindex
-        public UInt32 numrecords_review;   // количество просмотренных записей всего в поиске не пустых
-        public UInt32 numrecords_found;    // количество найденных непустых записей (текущий размер recordsindex)
+        private UInt32[] recordsindex;      // массив индексов записей по номеру (только не пустые записи)
+        private bool recordsindex_complete; // признак заполнености recordsindex
+        private UInt32 numrecords_review;   // количество просмотренных записей всего в поиске не пустых
+        private UInt32 numrecords_found;    // количество найденных непустых записей (текущий размер recordsindex)
+
+        public uint[] Recordsindex { get { return recordsindex; } set { recordsindex = value; } }
+        public bool Recordsindex_complete { get { return recordsindex_complete; } set { recordsindex_complete = value; } }
+        public uint Numrecords_review { get { return numrecords_review; } set { numrecords_review = value; } }
+        public uint Numrecords_found { get { return numrecords_found; } set { numrecords_found = value; } }
+
+        public T_1CD Base_ { get { return base_; } set { base_ = value; } }
+
+        public string Name { get { return name; } set { name = value; } }
+
+        public V8object File_index { get { return file_index; } set { file_index = value; } }
+
+        public uint Log_numrecords { get { return log_numrecords; } set { log_numrecords = value; } }
+
+        public bool Bad { get { return bad; } set { bad = value; } }
+
+
 
         #endregion
 
@@ -169,9 +223,9 @@ namespace _1STool1CD
             Int32 j;
             byte[] rec;
 
-            if (recordsindex_complete)
+            if (Recordsindex_complete)
                 return;
-            recordsindex = new UInt32[phys_numrecords];
+            Recordsindex = new UInt32[phys_numrecords];
             rec = new byte[recordlen];
 
             j = 0;
@@ -180,12 +234,12 @@ namespace _1STool1CD
                 Getrecord(i, rec);
                 if (rec != null)
                     continue;
-                recordsindex[j++] = i;
+                Recordsindex[j++] = i;
             }
-            recordsindex_complete = true;
-            numrecords_review = phys_numrecords;
-            numrecords_found = (UInt32)j;
-            log_numrecords = (UInt32)j;
+            Recordsindex_complete = true;
+            Numrecords_review = phys_numrecords;
+            Numrecords_found = (UInt32)j;
+            Log_numrecords = (UInt32)j;
 
             rec = null;
 
@@ -201,9 +255,9 @@ namespace _1STool1CD
 
         public V8Table(T_1CD _base, Int32 block_descr)
         {
-            base_ = _base;
+            Base_ = _base;
 
-            descr_table = new V8object(base_, block_descr);
+            descr_table = new V8object(Base_, block_descr);
             description = System.Text.Encoding.UTF8.GetString(descr_table.Getdata(), 0, descr_table.Getdata().Length);
 
             Init(block_descr);
@@ -211,7 +265,7 @@ namespace _1STool1CD
 
         public V8Table(T_1CD _base, String _descr, Int32 block_descr = 0)
         {
-            base_ = _base;
+            Base_ = _base;
 
             descr_table = null;
             description = _descr;
@@ -232,21 +286,21 @@ namespace _1STool1CD
             recordlock = false;
             file_data = null;
             file_blob = null;
-            file_index = null;
+            File_index = null;
             lockinmemory = 0;
 
-            recordsindex_complete = false;
-            numrecords_review = 0;
-            numrecords_found = 0;
-            recordsindex = null;
+            Recordsindex_complete = false;
+            Numrecords_review = 0;
+            Numrecords_found = 0;
+            Recordsindex = null;
 
             edit = false;
             ch_rec = null;
             added_numrecords = 0;
 
             phys_numrecords = 0;
-            log_numrecords = 0;
-            bad = true;
+            Log_numrecords = 0;
+            Bad = true;
 
         }
 
@@ -313,31 +367,31 @@ namespace _1STool1CD
                 root = null;
                 return;
             }
-            name = t.Get_value();
+            Name = t.Get_value();
 
             issystem =
-                name[1] != '_' ||
-                name.Substring(name.Length - 6, 7).Contains("STORAGE") ||
-                name.Contains("_SYSTEMSETTINGS") ||
-                name.Contains("_COMMONSETTINGS") ||
-                name.Contains("_REPSETTINGS") ||
-                name.Contains("_REPVARSETTINGS") ||
-                name.Contains("_FRMDTSETTINGS") ||
-                name.Contains("_SCHEDULEDJOBS");
+                Name[1] != '_' ||
+                Name.Substring(Name.Length - 6, 7).Contains("STORAGE") ||
+                Name.Contains("_SYSTEMSETTINGS") ||
+                Name.Contains("_COMMONSETTINGS") ||
+                Name.Contains("_REPSETTINGS") ||
+                Name.Contains("_REPVARSETTINGS") ||
+                Name.Contains("_FRMDTSETTINGS") ||
+                Name.Contains("_SCHEDULEDJOBS");
 
             t = t.Get_next();
             // пропускаем узел, так как там всегда содержится "0", и что это такое, неизвестно (версия формата описания таблиц?)
             t = t.Get_next();
             if (t.Get_type() != Node_type.nd_list)
             {
-                Console.WriteLine($"Ошибка получения полей таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения полей таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {Name}");
                 Init();
                 root = null;
                 return;
             }
             if (t.Get_num_subnode() < 2)
             {
-                Console.WriteLine($"Ошибка получения полей таблицы. Нет узлов описания полей. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения полей таблицы. Нет узлов описания полей. Блок, {block_descr}, Таблица {Name}");
                 Init();
                 root = null;
                 return;
@@ -351,7 +405,7 @@ namespace _1STool1CD
             f = t.Get_first();
             if (f.Get_type() != Node_type.nd_string)
             {
-                Console.WriteLine($"Ошибка получения полей таблицы. Ожидаемый узел Fields не является строкой. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения полей таблицы. Ожидаемый узел Fields не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Init();
                 root = null;
@@ -360,7 +414,7 @@ namespace _1STool1CD
 
             if (f.Get_value() != "Fields")
             {
-                Console.WriteLine($"Ошибка получения полей таблицы. Узел не Fields. Блок, {block_descr}, Таблица {name}, Узел {f.Get_value()}");
+                Console.WriteLine($"Ошибка получения полей таблицы. Узел не Fields. Блок, {block_descr}, Таблица {Name}, Узел {f.Get_value()}");
                 Deletefields();
                 Init();
                 root = null;
@@ -372,7 +426,7 @@ namespace _1STool1CD
                 f = f.Get_next();
                 if (f.Get_num_subnode() != 6)
                 {
-                    Console.WriteLine($"Ошибка получения узла очередного поля таблицы. Количество узлов поля не равно 6. Блок, {block_descr}, Таблица {name}, Номер поля {i + 1}, Узел {f.Get_num_subnode()}");
+                    Console.WriteLine($"Ошибка получения узла очередного поля таблицы. Количество узлов поля не равно 6. Блок, {block_descr}, Таблица {Name}, Номер поля {i + 1}, Узел {f.Get_num_subnode()}");
                     Deletefields();
                     Init();
                     root = null;
@@ -394,14 +448,14 @@ namespace _1STool1CD
                     Deletefields();
                     Init();
                     root = null;
-                    Console.WriteLine($"Блок, {block_descr}, Таблица {name}, Номер поля {i + 1}");
+                    Console.WriteLine($"Блок, {block_descr}, Таблица {Name}, Номер поля {i + 1}");
                     return;
                 }
             }
             t = t.Get_next();
             if (t.Get_type() != Node_type.nd_list)
             {
-                Console.WriteLine($"Ошибка получения индексов таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения индексов таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Init();
                 root = null;
@@ -409,7 +463,7 @@ namespace _1STool1CD
             }
             if (t.Get_num_subnode() < 1)
             {
-                Console.WriteLine($"Ошибка получения индексов таблицы. Нет узлов описания индексов. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения индексов таблицы. Нет узлов описания индексов. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Init();
                 root = null;
@@ -427,7 +481,7 @@ namespace _1STool1CD
                 f = t.Get_first();
                 if (f.Get_type() != Node_type.nd_string)
                 {
-                    Console.WriteLine($"Ошибка получения индексов таблицы. Ожидаемый узел Indexes не является строкой. Блок, {block_descr}, Таблица {name}");
+                    Console.WriteLine($"Ошибка получения индексов таблицы. Ожидаемый узел Indexes не является строкой. Блок, {block_descr}, Таблица {Name}");
                     Deletefields();
                     Deleteindexes();
                     Init();
@@ -437,7 +491,7 @@ namespace _1STool1CD
 
                 if (f.Get_value() != "Indexes")
                 {
-                    Console.WriteLine($"Ошибка получения индексов таблицы. Узел не Indexes. Блок, {block_descr}, Таблица {name}, Узел {f.Get_value()}");
+                    Console.WriteLine($"Ошибка получения индексов таблицы. Узел не Indexes. Блок, {block_descr}, Таблица {Name}, Узел {f.Get_value()}");
                     Deletefields();
                     Deleteindexes();
                     Init();
@@ -450,7 +504,7 @@ namespace _1STool1CD
                     numrec = f.Get_num_subnode() - 2;
                     if (numrec < 1)
                     {
-                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Нет узлов описаня полей индекса. Блок, {block_descr}, Таблица {name}, Номер индекса {i+1}");
+                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Нет узлов описаня полей индекса. Блок, {block_descr}, Таблица {Name}, Номер индекса {i+1}");
                         Deletefields();
                         Deleteindexes();
                         Init();
@@ -462,7 +516,7 @@ namespace _1STool1CD
 
                     if (f.Get_type() != Node_type.nd_list)
                     {
-                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {name}, Номер индекса {i + 1}");
+                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {Name}, Номер индекса {i + 1}");
                         Deletefields();
                         Deleteindexes();
                         Init();
@@ -472,7 +526,7 @@ namespace _1STool1CD
                     Tree index_tree = f.Get_first();
                     if (index_tree.Get_type() != Node_type.nd_string)
                     {
-                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {name}, Номер индекса {i + 1}");
+                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}, Номер индекса {i + 1}");
                         Deletefields();
                         Deleteindexes();
                         Init();
@@ -484,7 +538,7 @@ namespace _1STool1CD
                     index_tree = index_tree.Get_next();
                     if (index_tree.Get_type() != Node_type.nd_number)
                     {
-                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {name}, Номер индекса {ind.name}");
+                        Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}, Номер индекса {ind.name}");
                         Deletefields();
                         Deleteindexes();
                         Init();
@@ -499,7 +553,7 @@ namespace _1STool1CD
                         ind.is_primary = true;
                     else
                     {
-                        Console.WriteLine($"Неизвестный тип индекса таблицы. Блок, {block_descr}, Таблица {name}, Индекс {ind.name}, Тип индекса {sIsPrimaryIndex}");
+                        Console.WriteLine($"Неизвестный тип индекса таблицы. Блок, {block_descr}, Таблица {Name}, Индекс {ind.name}, Тип индекса {sIsPrimaryIndex}");
                         Deletefields();
                         Deleteindexes();
                         Init();
@@ -513,7 +567,7 @@ namespace _1STool1CD
                         index_tree = index_tree.Get_next();
                         if (index_tree.Get_num_subnode() != 2)
                         {
-                            Console.WriteLine($"Ошибка получения очередного поля индекса таблицы. Количество узлов поля не равно 2. Блок, {block_descr}, Таблица {name}, Индекс {ind.name}, Номер поля индекса {j + 1}, Узлов {index_tree.Get_num_subnode()}");
+                            Console.WriteLine($"Ошибка получения очередного поля индекса таблицы. Количество узлов поля не равно 2. Блок, {block_descr}, Таблица {Name}, Индекс {ind.name}, Номер поля индекса {j + 1}, Узлов {index_tree.Get_num_subnode()}");
                             Deletefields();
                             Deleteindexes();
                             Init();
@@ -524,7 +578,7 @@ namespace _1STool1CD
 				        in_ = index_tree.Get_first();
                         if (in_.Get_type() != Node_type.nd_string)
 				        {
-                            Console.WriteLine($"Ошибка получения имени поля индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {name}, Индекс {ind.name}, Номер поля индекса {j + 1}");
+                            Console.WriteLine($"Ошибка получения имени поля индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}, Индекс {ind.name}, Номер поля индекса {j + 1}");
                             Deletefields();
                             Deleteindexes();
                             Init();
@@ -543,7 +597,7 @@ namespace _1STool1CD
 
                         if (k >= num_fields)
                         {
-                            Console.WriteLine($"Ошибка получения индекса таблицы. Не найдено поле таблицы по имени поля индекса. Блок, {block_descr}, Таблица {name}, Индекс {ind.name}, Поле индекса {field_name}");
+                            Console.WriteLine($"Ошибка получения индекса таблицы. Не найдено поле таблицы по имени поля индекса. Блок, {block_descr}, Таблица {Name}, Индекс {ind.name}, Поле индекса {field_name}");
                             Deletefields();
                             Deleteindexes();
                             Init();
@@ -555,7 +609,7 @@ namespace _1STool1CD
 
                         if (in_.Get_type() != Node_type.nd_number)
                         {
-                            Console.WriteLine($"Ошибка получения длины поля индекса таблицы. Узел не является числом. Блок, {block_descr}, Таблица {name}, Индекс {ind.name}, Поле индекса {field_name}");
+                            Console.WriteLine($"Ошибка получения длины поля индекса таблицы. Узел не является числом. Блок, {block_descr}, Таблица {Name}, Индекс {ind.name}, Поле индекса {field_name}");
                             Deletefields();
                             Deleteindexes();
                             Init();
@@ -580,7 +634,7 @@ namespace _1STool1CD
             t = t.Get_next();
             if (t.Get_num_subnode() != 2)
             {
-                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Количество узлов не равно 2. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Количество узлов не равно 2. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -591,7 +645,7 @@ namespace _1STool1CD
             f = t.Get_first();
             if (f.Get_type() != Node_type.nd_string)
             {
-                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Ожидаемый узел Recordlock не является строкой. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Ожидаемый узел Recordlock не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -601,7 +655,7 @@ namespace _1STool1CD
 
             if (f.Get_value() != "Recordlock")
             {
-                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Узел не Recordlock. Блок, {block_descr}, Таблица {name}, Узел {f.Get_value()}");
+                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Узел не Recordlock. Блок, {block_descr}, Таблица {Name}, Узел {f.Get_value()}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -612,7 +666,7 @@ namespace _1STool1CD
             f = f.Get_next();
             if (f.Get_type() != Node_type.nd_string)
             {
-                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения типа блокировки таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -626,7 +680,7 @@ namespace _1STool1CD
                 recordlock = true;
             else
             {
-                Console.WriteLine($"Неизвестное значение типа блокировки таблицы. Блок, {block_descr}, Таблица {name}, Тип блокировки {sTableLock}");
+                Console.WriteLine($"Неизвестное значение типа блокировки таблицы. Блок, {block_descr}, Таблица {Name}, Тип блокировки {sTableLock}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -646,7 +700,7 @@ namespace _1STool1CD
             t = t.Get_next();
             if (t.Get_num_subnode() != 4)
             {
-                Console.WriteLine($"Ошибка получения файлов таблицы. Количество узлов не равно 4. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения файлов таблицы. Количество узлов не равно 4. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -657,7 +711,7 @@ namespace _1STool1CD
             f = t.Get_first();
             if (f.Get_type() != Node_type.nd_string)
             {
-                Console.WriteLine($"Ошибка получения файлов таблицы. Ожидаемый узел Files не является строкой. Блок, {block_descr}, Таблица {name}");
+                Console.WriteLine($"Ошибка получения файлов таблицы. Ожидаемый узел Files не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -667,7 +721,7 @@ namespace _1STool1CD
 
             if (f.Get_value() != "Files")
             {
-                Console.WriteLine($"Ошибка получения файлов таблицы. Узел не Files. Блок, {block_descr}, Таблица {name}, Узел {f.Get_value()}");
+                Console.WriteLine($"Ошибка получения файлов таблицы. Узел не Files. Блок, {block_descr}, Таблица {Name}, Узел {f.Get_value()}");
                 Deletefields();
                 Deleteindexes();
                 Init();
@@ -680,7 +734,7 @@ namespace _1STool1CD
                 f = f.Get_next();
                 if (f.Get_type() != Node_type.nd_number)
                 {
-                    Console.WriteLine($"Ошибка получения файлов таблицы. Узел не является числом. Блок, {block_descr}, Таблица {name}, Номер файла {i + 1}");
+                    Console.WriteLine($"Ошибка получения файлов таблицы. Узел не является числом. Блок, {block_descr}, Таблица {Name}, Номер файла {i + 1}");
                     Deletefields();
                     Deleteindexes();
                     Init();
@@ -693,31 +747,31 @@ namespace _1STool1CD
             root = null;
 
 
-            file_data  = (blockfile[0] != 0) ? new V8object(base_, blockfile[0]) : null;
-            file_blob  = (blockfile[1] != 0) ? new V8object(base_, blockfile[1]) : null;
-            file_index = (blockfile[2] != 0) ? new V8object(base_, blockfile[2]) : null;
+            file_data  = (blockfile[0] != 0) ? new V8object(Base_, blockfile[0]) : null;
+            file_blob  = (blockfile[1] != 0) ? new V8object(Base_, blockfile[1]) : null;
+            File_index = (blockfile[2] != 0) ? new V8object(Base_, blockfile[2]) : null;
 
-            if (num_indexes !=0  && file_index == null)
+            if (num_indexes !=0  && File_index == null)
             {
-                Console.WriteLine($"В таблице есть индексы, однако файл индексов отсутствует. Блок, {block_descr}, Таблица {name}, Количество индексов {num_indexes}");
+                Console.WriteLine($"В таблице есть индексы, однако файл индексов отсутствует. Блок, {block_descr}, Таблица {Name}, Количество индексов {num_indexes}");
             }
-            else if (num_indexes == 0 && file_index != null)
+            else if (num_indexes == 0 && File_index != null)
             {
-                Console.WriteLine($"В таблице нет индексов, однако присутствует файл индексов. Блок, {block_descr}, Таблица {name}, Блок индексов {blockfile[2]}");
+                Console.WriteLine($"В таблице нет индексов, однако присутствует файл индексов. Блок, {block_descr}, Таблица {Name}, Блок индексов {blockfile[2]}");
             }
-            else if (file_index != null)
+            else if (File_index != null)
             {
-                m = (UInt32)file_index.Getlen() / base_.pagesize;
+                m = (UInt32)File_index.Getlen() / Base_.Pagesize;
 
-                if (file_index.Getlen() != m * base_.pagesize)
+                if (File_index.Getlen() != m * Base_.Pagesize)
                 {
-                    Console.WriteLine($"Ошибка чтения индексов. Длина файла индексов не кратна размеру страницы. Таблица {name}, Длина файла индексов {file_index.Getlen()}");
+                    Console.WriteLine($"Ошибка чтения индексов. Длина файла индексов не кратна размеру страницы. Таблица {Name}, Длина файла индексов {File_index.Getlen()}");
                 }
                 else
                 {
                     Int32 buflen = num_indexes * 4 + 4;
                     //buf = new UInt32[num_indexes + 1];
-                    file_index.Getdata(buf, 0, (UInt32)buflen);
+                    File_index.Getdata(buf, 0, (UInt32)buflen);
 
                     //			// Временно, для отладки >>
                     //			if(buf[0]) msreg_g.AddMessage_("Существуют свободные страницы в файле индексов", MessageState::Hint,
@@ -725,23 +779,23 @@ namespace _1STool1CD
                     //					"Индекс свободной страницы", to_hex_string(buf[0]));
                     //			// Временно, для олтладки <<
 
-                    if (buf[0] * base_.pagesize >= file_index.Getlen())
+                    if (buf[0] * Base_.Pagesize >= File_index.Getlen())
                     {
-                        Console.WriteLine($"Ошибка чтения индексов. Индекс первого свободного блока за пределами файла индексов. Таблица {name}, Длина файла индексов {file_index.Getlen()}, Индекс свободной страницы {buf[0]}");
+                        Console.WriteLine($"Ошибка чтения индексов. Индекс первого свободного блока за пределами файла индексов. Таблица {Name}, Длина файла индексов {File_index.Getlen()}, Индекс свободной страницы {buf[0]}");
                     }
                     else
                     {
                         for (i = 1; i <= num_indexes; i++)
                         {
-                            if ((int)base_.version < (int)Db_ver.ver8_3_8_0)
+                            if ((int)Base_.Version < (int)Db_ver.ver8_3_8_0)
                             {
-                                if (buf[i] >= file_index.Getlen())
+                                if (buf[i] >= File_index.Getlen())
                                 {
-                                    Console.WriteLine($"Ошибка чтения индексов. Указанное смещение индекса за пределами файла индексов. Таблица {name}, Длина файла индексов {file_index.Getlen()}, Номер индекса { i }, Смещение индекса {buf[i]}");
+                                    Console.WriteLine($"Ошибка чтения индексов. Указанное смещение индекса за пределами файла индексов. Таблица {Name}, Длина файла индексов {File_index.Getlen()}, Номер индекса { i }, Смещение индекса {buf[i]}");
                                 }
                                 else if ((buf[i] & 0xfff) != 0)
                                 {
-                                    Console.WriteLine($"Ошибка чтения индексов. Указанное смещение индекса не кратно 4 Кб. Таблица {name}, Длина файла индексов {file_index.Getlen()}, Номер индекса { i }, Смещение индекса {buf[i]}");
+                                    Console.WriteLine($"Ошибка чтения индексов. Указанное смещение индекса не кратно 4 Кб. Таблица {Name}, Длина файла индексов {File_index.Getlen()}, Номер индекса { i }, Смещение индекса {buf[i]}");
                                 }
                                 else
                                     indexes[i - 1].start = buf[i];
@@ -749,10 +803,10 @@ namespace _1STool1CD
                             else
                             {
                                 s = buf[i];
-                                s *= base_.pagesize;
-                                if (s >= file_index.Getlen())
+                                s *= Base_.Pagesize;
+                                if (s >= File_index.Getlen())
                                 {
-                                    Console.WriteLine($"Ошибка чтения индексов. Указанное смещение индекса за пределами файла индексов. Таблица {name}, Длина файла индексов {file_index.Getlen()}, Номер индекса { i }, Смещение индекса { s }");
+                                    Console.WriteLine($"Ошибка чтения индексов. Указанное смещение индекса за пределами файла индексов. Таблица {Name}, Длина файла индексов {File_index.Getlen()}, Номер индекса { i }, Смещение индекса { s }");
                                 }
                                 else
                                     indexes[i - 1].start = s;
@@ -798,12 +852,12 @@ namespace _1STool1CD
             {
                 if (phys_numrecords * (UInt32)recordlen != file_data.Getlen())
                 {
-                    Console.WriteLine($"Длина таблицы не кратна длине записи. Блок {block_descr} Таблица {name}, Длина таблицы {file_data.Getlen()}, Длина записи { recordlen }");
+                    Console.WriteLine($"Длина таблицы не кратна длине записи. Блок {block_descr} Таблица {Name}, Длина таблицы {file_data.Getlen()}, Длина записи { recordlen }");
                 }
             }
             else
             {
-                Console.WriteLine($"Отсутствует файл данных таблицы. Блок {block_descr} Таблица {name}");
+                Console.WriteLine($"Отсутствует файл данных таблицы. Блок {block_descr} Таблица {Name}");
                 return;
             }
 
@@ -811,9 +865,9 @@ namespace _1STool1CD
             for (i = 0; i < num_indexes; i++)
                 indexes[i].Get_length();
 
-            Console.WriteLine($"Создана таблица. Таблица {name} Длина таблицы {file_data.Getlen()}, длина записи {recordlen}");
+            Console.WriteLine($"Создана таблица. Таблица {Name} Длина таблицы {file_data.Getlen()}, длина записи {recordlen}");
 
-            bad = false;
+            Bad = false;
 
         }// окончание процедуры
 
@@ -823,7 +877,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public String Getname()
         {
-            return name;
+            return Name;
         }
 
         public String Getdescription()
@@ -845,7 +899,7 @@ namespace _1STool1CD
         {
             if (numfield >= num_fields)
             {
-                Console.WriteLine($"Попытка получения поля таблицы по номеру, превышающему количество полей. Таблица {name} Количество полей {num_fields} Номер поля {numfield + 1}");
+                Console.WriteLine($"Попытка получения поля таблицы по номеру, превышающему количество полей. Таблица {Name} Количество полей {num_fields} Номер поля {numfield + 1}");
                 return null;
             }
             return fields[numfield];
@@ -855,7 +909,7 @@ namespace _1STool1CD
         {
             if (numindex >= num_indexes)
             {
-                Console.WriteLine($"Попытка получения индекса таблицы по номеру, превышающему количество индексов. Таблица {name} Количество индексов {num_indexes} Номер индекса {numindex + 1}");
+                Console.WriteLine($"Попытка получения индекса таблицы по номеру, превышающему количество индексов. Таблица {Name} Количество индексов {num_indexes} Номер индекса {numindex + 1}");
                 return null;
             }
             return indexes[numindex];
@@ -891,12 +945,12 @@ namespace _1STool1CD
         /// <returns></returns>
         public UInt32 Get_log_numrecords()
         {
-            return log_numrecords;
+            return Log_numrecords;
         } 
 
         public void Set_log_numrecords(UInt32 _log_numrecords)
         {
-            log_numrecords = _log_numrecords;
+            Log_numrecords = _log_numrecords;
         } //
 
         public UInt32 Get_added_numrecords()
@@ -931,7 +985,7 @@ namespace _1STool1CD
             startlen = (UInt32)_str.Position;
             if (_startblock == 0 && _length != 0)
             {
-                Console.WriteLine($"Попытка чтения нулевого блока файла Blob. Таблица {name}");
+                Console.WriteLine($"Попытка чтения нулевого блока файла Blob. Таблица {Name}");
                 return _str;
             }
 
@@ -941,7 +995,7 @@ namespace _1STool1CD
                 _numblock = (UInt32)_filelen >> 8;
                 if (_numblock << 8 != _filelen)
                 {
-                    Console.WriteLine($"Длина файла Blob не кратна 0x100. Таблица {name}. Длина файла {_filelen}");
+                    Console.WriteLine($"Длина файла Blob не кратна 0x100. Таблица {Name}. Длина файла {_filelen}");
                 }
 
                 _curb = new byte[0x100];
@@ -951,7 +1005,7 @@ namespace _1STool1CD
                 {
                     if (_curblock >= _numblock)
                     {
-                        Console.WriteLine($"Попытка чтения блока файла Blob за пределами файла. Таблица {name}. Всего блоков {_numblock}. Читаемый блок {_curblock}");
+                        Console.WriteLine($"Попытка чтения блока файла Blob за пределами файла. Таблица {Name}. Всего блоков {_numblock}. Читаемый блок {_curblock}");
                         return _str;
                     }
                     file_blob.Getdata(_curb, _curblock << 8, 0x100);
@@ -962,7 +1016,7 @@ namespace _1STool1CD
 
                     if (_curlen > 0xfa)
                     {
-                        Console.WriteLine($"Попытка чтения из блока файла Blob более 0xfa байт. Таблица {name}. Индекс блока {_curblock}. Читаемый байт {_curlen}");
+                        Console.WriteLine($"Попытка чтения из блока файла Blob более 0xfa байт. Таблица {Name}. Индекс блока {_curblock}. Читаемый байт {_curlen}");
                         return _str;
                     }
                     _str.Write(_curb, 6, _curlen);
@@ -975,12 +1029,12 @@ namespace _1STool1CD
 
                 if (_str.Length - startlen != _length)
                 {
-                    Console.WriteLine($"Несовпадение длины Blob-поля, указанного в записи, с длиной практически прочитанных данных. Таблица {name}. Длина поля {_length}. Прочитано {_str.Length - startlen}");
+                    Console.WriteLine($"Несовпадение длины Blob-поля, указанного в записи, с длиной практически прочитанных данных. Таблица {Name}. Длина поля {_length}. Прочитано {_str.Length - startlen}");
                 }
             }
             else
             {
-                Console.WriteLine($"Попытка чтения Blob-поля при отстутствующем файле Blob. Таблица {name}. Длина поля {_length}");
+                Console.WriteLine($"Попытка чтения Blob-поля при отстутствующем файле Blob. Таблица {Name}. Длина поля {_length}");
             }
 
             return _str;
@@ -998,7 +1052,7 @@ namespace _1STool1CD
 
             if (_startblock == 0 && _length != 0)
             {
-                Console.WriteLine($"Попытка чтения нулевого блока файла Blob. Таблица {name}");
+                Console.WriteLine($"Попытка чтения нулевого блока файла Blob. Таблица {Name}");
                 return 0;
             }
             
@@ -1010,7 +1064,7 @@ namespace _1STool1CD
                 _numblock = _filelen >> 8;
                 if (_numblock << 8 != _filelen)
                 {
-                    Console.WriteLine($"Длина файла Blob не кратна 0x100. Таблица {name}. Длина файла {_filelen}");
+                    Console.WriteLine($"Длина файла Blob не кратна 0x100. Таблица {Name}. Длина файла {_filelen}");
                 }
 
                 byte[] _curb = new byte[0x100];
@@ -1020,7 +1074,7 @@ namespace _1STool1CD
                 {
                     if (_curblock >= _numblock)
                     {
-                        Console.WriteLine($"Попытка чтения блока файла Blob за пределами файла. Таблица {name}. Всего блоков {_numblock}. Читаемый блок {_curblock}");
+                        Console.WriteLine($"Попытка чтения блока файла Blob за пределами файла. Таблица {Name}. Всего блоков {_numblock}. Читаемый блок {_curblock}");
                         return readed;
                     }
                     file_blob.Getdata(_curb, _curblock << 8, BLOB_RECORD_LEN);
@@ -1028,7 +1082,7 @@ namespace _1STool1CD
                     _curlen = _curb[4];
                     if (_curlen > BLOB_RECORD_DATA_LEN)
                     {
-                        Console.WriteLine($"Попытка чтения из блока файла Blob более 0xfa байт. Таблица {name}. Индекс блока {_curblock}. Читаемый байт {_curlen}");
+                        Console.WriteLine($"Попытка чтения из блока файла Blob более 0xfa байт. Таблица {Name}. Индекс блока {_curblock}. Читаемый байт {_curlen}");
                         return readed;
                     }
                     Array.Copy(_curb, 6, _buf, destIndex, _curlen);
@@ -1042,14 +1096,14 @@ namespace _1STool1CD
 
                 if (readed != _length)
                 {
-                    Console.WriteLine($"Несовпадение длины Blob-поля, указанного в записи, с длиной практически прочитанных данных. Таблица {name}. Длина поля {_length}. Прочитано {readed}");
+                    Console.WriteLine($"Несовпадение длины Blob-поля, указанного в записи, с длиной практически прочитанных данных. Таблица {Name}. Длина поля {_length}. Прочитано {readed}");
                 }
 
 
             }
             else
             {
-                Console.WriteLine($"Попытка чтения Blob-поля при отстутствующем файле Blob. Таблица {name}. Длина поля {_length}");
+                Console.WriteLine($"Попытка чтения Blob-поля при отстутствующем файле Blob. Таблица {Name}. Длина поля {_length}");
             }
 
             return readed;
@@ -1071,7 +1125,7 @@ namespace _1STool1CD
 
         public V8object Get_file_index()
         {
-            return file_index;
+            return File_index;
         }
 
         /// <summary>
@@ -1093,12 +1147,12 @@ namespace _1STool1CD
         public byte[] Get_edit_record(UInt32 phys_numrecord, byte[] rec)
         {
             Changed_rec cr;
-            for (cr = ch_rec; cr != null; cr = cr.next)
-                if (phys_numrecord == cr.numrec)
+            for (cr = ch_rec; cr != null; cr = cr.Next)
+                if (phys_numrecord == cr.Numrec)
                 {
-                    if (cr.changed_type != Changed_rec_type.deleted)
+                    if (cr.Changed_type != Changed_rec_type.deleted)
                     {
-                        Array.Copy(cr.rec, rec, recordlen);
+                        Array.Copy(cr.Rec, rec, recordlen);
                         return rec;
                     }
                     break;
@@ -1124,25 +1178,25 @@ namespace _1STool1CD
 
             if (ARow == 0)
             {
-                Console.WriteLine($"Попытка получения номера физической записи по нулевому номеру строки. Таблица {name}");
+                Console.WriteLine($"Попытка получения номера физической записи по нулевому номеру строки. Таблица {Name}");
                 return 0;
             }
 
             if (edit)
             {
-                if (ARow > log_numrecords + added_numrecords)
+                if (ARow > Log_numrecords + added_numrecords)
                 {
-                    Console.WriteLine($"Попытка получения номера физической записи по номеру строки, превышающему количество записей. Таблица {name}" +
-                        $"Количество логических записей {log_numrecords}, Количество добавленных записей {added_numrecords}, Номер строки {ARow}");
+                    Console.WriteLine($"Попытка получения номера физической записи по номеру строки, превышающему количество записей. Таблица {Name}" +
+                        $"Количество логических записей {Log_numrecords}, Количество добавленных записей {added_numrecords}, Номер строки {ARow}");
                     return 0;
                 }
-                if (ARow > log_numrecords)
-                    return (UInt32)ARow - 1 - log_numrecords + phys_numrecords;
+                if (ARow > Log_numrecords)
+                    return (UInt32)ARow - 1 - Log_numrecords + phys_numrecords;
             }
 
-            if (ARow > log_numrecords)
+            if (ARow > Log_numrecords)
             {
-                Console.WriteLine($"Попытка получения номера физической записи по номеру строки, превышающему количество записей. Таблица {name}, Количество логических записей {log_numrecords}, Номер строки {ARow}");
+                Console.WriteLine($"Попытка получения номера физической записи по номеру строки, превышающему количество записей. Таблица {Name}, Количество логических записей {Log_numrecords}, Номер строки {ARow}");
                 return 0;
             }
             if (cur_index != null)
@@ -1154,7 +1208,7 @@ namespace _1STool1CD
                     tr_syn->BeginRead();
                 #endif
                 */
-                numrec = recordsindex[ARow - 1];
+                numrec = Recordsindex[ARow - 1];
                 /* для чего-то это нужно
                 # ifndef getcfname
                     tr_syn->EndRead();
@@ -1200,7 +1254,7 @@ namespace _1STool1CD
                 }
             }
 
-            if (!issystem || String.Compare(name, "CONFIG") == 0 || String.Compare(name, "CONFIGSAVE") == 0 || String.Compare(name, "FILES") == 0 || String.Compare(name, "PARAMS") == 0)
+            if (!issystem || String.Compare(Name, "CONFIG") == 0 || String.Compare(Name, "CONFIGSAVE") == 0 || String.Compare(Name, "FILES") == 0 || String.Compare(Name, "PARAMS") == 0)
             {
                 if (s.Length != 0)
                     s += "_";
@@ -1256,7 +1310,7 @@ namespace _1STool1CD
             return s;
         } 
 
-        public T_1CD Getbase() { return base_; }
+        public T_1CD Getbase() { return Base_; }
 
         public void Begin_edit() { } // переводит таблицу в режим редактирования
 
@@ -1274,9 +1328,9 @@ namespace _1STool1CD
             cr = ch_rec;
             while (cr != null)
             {
-                if (cr.numrec == phys_numrecord)
-                    return cr.changed_type;
-                cr = cr.next;
+                if (cr.Numrec == phys_numrecord)
+                    return cr.Changed_type;
+                cr = cr.Next;
             }
             return Changed_rec_type.not_changed;
         }
@@ -1291,15 +1345,15 @@ namespace _1STool1CD
             cr = ch_rec;
             while (cr != null)
             {
-                if (cr.numrec == phys_numrecord)
+                if (cr.Numrec == phys_numrecord)
                 {
-                    if (cr.changed_type == Changed_rec_type.changed)
+                    if (cr.Changed_type == Changed_rec_type.changed)
                     {
-                        return cr.fields[numfield] != '0' ? Changed_rec_type.changed : Changed_rec_type.not_changed;
+                        return cr.Fields[numfield] != '0' ? Changed_rec_type.changed : Changed_rec_type.not_changed;
                     }
-                    return cr.changed_type;
+                    return cr.Changed_type;
                 }
-                cr = cr.next;
+                cr = cr.Next;
             }
             return Changed_rec_type.not_changed;
         }
@@ -1471,7 +1525,7 @@ namespace _1STool1CD
             }
 
             String s = "В таблице ";
-            s += name;
+            s += Name;
             s += " не найдено поле ";
             s += fieldname;
             s += ".";
@@ -1495,7 +1549,7 @@ namespace _1STool1CD
             }
 
             String s = "В таблице ";
-            s += name;
+            s += Name;
             s += " не найден индекс ";
             s += indexname;
             s += ".";
@@ -1506,11 +1560,11 @@ namespace _1STool1CD
         }
 
         #region private
-        public T_1CD base_;
+        private T_1CD base_;
 
         private V8object descr_table; // объект с описанием структуры таблицы (только для версий с 8.0 до 8.2.14)
         private String description;
-        public String name;
+        private String name;
         private Int32 num_fields;
         private List<V8Field> fields;
 
@@ -1520,7 +1574,7 @@ namespace _1STool1CD
         private bool recordlock;
         private V8object file_data;
         private V8object file_blob;
-        public V8object file_index;
+        private V8object file_index;
         private Int32 recordlen; // длина записи (в байтах)
         private bool issystem; // Признак системной таблицы (имя таблицы не начинается с подчеркивания)
         private Int32 lockinmemory; // счетчик блокировок в памяти
@@ -1552,7 +1606,7 @@ namespace _1STool1CD
         private UInt32 added_numrecords; // количество добавленных записей в режиме редактирования
 
         private UInt32 phys_numrecords; // физическое количество записей (вместе с удаленными)
-        public UInt32 log_numrecords; // логическое количество записей (только не удаленные)
+        private UInt32 log_numrecords; // логическое количество записей (только не удаленные)
 
         /// <summary>
         /// создание файла file_data
@@ -1560,7 +1614,7 @@ namespace _1STool1CD
         private void Create_file_data()
         {
             if (file_data == null) return;
-            file_data = new V8object(base_);
+            file_data = new V8object(Base_);
             Refresh_descr_table();
         }
 
@@ -1570,7 +1624,7 @@ namespace _1STool1CD
         private void Create_file_blob()
         {
             if (file_blob == null) return;
-            file_blob = new V8object(base_);
+            file_blob = new V8object(Base_);
             Refresh_descr_table();
         }
 
@@ -1579,8 +1633,8 @@ namespace _1STool1CD
         /// </summary>
         private void Create_file_index()
         {
-            if (file_index == null) return;
-            file_index = new V8object(base_);
+            if (File_index == null) return;
+            File_index = new V8object(Base_);
             Refresh_descr_table();
         }
 
@@ -1589,7 +1643,7 @@ namespace _1STool1CD
         /// </summary>
         private void Refresh_descr_table()
         {
-            Console.WriteLine($"Попытка обновления файла описания таблицы. Таблица {name}");
+            Console.WriteLine($"Попытка обновления файла описания таблицы. Таблица {Name}");
             return;
         } 
 
@@ -1606,25 +1660,25 @@ namespace _1STool1CD
 
             if (!edit)
             {
-                Console.WriteLine($"Попытка удаления записи из файла file_data не в режиме редактирования. Таблица {name}, Индекс удаляемой записи {phys_numrecord}");
+                Console.WriteLine($"Попытка удаления записи из файла file_data не в режиме редактирования. Таблица {Name}, Индекс удаляемой записи {phys_numrecord}");
                 return;
             }
 
             if (file_data == null)
             {
-                Console.WriteLine($"Попытка удаления записи из несуществующего файла file_data. Таблица {name}, Индекс удаляемой записи {phys_numrecord}");
+                Console.WriteLine($"Попытка удаления записи из несуществующего файла file_data. Таблица {Name}, Индекс удаляемой записи {phys_numrecord}");
                 return;
             }
 
             if (phys_numrecord >= phys_numrecords)
             {
-                Console.WriteLine($"Попытка удаления записи в файле file_data за пределами файла. Таблица {name}, Всего записей {phys_numrecords} Индекс удаляемой записи {phys_numrecord}");
+                Console.WriteLine($"Попытка удаления записи в файле file_data за пределами файла. Таблица {Name}, Всего записей {phys_numrecords} Индекс удаляемой записи {phys_numrecord}");
                 return;
             }
 
             if (phys_numrecord == 0)
             {
-                Console.WriteLine($"Попытка удаления нулевой записи в файле file_data. Таблица {name}, Всего записей {phys_numrecords}");
+                Console.WriteLine($"Попытка удаления нулевой записи в файле file_data. Таблица {Name}, Всего записей {phys_numrecords}");
                 return;
             }
 
@@ -1666,25 +1720,25 @@ namespace _1STool1CD
 
             if (!edit)
             {
-                Console.WriteLine($"Попытка удаления записи из файла file_blob не в режиме редактирования. Таблица {name}, Смещение удаляемой записи {blob_numrecord << 8}");
+                Console.WriteLine($"Попытка удаления записи из файла file_blob не в режиме редактирования. Таблица {Name}, Смещение удаляемой записи {blob_numrecord << 8}");
                 return;
             }
 
             if (file_blob == null)
             {
-                Console.WriteLine($"Попытка удаления записи из несуществующего файла file_blob. Таблица {name}, Смещение удаляемой записи {blob_numrecord << 8}");
+                Console.WriteLine($"Попытка удаления записи из несуществующего файла file_blob. Таблица {Name}, Смещение удаляемой записи {blob_numrecord << 8}");
                 return;
             }
 
             if (blob_numrecord << 8 >= file_blob.Getlen())
             {
-                Console.WriteLine($"Попытка удаления записи в файле file_blob за пределами файла. Таблица {name}, Смещение удаляемой записи {blob_numrecord << 8}, Длина файла {file_blob.Getlen()}");
+                Console.WriteLine($"Попытка удаления записи в файле file_blob за пределами файла. Таблица {Name}, Смещение удаляемой записи {blob_numrecord << 8}, Длина файла {file_blob.Getlen()}");
                 return;
             }
 
             if (blob_numrecord == 0)
             {
-                Console.WriteLine($"Попытка удаления нулевой записи в файле file_blob. Таблица {name}, Длина файла {file_blob.Getlen()}");
+                Console.WriteLine($"Попытка удаления нулевой записи в файле file_blob. Таблица {Name}, Длина файла {file_blob.Getlen()}");
                 return;
             }
 
@@ -1749,7 +1803,7 @@ namespace _1STool1CD
 
             if (!edit)
             {
-                Console.WriteLine($"Попытка записи в файл file_data не в режиме редактирования. Таблица {name} Индекс записываемой записи {phys_numrecord}");
+                Console.WriteLine($"Попытка записи в файл file_data не в режиме редактирования. Таблица {Name} Индекс записываемой записи {phys_numrecord}");
                 return;
             }
 
@@ -1758,7 +1812,7 @@ namespace _1STool1CD
 
             if (phys_numrecord > phys_numrecords && !(phys_numrecord == 1 && phys_numrecords == 0))
             {
-                Console.WriteLine($"Попытка записи в файл file_data за пределами файла. Таблица {name} Всего записей {phys_numrecords} Индекс записываемой записи {phys_numrecord}");
+                Console.WriteLine($"Попытка записи в файл file_data за пределами файла. Таблица {Name} Всего записей {phys_numrecords} Индекс записываемой записи {phys_numrecord}");
                 return;
             }
 
@@ -1794,7 +1848,7 @@ namespace _1STool1CD
 
             if (!edit)
             {
-                Console.WriteLine($"Попытка записи в файл file_blob не в режиме редактирования. Таблица {name}");
+                Console.WriteLine($"Попытка записи в файл file_blob не в режиме редактирования. Таблица {Name}");
                 return 0;
             }
 
@@ -1858,9 +1912,10 @@ namespace _1STool1CD
         private void Write_index_record(UInt32 phys_numrecord, char[] rec)
         {
 
-        } 
+        }
 
-        public bool bad; // признак битой таблицы
+        private bool bad; // признак битой таблицы
+
 
         #endregion
 

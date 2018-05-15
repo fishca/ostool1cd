@@ -43,30 +43,80 @@ namespace _1STool1CD
     /// <summary>
     /// Структура страницы размещения уровня 1 версий от 8.0 до 8.2.14
     /// </summary>
-    public struct Objtab
+    //public struct Objtab
+    public class Objtab
     {
-        public Int32 numblocks;
-        public UInt32[] blocks;
+        private Int32 numblocks;
+        private UInt32[] blocks;
+
+        public int Numblocks
+        {
+            get { return numblocks;  }
+            set { numblocks = value; }
+        }
+
+        public uint[] Blocks
+        {
+            get { return blocks; }
+            set { blocks = value; }
+        }
+
         public Objtab(Int32 _numblocks, UInt32[] _blocks)
         {
-            numblocks = _numblocks;
-            blocks = _blocks;
+            Numblocks = _numblocks;
+            Blocks    = _blocks;
         }
 
     };
     
     public struct Root_80
     {
-        public char[] lang; // 8
-        public UInt32 numblocks;
-        public UInt32[] blocks;
+        private char[] lang; // 8
+        private UInt32 numblocks;
+        private UInt32[] blocks;
+
+        public char[] Lang
+        {
+            get { return lang; }
+            set { lang = value; }
+        }
+
+        public uint Numblocks
+        {
+            get { return numblocks; }
+            set { numblocks = value; }
+        }
+
+        public uint[] Blocks
+        {
+            get { return blocks; }
+            set { blocks = value; }
+        }
     };
 
     public struct Root_81
     {
-        public char[] lang; //32
-        public UInt32 numblocks;
-        public UInt32[] blocks;
+        private char[] lang; //32
+        private UInt32 numblocks;
+        private UInt32[] blocks;
+
+        public char[] Lang
+        {
+            get { return lang; }
+            set { lang = value; }
+        }
+
+        public uint Numblocks
+        {
+            get { return numblocks; }
+            set { numblocks = value; }
+        }
+
+        public uint[] Blocks
+        {
+            get { return blocks; }
+            set { blocks = value; }
+        }
     };
     
     /// <summary>
@@ -99,16 +149,35 @@ namespace _1STool1CD
     /// <summary>
     /// Структура принадлежности страницы
     /// </summary>
-    public struct Pagemaprec
+    public class Pagemaprec
     {
-        public Int32 tab;     // Индекс в T_1CD::tables, -1 - страница не относится к таблицам
-        public Pagetype type; // тип страницы
-        public UInt32 number; // номер страницы в своем типе
+        private Int32 tab;     // Индекс в T_1CD::tables, -1 - страница не относится к таблицам
+        private Pagetype type; // тип страницы
+        private UInt32 number; // номер страницы в своем типе
+
+        public int Tab
+        {
+            get { return tab; }
+            set { tab = value; }
+        }
+
+        public Pagetype Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
+        public uint Number
+        {
+            get { return number; }
+            set { number = value; }
+        }
+
         public Pagemaprec(Int32 _tab = -1, Pagetype _type = Pagetype.lost, UInt32 _number = 0)
         {
-            tab = -1;
-            type = _type;
-            number = 0;
+            Tab = -1;
+            Type = _type;
+            Number = 0;
         }
     };
 
@@ -136,10 +205,34 @@ namespace _1STool1CD
     // класс конфигурации поставщика
     public class SupplierConfig
     {
-	    public Table_file file;
-        public String name;     // имя конфигурация поставщика
-        public String supplier; // синоним конфигурация поставщика
-        public String version;  // версия конфигурация поставщика
+        private Table_file file;
+        private String name;     // имя конфигурация поставщика
+        private String supplier; // синоним конфигурация поставщика
+        private String version;  // версия конфигурация поставщика
+
+        public Table_file File
+        {
+            get { return file; }
+            set { file = value; }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string Supplier
+        {
+            get { return supplier; }
+            set { supplier = value; }
+        }
+
+        public string Version
+        {
+            get { return version; }
+            set { version = value; }
+        }
     };
 
 
@@ -158,12 +251,36 @@ namespace _1STool1CD
     /// </summary>
     public struct Table_file
     {
-        public V8Table t;
-        public String name; // Имя, как оно хранится в таблице
+        private V8Table t;
+        private String name; // Имя, как оно хранится в таблице
         UInt32 maxpartno;
         table_blob_file addr;
-        public DateTime ft_create;
-        public DateTime ft_modify;
+        private DateTime ft_create;
+        private DateTime ft_modify;
+
+        public V8Table T
+        {
+            get { return t; }
+            set { t = value; }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public DateTime Ft_create
+        {
+            get { return ft_create; }
+            set { ft_create = value; }
+        }
+
+        public DateTime Ft_modify
+        {
+            get { return ft_modify; }
+            set { ft_modify = value; }
+        }
 
         /*
         public table_file(Table _t, String _name, UInt32 _maxpartno)
@@ -173,7 +290,7 @@ namespace _1STool1CD
             maxpartno = _maxpartno;
         }
         */
-        
+
     }
 
     /// <summary>
@@ -181,28 +298,105 @@ namespace _1STool1CD
     /// </summary>
     public class T_1CD
     {
-        public static bool recoveryMode;
-        public char[] locale;    // код языка базы
-        public bool is_infobase; // признак информационной базы
-        public bool is_depot;    // признак хранилища конфигурации
+        private static bool recoveryMode;
+        private char[] locale;    // код языка базы
+        private bool is_infobase; // признак информационной базы
+        private bool is_depot;    // признак хранилища конфигурации
 
-        public Stream data1CD;
+        private Stream data1CD;
 
         /// <summary>
         /// Свойство, показывающее в каком режиме открыт файл БД
         /// </summary>
         public bool ReadOnly
         {
-            get
-            {
-                return Get_readonly();
-            }
-            set
-            {
-                _ReadOnly = value;
-            }
+            get { return Get_readonly(); }
+            set { _ReadOnly = value;     }
         }
 
+        public static bool RecoveryMode
+        {
+            get { return recoveryMode; }
+            set { recoveryMode = value; }
+        }
+
+        public char[] Locale
+        {
+            get { return locale; }
+            set { locale = value; }
+        }
+
+        public bool Is_infobase
+        {
+            get { return is_infobase; }
+            set { is_infobase = value; }
+        }
+
+        public bool Is_depot
+        {
+            get { return is_depot; }
+            set { is_depot = value; }
+        }
+
+        public Stream Data1CD
+        {
+            get { return data1CD; }
+            set { data1CD = value; }
+        }
+
+        public V8Table Table_config
+        {
+            get { return table_config; }
+            set { table_config = value; }
+        }
+
+        public V8Table Table_configsave
+        {
+            get { return table_configsave; }
+            set { table_configsave = value; }
+        }
+
+        public V8Table Table_params { get { return table_params; } set { table_params = value; } }
+
+        public V8Table Table_files { get { return table_files; } set { table_files = value; } }
+
+        public V8Table Table_dbschema { get { return table_dbschema; } set { table_dbschema = value; } }
+
+        public V8Table Table_configcas { get { return table_configcas; } set { table_configcas = value; } }
+
+        public V8Table Table_configcassave { get { return table_configcassave; } set { table_configcassave = value; } }
+
+        public V8Table Table__extensionsinfo { get { return table__extensionsinfo; } set { table__extensionsinfo = value; } }
+
+        public V8Table Table_depot { get { return table_depot; } set { table_depot = value; } }
+
+        public V8Table Table_users { get { return table_users; } set { table_users = value; } }
+
+        public V8Table Table_objects { get { return table_objects; } set { table_objects = value; } }
+
+        public V8Table Table_versions { get { return table_versions; } set { table_versions = value; } }
+
+        public V8Table Table_labels { get { return table_labels; } set { table_labels = value; } }
+
+        public V8Table Table_history { get { return table_history; } set { table_history = value; } }
+
+        public V8Table Table_lastestversions { get { return table_lastestversions; } set { table_lastestversions = value; } }
+
+        public V8Table Table_externals { get { return table_externals; } set { table_externals = value; } }
+
+        public V8Table Table_selfrefs { get { return table_selfrefs; } set { table_selfrefs = value; } }
+
+        public V8Table Table_outrefs { get { return table_outrefs; } set { table_outrefs = value; } }
+
+        public string Ver { get { return ver; } set { ver = value; } }
+
+        public List<SupplierConfig> Supplier_configs { get { return supplier_configs; } set { supplier_configs = value; } }
+
+        public bool Supplier_configs_defined { get { return supplier_configs_defined; } set { supplier_configs_defined = value; } }
+
+        public uint Pagesize { get { return pagesize; } set { pagesize = value; } }
+
+        public Db_ver Version { get { return version; } set { version = value; } }
 
         public bool Get_readonly()
         {
@@ -210,36 +404,36 @@ namespace _1STool1CD
         }
 
         // Таблицы информационной базы
-        public V8Table table_config;
-        public V8Table table_configsave;
-        public V8Table table_params;
-        public V8Table table_files;
-        public V8Table table_dbschema;
-        public V8Table table_configcas;
-        public V8Table table_configcassave;
-        public V8Table table__extensionsinfo;
+        private V8Table table_config;
+        private V8Table table_configsave;
+        private V8Table table_params;
+        private V8Table table_files;
+        private V8Table table_dbschema;
+        private V8Table table_configcas;
+        private V8Table table_configcassave;
+        private V8Table table__extensionsinfo;
 
         // таблицы - хранилища файлов
         ConfigStorageTableConfig cs_config;
         ConfigStorageTableConfigSave cs_configsave;
 
         // Таблицы хранилища конфигураций
-        public V8Table table_depot;
-        public V8Table table_users;
-        public V8Table table_objects;
-        public V8Table table_versions;
-        public V8Table table_labels;
-        public V8Table table_history;
-        public V8Table table_lastestversions;
-        public V8Table table_externals;
-        public V8Table table_selfrefs;
-        public V8Table table_outrefs;
+        private V8Table table_depot;
+        private V8Table table_users;
+        private V8Table table_objects;
+        private V8Table table_versions;
+        private V8Table table_labels;
+        private V8Table table_history;
+        private V8Table table_lastestversions;
+        private V8Table table_externals;
+        private V8Table table_selfrefs;
+        private V8Table table_outrefs;
 
-        public String ver;
+        private String ver;
 
-        public List<SupplierConfig> supplier_configs; // конфигурации поставщика
-        
-        public bool supplier_configs_defined; // признак, что был произведен поиск конфигураций поставщика
+        private List<SupplierConfig> supplier_configs; // конфигурации поставщика
+
+        private bool supplier_configs_defined; // признак, что был произведен поиск конфигураций поставщика
 
         /// <summary>
         ///  Конструктор 
@@ -380,15 +574,15 @@ namespace _1STool1CD
         public bool Save_supplier_configs(UInt32 numcon, String filename)
         {
             FileStream _fs = null;
-            container_file f;
+            Container_file f;
             Table_file tf;
 
-            if (numcon >= supplier_configs.Capacity)
+            if (numcon >= Supplier_configs.Capacity)
                 return false;
 
-            tf = supplier_configs[(int)numcon].file;
+            tf = Supplier_configs[(int)numcon].File;
 
-            f = new container_file(tf, tf.name);
+            f = new Container_file(tf, tf.Name);
             if (!f.open())
             {
                 //f = null;
@@ -529,14 +723,14 @@ namespace _1STool1CD
         public void Restore_DATA_allocation_table(V8Table tab) { }
         public bool Test_block_by_template(UInt32 testblock, char tt, UInt32 num, Int32 rlen, Int32 len) { return true; }
         public String Getfilename() { return filename; }
-        public UInt32 Getpagesize() { return pagesize; }
+        public UInt32 Getpagesize() { return Pagesize; }
 
         private String filename;
-        public UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
+        private UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
         FileStream fs;
-        
-        public Db_ver version;
+
+        private Db_ver version;
 
         private UInt32 length;        // длина базы в блоках
 
@@ -562,7 +756,7 @@ namespace _1STool1CD
         {
             if (_files_config != null)
             {
-                _files_config = new TableFiles(table_config);
+                _files_config = new TableFiles(Table_config);
             }
             return _files_config;
         }
@@ -571,7 +765,7 @@ namespace _1STool1CD
         {
             if (_files_configsave != null)
             {
-                _files_configsave = new TableFiles(table_configsave);
+                _files_configsave = new TableFiles(Table_configsave);
             }
             return _files_configsave;
         }
@@ -580,7 +774,7 @@ namespace _1STool1CD
         {
             if (_files_params != null)
             {
-                _files_params = new TableFiles(table_params);
+                _files_params = new TableFiles(Table_params);
             }
             return _files_params;
         }
@@ -589,7 +783,7 @@ namespace _1STool1CD
         {
             if (_files_files != null)
             {
-                _files_files = new TableFiles(table_files);
+                _files_files = new TableFiles(Table_files);
             }
             return _files_files;
         }
@@ -598,7 +792,7 @@ namespace _1STool1CD
         {
             if (_files_configcas != null)
             {
-                _files_configcas = new TableFiles(table_configcas);
+                _files_configcas = new TableFiles(Table_configcas);
             }
             return _files_configcas;
         }
@@ -607,7 +801,7 @@ namespace _1STool1CD
         {
             if (_files_configcassave != null) 
             {
-                _files_configcassave = new TableFiles(table_configcassave);
+                _files_configcassave = new TableFiles(Table_configcassave);
             }
             return _files_configcassave;
         }
@@ -617,7 +811,7 @@ namespace _1STool1CD
         public byte[] Getblock(UInt32 block_number)
         {
             
-            if (data1CD == null)
+            if (Data1CD == null)
                 return null;
             if (block_number >= length)
             {
@@ -625,17 +819,17 @@ namespace _1STool1CD
                 return null;
             }
 
-            V8MemBlock tmpV8MemBlock = new V8MemBlock((FileStream)data1CD, block_number, false, true);
-            return V8MemBlock.Getblock((FileStream)data1CD, block_number);
+            V8MemBlock tmpV8MemBlock = new V8MemBlock((FileStream)Data1CD, block_number, false, true);
+            return V8MemBlock.Getblock((FileStream)Data1CD, block_number);
         }
 
         public bool Getblock(ref byte[] buf, UInt32 block_number, Int32 blocklen = -1) // буфер принадлежит вызывающей процедуре
         {
-            if (data1CD == null)
+            if (Data1CD == null)
                 return false;
 
             if (blocklen < 0)
-                blocklen = (Int32)pagesize;
+                blocklen = (Int32)Pagesize;
 
             if (block_number >= length)
             {
@@ -646,8 +840,8 @@ namespace _1STool1CD
             //memcpy(buf, MemBlock::getblock(fs, block_number), blocklen);
 
 
-            V8MemBlock tmp_mem_block = new V8MemBlock((FileStream)data1CD, block_number, false, true);
-            byte[] tmp_buf = V8MemBlock.Getblock((FileStream)data1CD, block_number);
+            V8MemBlock tmp_mem_block = new V8MemBlock((FileStream)Data1CD, block_number, false, true);
+            byte[] tmp_buf = V8MemBlock.Getblock((FileStream)Data1CD, block_number);
             Array.Copy(tmp_buf, buf, blocklen);
             return true;
 
@@ -693,36 +887,36 @@ namespace _1STool1CD
             }
             pagemap = new Pagemaprec[length];
 
-            pagemap[0].type = Pagetype.root;
-            pagemap[1].type = Pagetype.freeroot;
-            pagemap[2].type = Pagetype.rootfileroot;
+            pagemap[0].Type = Pagetype.root;
+            pagemap[1].Type = Pagetype.freeroot;
+            pagemap[2].Type = Pagetype.rootfileroot;
 
         }
 
         private String Pagemaprec_presentation(Pagemaprec pmr)
         {
-            switch (pmr.type)
+            switch (pmr.Type)
             {
                 case Pagetype.lost:          return ("потерянная страница");
                 case Pagetype.root:          return ("корневая страница базы");
                 case Pagetype.freeroot:      return ("корневая страница таблицы свободных блоков");
-                case Pagetype.freealloc:     return ("страница размещения таблицы свободных блоков номер ") + pmr.number;
-                case Pagetype.free:          return ("свободная страница номер ")                           + pmr.number;
+                case Pagetype.freealloc:     return ("страница размещения таблицы свободных блоков номер ") + pmr.Number;
+                case Pagetype.free:          return ("свободная страница номер ")                           + pmr.Number;
                 case Pagetype.rootfileroot:  return ("корневая страница корневого файла");                  
-                case Pagetype.rootfilealloc: return ("страница размещения корневого файла номер ")          + pmr.number;
-                case Pagetype.rootfile:      return ("страница данных корневого файла номер ")              + pmr.number;
-                case Pagetype.descrroot:     return ("корневая страница файла descr таблицы ")              + tables[pmr.tab].Getname();
-                case Pagetype.descralloc:    return ("страница размещения файла descr таблицы ")            + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.descr:         return ("страница данных файла descr таблицы ")                + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.dataroot:      return ("корневая страница файла data таблицы ")               + tables[pmr.tab].Getname();
-                case Pagetype.dataalloc:     return ("страница размещения файла data таблицы ")             + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.data:          return ("страница данных файла data таблицы ")                 + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.indexroot:     return ("корневая страница файла index таблицы ")              + tables[pmr.tab].Getname();
-                case Pagetype.indexalloc:    return ("страница размещения файла index таблицы ")            + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.index:         return ("страница данных файла index таблицы ")                + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.blobroot:      return ("корневая страница файла blob таблицы ")               + tables[pmr.tab].Getname();
-                case Pagetype.bloballoc:     return ("страница размещения файла blob таблицы ")             + tables[pmr.tab].Getname() + " номер " + pmr.number;
-                case Pagetype.blob:          return ("страница данных файла blob таблицы ")                 + tables[pmr.tab].Getname() + " номер " + pmr.number;
+                case Pagetype.rootfilealloc: return ("страница размещения корневого файла номер ")          + pmr.Number;
+                case Pagetype.rootfile:      return ("страница данных корневого файла номер ")              + pmr.Number;
+                case Pagetype.descrroot:     return ("корневая страница файла descr таблицы ")              + tables[pmr.Tab].Getname();
+                case Pagetype.descralloc:    return ("страница размещения файла descr таблицы ")            + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.descr:         return ("страница данных файла descr таблицы ")                + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.dataroot:      return ("корневая страница файла data таблицы ")               + tables[pmr.Tab].Getname();
+                case Pagetype.dataalloc:     return ("страница размещения файла data таблицы ")             + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.data:          return ("страница данных файла data таблицы ")                 + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.indexroot:     return ("корневая страница файла index таблицы ")              + tables[pmr.Tab].Getname();
+                case Pagetype.indexalloc:    return ("страница размещения файла index таблицы ")            + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.index:         return ("страница данных файла index таблицы ")                + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.blobroot:      return ("корневая страница файла blob таблицы ")               + tables[pmr.Tab].Getname();
+                case Pagetype.bloballoc:     return ("страница размещения файла blob таблицы ")             + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
+                case Pagetype.blob:          return ("страница данных файла blob таблицы ")                 + tables[pmr.Tab].Getname() + " номер " + pmr.Number;
 
                 default:
                     return ("??? неизвестный тип страницы ???");
@@ -733,7 +927,7 @@ namespace _1STool1CD
         {
             Depot_ver depotVer = Depot_ver.UnknownVer;
 
-            V8Field fldd_depotver = table_depot.Get_field("DEPOTVER");
+            V8Field fldd_depotver = Table_depot.Get_field("DEPOTVER");
 
             if (fldd_depotver != null)
             {

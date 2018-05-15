@@ -383,7 +383,7 @@ namespace _1STool1CD
             }
             catch
             {
-                throw new Exception($"Таблица {parent.name}, поле {name}");
+                throw new Exception($"Таблица {parent.Name}, поле {name}");
             }
             
         }
@@ -412,8 +412,8 @@ namespace _1STool1CD
                 throw new Exception($"Поле {fld.name}");
             }
 
-            fld.type = type_declaration.type;
-            fld.null_exists = type_declaration.null_exists;
+            fld.type = type_declaration.Type;
+            fld.null_exists = type_declaration.Null_exists;
             fld.type_manager = FieldType.Create_type_manager(type_declaration);
 
             if (fld.type == Type_fields.tf_version)

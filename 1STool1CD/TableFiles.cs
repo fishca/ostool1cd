@@ -11,8 +11,11 @@ namespace _1STool1CD
     /// </summary>
     public struct table_blob_file
     {
-        public UInt32 blob_start;
-        public UInt32 blob_length;
+        private UInt32 blob_start;
+        private UInt32 blob_length;
+
+        public uint Blob_start { get { return blob_start; } set { blob_start = value; } }
+        public uint Blob_length { get { return blob_length; } set { blob_length = value; } }
     }
 
     /// <summary>
@@ -20,11 +23,17 @@ namespace _1STool1CD
     /// </summary>
     public struct table_rec
     {
-        public String name;
-        public table_blob_file addr;
-        public Int32 partno;
-        public DateTime ft_create;
-        public DateTime ft_modify;
+        private String name;
+        private table_blob_file addr;
+        private Int32 partno;
+        private DateTime ft_create;
+        private DateTime ft_modify;
+
+        public string Name { get { return name; } set { name = value; } }
+        public table_blob_file Addr { get { return addr; } set { addr = value; } }
+        public int Partno { get { return partno; } set { partno = value; } }
+        public DateTime Ft_create { get { return ft_create; } set { ft_create = value; } }
+        public DateTime Ft_modify { get { return ft_modify; } set { ft_modify = value; } }
     };
 
     public class TableFiles
