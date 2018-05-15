@@ -78,7 +78,7 @@ namespace _1STool1CD
             File = fs;
 
             // регистрируем себя в массиве блоков
-            memblocks[Numblock] = this;
+            Memblocks[Numblock] = this;
         }
 
         public static void Garbage()
@@ -90,12 +90,12 @@ namespace _1STool1CD
         {
             if (_numblock >= Numblocks)
                 return null;
-            if (memblocks[_numblock] != null)
+            if (Memblocks[_numblock] != null)
             {
                 V8MemBlock tmpV8Mem = new V8MemBlock(fs, _numblock, false, true);
             }
             return
-                memblocks[_numblock].Getblock(false);
+                Memblocks[_numblock].Getblock(false);
         }
 
         public static byte[] Getblock_for_write(FileStream fs, UInt32 _numblock, bool read)
@@ -104,22 +104,22 @@ namespace _1STool1CD
                 return null;
             if (_numblock == Numblocks)
                 Add_block();
-            if (memblocks[_numblock] != null)
+            if (Memblocks[_numblock] != null)
             {
                 V8MemBlock tmpV8Mem = new V8MemBlock(fs, _numblock, true, read);
             }
             else
-                memblocks[_numblock].Is_changed = true;
+                Memblocks[_numblock].Is_changed = true;
 
             return
-                memblocks[_numblock].Getblock(true);
+                Memblocks[_numblock].Getblock(true);
         }
 
         public static void Create_memblocks(UInt32 _numblocks)
         {
             Numblocks = _numblocks;
             Array_numblocks = (Numblocks / Delta + 1) * Delta;
-            memblocks = new V8MemBlock[Array_numblocks];
+            Memblocks = new V8MemBlock[Array_numblocks];
             //memset(memblocks, 0, array_numblocks * sizeof(MemBlock*));
         }
 
@@ -128,7 +128,7 @@ namespace _1STool1CD
             while (First != null)
                 First = null;
 
-            memblocks = null;
+            Memblocks = null;
 
             Numblocks = 0;
 
@@ -174,7 +174,7 @@ namespace _1STool1CD
 
         //static MemBlock** memblocks; // указатель на массив указателей MemBlock (количество равно количеству блоков в файле *.1CD)
         //public List<v8MemBlock> memblocks;
-        public static V8MemBlock[] memblocks;
+        private static V8MemBlock[] memblocks;
 
 
         private UInt32 lastdataget; // время (Windows time, в миллисекундах) последнего обращения к данным объекта (data)
@@ -199,6 +199,8 @@ namespace _1STool1CD
         public static uint Array_numblocks { get { return array_numblocks; } set { array_numblocks = value; } }
         public static uint Delta { get { return delta; } set { delta = value; } }
         public uint Lastdataget { get { return lastdataget; } set { lastdataget = value; } }
+
+        public static V8MemBlock[] Memblocks { get { return memblocks; } set { memblocks = value; } }
 
         //char* getblock(bool for_write); // получить блок для чтения или для записи
         public byte[] Getblock(bool for_write) // получить блок для чтения или для записи
@@ -236,21 +238,21 @@ namespace _1STool1CD
         {
 
             if (Numblocks < Array_numblocks)
-                memblocks[Numblocks++] = null;
+                Memblocks[Numblocks++] = null;
             else
             {
                 V8MemBlock[] mb = new V8MemBlock[Array_numblocks + Delta];
                 for (uint i = 0; i < Array_numblocks; i++)
-                    mb[i] = memblocks[i];
+                    mb[i] = Memblocks[i];
 
                 for (uint i = Array_numblocks; i < Array_numblocks + Delta; i++)
                     mb[i] = null;
 
                 Array_numblocks += Delta;
 
-                memblocks = null;
+                Memblocks = null;
 
-                memblocks = mb;
+                Memblocks = mb;
             }
 
         }

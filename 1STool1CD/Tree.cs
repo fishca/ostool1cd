@@ -10,7 +10,9 @@ namespace _1STool1CD
     
     public struct node
     {
-        public int _data_;
+        private int data_;
+
+        public int Data_ { get { return data_; } set { data_ = value; } }
     }
 
     public class TreeNode<T>

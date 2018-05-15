@@ -15,8 +15,11 @@ namespace _1STool1CD
     /// </summary>
     public struct _version_rec
     {
-        public UInt32 version_1; // версия реструктуризации
-        public UInt32 version_2; // версия изменения
+        private UInt32 version_1; // версия реструктуризации
+        private UInt32 version_2; // версия изменения
+
+        public uint Version_1 { get { return version_1; } set { version_1 = value; } }
+        public uint Version_2 { get { return version_2; } set { version_2 = value; } }
     }
 
     /// <summary>
@@ -24,9 +27,13 @@ namespace _1STool1CD
     /// </summary>
     public struct _version
     {
-        public UInt32 version_1; // версия реструктуризации
-        public UInt32 version_2; // версия изменения
-        public UInt32 version_3; // версия изменения 2
+        private UInt32 version_1; // версия реструктуризации
+        private UInt32 version_2; // версия изменения
+        private UInt32 version_3; // версия изменения 2
+
+        public uint Version_1 { get { return version_1; } set { version_1 = value; } }
+        public uint Version_2 { get { return version_2; } set { version_2 = value; } }
+        public uint Version_3 { get { return version_3; } set { version_3 = value; } }
     }
 
     /// <summary>
@@ -34,7 +41,9 @@ namespace _1STool1CD
     /// </summary>
     public struct Objtab838
     {
-        public UInt32[] blocks; // реальное количество блоков зависит от размера страницы (pagesize)
+        private UInt32[] blocks; // реальное количество блоков зависит от размера страницы (pagesize)
+
+        public uint[] Blocks { get { return blocks; } set { blocks = value; } }
     }
 
     /// <summary>
@@ -42,10 +51,15 @@ namespace _1STool1CD
     /// </summary>
     public struct V8ob
     {
-        public char[] sig; // сигнатура SIG_OBJ
-        public UInt32 len; // длина файла
-        public _version version;
-        public UInt32[] blocks;
+        private char[] sig; // сигнатура SIG_OBJ
+        private UInt32 len; // длина файла
+        private _version version;
+        private UInt32[] blocks;
+
+        public char[] Sig { get { return sig; } set { sig = value; } }
+        public uint Len { get { return len; } set { len = value; } }
+        public _version Version { get { return version; } set { version = value; } }
+        public uint[] Blocks { get { return blocks; } set { blocks = value; } }
     }
 
     /// <summary>
@@ -54,11 +68,18 @@ namespace _1STool1CD
     public struct V838ob_data
     {
         //public char[] sig;       // сигнатура 0x1C 0xFD (1C File Data?)
-        public byte[] sig;
-        public Int16 fatlevel;   // уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
-        public _version version;
-        public UInt64 len;       // длина файла
-        public UInt32[] blocks;  // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
+        private byte[] sig;
+        private Int16 fatlevel;   // уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
+        private _version version;
+        private UInt64 len;       // длина файла
+        private UInt32[] blocks;  // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
+
+        public byte[] Sig { get { return sig; } set { sig = value; } }
+
+        public short Fatlevel { get { return fatlevel; } set { fatlevel = value; } }
+        public _version Version { get { return version; } set { version = value; } }
+        public ulong Len { get { return len; } set { len = value; } }
+        public uint[] Blocks { get { return blocks; } set { blocks = value; } }
     }
 
     /// <summary>
@@ -67,10 +88,15 @@ namespace _1STool1CD
     public struct V838ob_free
     {
         //public char[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
-        public byte[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
-        public Int16 fatlevel; // 0x0000 пока! но может ... уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
-        public UInt32 version;        // ??? предположительно...
-        public UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
+        private byte[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
+        private Int16 fatlevel; // 0x0000 пока! но может ... уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
+        private UInt32 version;        // ??? предположительно...
+        private UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
+
+        public byte[] Sig { get { return sig; } set { sig = value; } }
+        public short Fatlevel { get { return fatlevel; } set { fatlevel = value; } }
+        public uint Version { get { return version; } set { version = value; } }
+        public uint[] Blocks { get { return blocks; } set { blocks = value; } }
     }
 
     /// <summary>
@@ -91,16 +117,16 @@ namespace _1STool1CD
     public class V8object
     {
 
-        public T_1CD _base;
+        private T_1CD _base;
 
-        public UInt64 len;                 // длина объекта. Для типа таблицы свободных страниц - количество свободных блоков
-        public _version version;           // текущая версия объекта
-        public _version_rec version_rec;   // текущая версия записи
-        public bool new_version_recorded;  // признак, что новая версия объекта записана
-        public V8objtype type;             // тип и формат файла
-        public Int32 fatlevel;             // Количество промежуточных уровней в таблице размещения
-        public UInt64 numblocks;           // кол-во страниц в корневой таблице размещения объекта
-        public UInt32 real_numblocks;      // реальное кол-во страниц в корневой таблице (только для файлов свободных страниц, может быть больше numblocks)
+        private UInt64 len;                 // длина объекта. Для типа таблицы свободных страниц - количество свободных блоков
+        private _version version;           // текущая версия объекта
+        private _version_rec version_rec;   // текущая версия записи
+        private bool new_version_recorded;  // признак, что новая версия объекта записана
+        private V8objtype type;             // тип и формат файла
+        private Int32 fatlevel;             // Количество промежуточных уровней в таблице размещения
+        private UInt64 numblocks;           // кол-во страниц в корневой таблице размещения объекта
+        private UInt32 real_numblocks;      // реальное кол-во страниц в корневой таблице (только для файлов свободных страниц, может быть больше numblocks)
 
         //uint32_t* blocks;        
 
@@ -120,21 +146,56 @@ namespace _1STool1CD
 
 
         // наверное пока так               // номера страниц в массиве                                    
-        public UInt32[] blocks;            // таблица страниц корневой таблицы размещения объекта (т.е. уровня 0)
+        private UInt32[] blocks;            // таблица страниц корневой таблицы размещения объекта (т.е. уровня 0)
 
+        private UInt32 block;               // номер блока объекта
+        private byte[] data;                // данные, представляемые объектом, NULL если не прочитаны или len = 0   //char* data;                      
 
+        private static V8object first;
+        private static V8object last;
 
-        public UInt32 block;               // номер блока объекта
-        public byte[] data;                // данные, представляемые объектом, NULL если не прочитаны или len = 0   //char* data;                      
+        private V8object next;
+        private V8object prev;
 
-        public static V8object first;
-        public static V8object last;
+        private UInt32 lastdataget;          // время (Windows time, в миллисекундах) последнего обращения к данным объекта (data)
+        private bool lockinmemory;
 
-        public V8object next;
-        public V8object prev;
+        public T_1CD Base { get { return _base; } set { _base = value; } }
 
-        public UInt32 lastdataget;          // время (Windows time, в миллисекундах) последнего обращения к данным объекта (data)
-        public bool lockinmemory;
+        public ulong Len { get { return len; } set { len = value; } }
+
+        public _version Version { get { return version; } set { version = value; } }
+
+        public _version_rec Version_rec { get { return version_rec; } set { version_rec = value; } }
+
+        public bool New_version_recorded { get { return new_version_recorded; } set { new_version_recorded = value; } }
+
+        public V8objtype Type { get { return type; } set { type = value; } }
+
+        public int Fatlevel { get { return fatlevel; } set { fatlevel = value; } }
+
+        public ulong Numblocks { get { return numblocks; } set { numblocks = value; } }
+
+        public uint Real_numblocks { get { return real_numblocks; } set { real_numblocks = value; } }
+
+        public uint[] Blocks { get { return blocks; } set { blocks = value; } }
+
+        public uint Block { get { return block; } set { block = value; } }
+
+        public byte[] Data { get { return data; } set { data = value; } }
+
+        public static V8object First { get { return first; } set { first = value; } }
+
+        public static V8object Last { get { return last; } set { last = value; } }
+
+        public V8object Next { get { return next; } set { next = value; } }
+
+        public V8object Prev { get { return prev; } set { prev = value; } }
+
+        public uint Lastdataget { get { return lastdataget; } set { lastdataget = value; } }
+
+        public bool Lockinmemory { get { return lockinmemory; } set { lockinmemory = value; } }
+
 
         /// <summary>
         /// Установка новой длины объекта
@@ -154,58 +215,58 @@ namespace _1STool1CD
             UInt64 maxlen;
             Int32 newfatlevel;
 
-            if (len == _len) return;
+            if (Len == _len) return;
 
-            if (type == V8objtype.free80 || type == V8objtype.free838)
+            if (Type == V8objtype.free80 || Type == V8objtype.free838)
             {
                 // Таблица свободных блоков
                 Console.WriteLine("Попытка установки длины в файле свободных страниц");
                 return;
             }
 
-            data = null;
+            Data = null;
 
-            if (type == V8objtype.data80)
+            if (Type == V8objtype.data80)
             {
 
-                b = ByteArrayToV8ob(_base.Getblock_for_write(block, true));
-                b.len = (UInt32)_len;
+                b = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
+                b.Len = (UInt32)_len;
 
                 num_data_blocks = (UInt32)(_len + 0xfff) >> 12;
                 num_blocks = (num_data_blocks + 1022) / 1023;
-                cur_data_blocks = (UInt32)(len + 0xfff) >> 12;
+                cur_data_blocks = (UInt32)(Len + 0xfff) >> 12;
 
-                if (numblocks != num_blocks)
+                if (Numblocks != num_blocks)
                 {
-                    blocks = null;
+                    Blocks = null;
                     if (num_blocks != 0)
-                        blocks = new UInt32[num_blocks];
+                        Blocks = new UInt32[num_blocks];
                     else
-                        blocks = null;
+                        Blocks = null;
                 }
                 if (num_data_blocks > cur_data_blocks)
                 {
                     Objtab ot = new Objtab(0,null);
                     // Увеличение длины объекта
-                    if (numblocks != 0)
+                    if (Numblocks != 0)
                     {
-                        ot = ByteArrayToObjtab(_base.Getblock_for_write(b.blocks[numblocks - 1], true));
+                        ot = ByteArrayToObjtab(Base.Getblock_for_write(b.Blocks[Numblocks - 1], true));
                     }
                     for (; cur_data_blocks < num_data_blocks; cur_data_blocks++)
                     {
                         i = cur_data_blocks % 1023;
                         if (i == 0)
                         {
-                            bl = _base.Get_free_block();
-                            b.blocks[numblocks++] = bl;
+                            bl = Base.Get_free_block();
+                            b.Blocks[Numblocks++] = bl;
 
                             //ot = (objtab*)base->getblock_for_write(bl, false);
-                            ot = ByteArrayToObjtab(_base.Getblock_for_write(bl, false));
+                            ot = ByteArrayToObjtab(Base.Getblock_for_write(bl, false));
 
                             ot.Numblocks = 0;
                         }
-                        bl = _base.Get_free_block();
-                        _base.Getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
+                        bl = Base.Get_free_block();
+                        Base.Getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
                         //ot.blocks[i] = bl;  // TODO: надо доработать
                         ot.Numblocks = (Int32)i + 1;
                     }
@@ -213,49 +274,49 @@ namespace _1STool1CD
                 else if (num_data_blocks < cur_data_blocks)
                 {
                     // Уменьшение длины объекта
-                    Objtab ot = ByteArrayToObjtab(_base.Getblock_for_write(b.blocks[numblocks - 1], true));
+                    Objtab ot = ByteArrayToObjtab(Base.Getblock_for_write(b.Blocks[Numblocks - 1], true));
 
                     for (cur_data_blocks--; cur_data_blocks >= num_data_blocks; cur_data_blocks--)
                     {
                         i = cur_data_blocks % 1023;
-                        _base.Set_block_as_free(ot.Blocks[i]);
+                        Base.Set_block_as_free(ot.Blocks[i]);
                         ot.Blocks[i] = 0;
                         ot.Numblocks = (Int32)i;
                         if (i == 0)
                         {
-                            _base.Set_block_as_free(b.blocks[--numblocks]);
-                            b.blocks[numblocks] = 0;
-                            if (numblocks != 0)
-                                ot = ByteArrayToObjtab(_base.Getblock_for_write(b.blocks[numblocks - 1], true));
+                            Base.Set_block_as_free(b.Blocks[--Numblocks]);
+                            b.Blocks[Numblocks] = 0;
+                            if (Numblocks != 0)
+                                ot = ByteArrayToObjtab(Base.Getblock_for_write(b.Blocks[Numblocks - 1], true));
                         }
                     }
 
                 }
-                len = _len;
-                if (numblocks != 0)
+                Len = _len;
+                if (Numblocks != 0)
                 {
                     //memcpy(blocks, b->blocks, numblocks * 4);
-                    Array.Copy(b.blocks, blocks, (Int32)numblocks * 4);
+                    Array.Copy(b.Blocks, Blocks, (Int32)Numblocks * 4);
                 }
 
                 Write_new_version();
 
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
-                offsperpage = _base.Pagesize / 4;
-                maxlen = _base.Pagesize * offsperpage * (offsperpage - 6);
+                offsperpage = Base.Pagesize / 4;
+                maxlen = Base.Pagesize * offsperpage * (offsperpage - 6);
                 if (_len > maxlen)
                 {
-                    Console.WriteLine($"Попытка установки длины файла больше максимальной. Номер страницы файла {block}. Максимальная длина файла {maxlen}. Запрошенная длина файла {_len}");
+                    Console.WriteLine($"Попытка установки длины файла больше максимальной. Номер страницы файла {Block}. Максимальная длина файла {maxlen}. Запрошенная длина файла {_len}");
                     _len = maxlen;
                 }
 
                 //bd = (v838ob_data*)base->getblock_for_write(block, true);
-                bd = ByteArrayTov838ob(_base.Getblock_for_write(block, true));
-                bd.len = _len;
+                bd = ByteArrayTov838ob(Base.Getblock_for_write(Block, true));
+                bd.Len = _len;
 
-                num_data_blocks = (UInt32)(_len + _base.Pagesize - 1) / _base.Pagesize;
+                num_data_blocks = (UInt32)(_len + Base.Pagesize - 1) / Base.Pagesize;
                 if (num_data_blocks > offsperpage - 6)
                 {
                     num_blocks = (num_data_blocks + offsperpage - 1) / offsperpage;
@@ -266,84 +327,84 @@ namespace _1STool1CD
                     num_blocks = num_data_blocks;
                     newfatlevel = 0;
                 }
-                cur_data_blocks = (UInt32)(len + _base.Pagesize - 1) / _base.Pagesize;
+                cur_data_blocks = (UInt32)(Len + Base.Pagesize - 1) / Base.Pagesize;
 
-                if (numblocks != num_blocks)
+                if (Numblocks != num_blocks)
                 {
-                    blocks = null;
+                    Blocks = null;
                     if (num_blocks != 0)
-                        blocks = new UInt32[num_blocks];
+                        Blocks = new UInt32[num_blocks];
                     else
-                        blocks = null;
+                        Blocks = null;
                 }
 
                 if (num_data_blocks > cur_data_blocks)
                 {
                     // Увеличение длины объекта
-                    if (fatlevel == 0 && newfatlevel != 0)
+                    if (Fatlevel == 0 && newfatlevel != 0)
                     {
-                        bl = _base.Get_free_block();
+                        bl = Base.Get_free_block();
                         //bb = (objtab838*)base->getblock_for_write(bl, false);
-                        bb = ByteArrayToObjtab838(_base.Getblock_for_write(bl, false));
+                        bb = ByteArrayToObjtab838(Base.Getblock_for_write(bl, false));
                         //memcpy(bb->blocks, bd->blocks, numblocks * 4);
-                        Array.Copy(bd.blocks, bb.blocks, (Int32)numblocks * 4);
-                        fatlevel = newfatlevel;
-                        bd.fatlevel = (Int16)newfatlevel;
-                        bd.blocks[0] = bl;
-                        numblocks = 1;
+                        Array.Copy(bd.Blocks, bb.Blocks, (Int32)Numblocks * 4);
+                        Fatlevel = newfatlevel;
+                        bd.Fatlevel = (Int16)newfatlevel;
+                        bd.Blocks[0] = bl;
+                        Numblocks = 1;
                     }
                     else
                     {
-                        bb = ByteArrayToObjtab838(_base.Getblock_for_write(bd.blocks[numblocks - 1], true));
+                        bb = ByteArrayToObjtab838(Base.Getblock_for_write(bd.Blocks[Numblocks - 1], true));
                     }
 
-                    if (fatlevel != 0)
+                    if (Fatlevel != 0)
                     {
                         for (; cur_data_blocks < num_data_blocks; cur_data_blocks++)
                         {
                             i = cur_data_blocks % offsperpage;
                             if (i == 0)
                             {
-                                bl = _base.Get_free_block();
-                                bd.blocks[numblocks++] = bl;
-                                bb = ByteArrayToObjtab838(_base.Getblock_for_write(bl, false));
+                                bl = Base.Get_free_block();
+                                bd.Blocks[Numblocks++] = bl;
+                                bb = ByteArrayToObjtab838(Base.Getblock_for_write(bl, false));
                             }
-                            bl = _base.Get_free_block();
-                            _base.Getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
-                            bb.blocks[i] = bl;
+                            bl = Base.Get_free_block();
+                            Base.Getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
+                            bb.Blocks[i] = bl;
                         }
                     }
                     else
                     {
                         for (; cur_data_blocks < num_data_blocks; cur_data_blocks++)
                         {
-                            bl = _base.Get_free_block();
-                            _base.Getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
-                            bd.blocks[cur_data_blocks] = bl;
+                            bl = Base.Get_free_block();
+                            Base.Getblock_for_write(bl, false); // получаем блок без чтения, на случай, если блок вдруг в конце файла
+                            bd.Blocks[cur_data_blocks] = bl;
                         }
                     }
                 }
                 else if (num_data_blocks < cur_data_blocks)
                 {
                     // Уменьшение длины объекта
-                    if (fatlevel != 0)
+                    if (Fatlevel != 0)
                     {
                         //bb = (objtab838*)base->getblock_for_write(b->blocks[numblocks - 1], true);
                         //bb = ByteArrayToObjtab838(_base.getblock_for_write(b.blocks[numblocks - 1], true));
-                        bb = ByteArrayToObjtab838(_base.Getblock_for_write((UInt32)numblocks - 1, true)); // TODO: надо доработать
+                        bb = ByteArrayToObjtab838(Base.Getblock_for_write((UInt32)Numblocks - 1, true)); // TODO: надо доработать
                         for (cur_data_blocks--; cur_data_blocks >= num_data_blocks; cur_data_blocks--)
                         {
                             i = cur_data_blocks % offsperpage;
-                            _base.Set_block_as_free(bb.blocks[i]);
-                            bb.blocks[i] = 0;
+                            Base.Set_block_as_free(bb.Blocks[i]);
+                            bb.Blocks[i] = 0;
                             if (i == 0)
                             {
-                                _base.Set_block_as_free(bd.blocks[--numblocks]);
-                                bd.blocks[numblocks] = 0;
-                                if (numblocks != 0)
+                                Base.Set_block_as_free(bd.Blocks[--Numblocks]);
+                                bd.Blocks[Numblocks] = 0;
+                                if (Numblocks != 0)
                                 {
                                     //bb = ByteArrayToObjtab838(_base.getblock_for_write(b.blocks[numblocks - 1], true));
-                                    bb = ByteArrayToObjtab838(_base.Getblock_for_write((UInt32)numblocks - 1, true)); // TODO: надо доработать
+                                    bb = ByteArrayToObjtab838(Base.Getblock_for_write((UInt32)Numblocks - 1, true)); // TODO: надо доработать
                                 }
                             }
                         }
@@ -352,32 +413,32 @@ namespace _1STool1CD
                     {
                         for (cur_data_blocks--; cur_data_blocks >= num_data_blocks; cur_data_blocks--)
                         {
-                            _base.Set_block_as_free(bd.blocks[cur_data_blocks]);
-                            bd.blocks[cur_data_blocks] = 0;
+                            Base.Set_block_as_free(bd.Blocks[cur_data_blocks]);
+                            bd.Blocks[cur_data_blocks] = 0;
                         }
-                        numblocks = num_data_blocks;
+                        Numblocks = num_data_blocks;
                     }
 
-                    if (fatlevel != 0 && newfatlevel == 0)
+                    if (Fatlevel != 0 && newfatlevel == 0)
                     {
-                        if (numblocks != 0)
+                        if (Numblocks != 0)
                         {
-                            bl = bd.blocks[0];
+                            bl = bd.Blocks[0];
                             //memcpy(bd->blocks, bb->blocks, num_data_blocks * 4);
                             //Array.Copy(bb.blocks, bd.blocks, num_data_blocks * 4);  // TODO: надо доработать
-                            _base.Set_block_as_free(bl);
+                            Base.Set_block_as_free(bl);
                         }
-                        fatlevel = 0;
-                        bd.fatlevel = 0;
+                        Fatlevel = 0;
+                        bd.Fatlevel = 0;
                     }
 
                 }
 
-                len = _len;
-                if (numblocks != 0)
+                Len = _len;
+                if (Numblocks != 0)
                 {
                     //memcpy(blocks, bd->blocks, numblocks * 4);
-                    Array.Copy(bd.blocks, blocks, (Int32)numblocks * 4);
+                    Array.Copy(bd.Blocks, Blocks, (Int32)Numblocks * 4);
                 }
                 Write_new_version();
 
@@ -404,7 +465,7 @@ namespace _1STool1CD
                 //memcpy(((v8ob*)b)->sig, SIG_OBJ, 8);
 
                 
-                Array.Copy(SIG_OBJ.ToCharArray(), ByteArrayToV8ob(b).sig, 8);
+                Array.Copy(SIG_OBJ.ToCharArray(), ByteArrayToV8ob(b).Sig, 8);
             }
             else
             {
@@ -432,165 +493,165 @@ namespace _1STool1CD
         /// <param name="blockNum"></param>
         public void Init(T_1CD _base, Int32 blockNum)
         {
-            this._base = _base;
-            prev = last;
-            next = null;
+            this.Base = _base;
+            Prev = Last;
+            Next = null;
 
-            if (last != null)
-                last.next = this;
+            if (Last != null)
+                Last.Next = this;
             else
-                first = this;
-            last = this;
+                First = this;
+            Last = this;
             if (blockNum == 1)
             {
-                if ((int)this._base.Version < (int)Db_ver.ver8_3_8_0)
-                    type = V8objtype.free80;
+                if ((int)this.Base.Version < (int)Db_ver.ver8_3_8_0)
+                    Type = V8objtype.free80;
                 else
-                    type = V8objtype.free838;
+                    Type = V8objtype.free838;
 
             }
             else
             {
-                if ((int)this._base.Version < (int)Db_ver.ver8_3_8_0)
-                    type = V8objtype.data80;
+                if ((int)this.Base.Version < (int)Db_ver.ver8_3_8_0)
+                    Type = V8objtype.data80;
                 else
-                    type = V8objtype.data838;
+                    Type = V8objtype.data838;
             }
 
-            if (type == V8objtype.data80 || type == V8objtype.free80)
+            if (Type == V8objtype.data80 || Type == V8objtype.free80)
             {
-                fatlevel = 1;
+                Fatlevel = 1;
                 V8ob t = new V8ob();
                 Byte[] buf = new Byte[0x1000];
 
                 //this._base.getblock(t, (UInt32)blockNum);
-                this._base.Getblock(ref buf, (UInt32)blockNum);
+                this.Base.Getblock(ref buf, (UInt32)blockNum);
 
                 t = ByteArrayToV8ob(buf);
-                if (!t.sig.SequenceEqual(SIG_OBJ))
+                if (!t.Sig.SequenceEqual(SIG_OBJ))
                 {
                     t = new V8ob();
                     Init();
                     Console.WriteLine($"Ошибка получения объекта из блока. Блок не является объектом. Блок {blockNum}");
                 }
 
-                len = t.len;
-                version.version_1 = t.version.version_1;
-                version.version_2 = t.version.version_2;
-                version.version_3 = t.version.version_3;
-                version_rec.version_1 = version.version_1 + 1;
-                version_rec.version_2 = 0;
-                new_version_recorded = false;
-                block = (UInt32)blockNum;
-                real_numblocks = 0;
-                data = null;
+                Len = t.Len;
+                Version.Version_1 = t.Version.Version_1;
+                Version.Version_2 = t.Version.Version_2;
+                Version.Version_3 = t.Version.Version_3;
+                Version_rec.Version_1 = Version.Version_1 + 1;
+                Version_rec.Version_2 = 0;
+                New_version_recorded = false;
+                Block = (UInt32)blockNum;
+                Real_numblocks = 0;
+                Data = null;
 
-                if (type == V8objtype.free80)
+                if (Type == V8objtype.free80)
                 {
-                    if (len != 0)
-                        numblocks = (len - 1) / 0x400 + 1;
+                    if (Len != 0)
+                        Numblocks = (Len - 1) / 0x400 + 1;
                     else
-                        numblocks = 0;
+                        Numblocks = 0;
 
                     // в таблице свободных блоков в разделе blocks может быть больше блоков, чем numblocks
                     // numblocks - кол-во блоков с реальными данными
                     // оставшиеся real_numblocks - numblocks блоки принадлежат объекту, но не содержат данных
-                    while (t.blocks[real_numblocks] != 0)
-                        real_numblocks++;
-                    if (real_numblocks != 0)
+                    while (t.Blocks[Real_numblocks] != 0)
+                        Real_numblocks++;
+                    if (Real_numblocks != 0)
                     {
-                        blocks = new UInt32[real_numblocks];
+                        Blocks = new UInt32[Real_numblocks];
                         //memcpy(blocks, t->blocks, real_numblocks * sizeof(*blocks));
-                        Array.Copy(t.blocks, 0, blocks, 0, real_numblocks * 4);
+                        Array.Copy(t.Blocks, 0, Blocks, 0, Real_numblocks * 4);
                     }
                     else
-                        blocks = null;
+                        Blocks = null;
 
                 }
                 else
                 {
-                    if (len != 0)
-                        numblocks = (len - 1) / 0x3ff000 + 1;
+                    if (Len != 0)
+                        Numblocks = (Len - 1) / 0x3ff000 + 1;
                     else
-                        numblocks = 0;
-                    if (numblocks != 0)
+                        Numblocks = 0;
+                    if (Numblocks != 0)
                     {
-                        blocks = new UInt32[numblocks];
+                        Blocks = new UInt32[Numblocks];
                         //memcpy(blocks, t->blocks, numblocks * sizeof(*blocks));
-                        Array.Copy(t.blocks, 0, blocks, 0, real_numblocks * 4);
+                        Array.Copy(t.Blocks, 0, Blocks, 0, Real_numblocks * 4);
                     }
                     else
-                        blocks = null;
+                        Blocks = null;
                 }
 
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
-                byte[] b = new byte[this._base.Pagesize];
-                this._base.Getblock(ref b, (UInt32)blockNum);
+                byte[] b = new byte[this.Base.Pagesize];
+                this.Base.Getblock(ref b, (UInt32)blockNum);
                 V838ob_data t = ByteArrayTov838ob(b);
-                if (t.sig[0] != 0x1c || t.sig[1] != 0xfd)
+                if (t.Sig[0] != 0x1c || t.Sig[1] != 0xfd)
                 {
                     b = null;
                     Init();
                     Console.WriteLine($"Ошибка получения файла из страницы. Страница не является заголовочной страницей файла данных. Блок {blockNum}");
                     return;
                 }
-                len = t.len;
-                fatlevel = t.fatlevel;
-                if (fatlevel == 0 && len > ((this._base.Pagesize / 4 - 6) * this._base.Pagesize))
+                Len = t.Len;
+                Fatlevel = t.Fatlevel;
+                if (Fatlevel == 0 && Len > ((this.Base.Pagesize / 4 - 6) * this.Base.Pagesize))
                 {
                     b = null;
                     Init();
-                    Console.WriteLine($"Ошибка получения файла из страницы. Длина файла больше допустимой при одноуровневой таблице размещения. Блок {blockNum}. Длина файла {len}");
+                    Console.WriteLine($"Ошибка получения файла из страницы. Длина файла больше допустимой при одноуровневой таблице размещения. Блок {blockNum}. Длина файла {Len}");
                     return;
                 }
-                version.version_1 = t.version.version_1;
-                version.version_2 = t.version.version_2;
-                version.version_3 = t.version.version_3;
-                version_rec.version_1 = version.version_1 + 1;
-                version_rec.version_2 = 0;
-                new_version_recorded = false;
-                block = (UInt32)blockNum;
-                real_numblocks = 0;
-                data = null;
+                Version.Version_1 = t.Version.Version_1;
+                Version.Version_2 = t.Version.Version_2;
+                Version.Version_3 = t.Version.Version_3;
+                Version_rec.Version_1 = Version.Version_1 + 1;
+                Version_rec.Version_2 = 0;
+                New_version_recorded = false;
+                Block = (UInt32)blockNum;
+                Real_numblocks = 0;
+                Data = null;
 
-                if (len != 0)
+                if (Len != 0)
                 {
-                    if (fatlevel == 0)
+                    if (Fatlevel == 0)
                     {
-                        numblocks = (len - 1) / this._base.Pagesize + 1;
+                        Numblocks = (Len - 1) / this.Base.Pagesize + 1;
                     }
                     else
                     {
-                        numblocks = (len - 1) / (this._base.Pagesize / 4 * this._base.Pagesize) + 1;
+                        Numblocks = (Len - 1) / (this.Base.Pagesize / 4 * this.Base.Pagesize) + 1;
                     }
                 }
                 else
-                    numblocks = 0;
+                    Numblocks = 0;
 
-                if (numblocks != 0)
+                if (Numblocks != 0)
                 {
-                    blocks = new UInt32[numblocks];
+                    Blocks = new UInt32[Numblocks];
 
                     //memcpy(blocks, t->blocks, numblocks * sizeof(*blocks));
                     //Array.Copy(t.blocks, 0, blocks, 0, (int)numblocks);
-                    Array.Copy(t.blocks, 0, blocks, 0, t.blocks.Length);
+                    Array.Copy(t.Blocks, 0, Blocks, 0, t.Blocks.Length);
                 }
                 else
-                    blocks = null;
+                    Blocks = null;
 
                 b = null;
             }
             else
             {
-                byte[] b = new byte[this._base.Pagesize];
+                byte[] b = new byte[this.Base.Pagesize];
 
-                this._base.Getblock(ref b, (UInt32)blockNum);
+                this.Base.Getblock(ref b, (UInt32)blockNum);
 
                 V838ob_free t = ByteArrayTov838ob_free(b);
 
-                if (t.sig[0] != 0x1c || t.sig[1] != 0xff)
+                if (t.Sig[0] != 0x1c || t.Sig[1] != 0xff)
                 {
                     b = null;
                     Init();
@@ -598,34 +659,34 @@ namespace _1STool1CD
                     return;
                 }
 
-                len = 0; // ВРЕМЕННО! Пока не понятна структура файла свободных страниц
+                Len = 0; // ВРЕМЕННО! Пока не понятна структура файла свободных страниц
 
-                version.version_1 = t.version;
-                version_rec.version_1 = version.version_1 + 1;
-                version_rec.version_2 = 0;
-                new_version_recorded = false;
-                block = (UInt32)blockNum;
-                real_numblocks = 0;
-                data = null;
+                Version.Version_1 = t.Version;
+                Version_rec.Version_1 = Version.Version_1 + 1;
+                Version_rec.Version_2 = 0;
+                New_version_recorded = false;
+                Block = (UInt32)blockNum;
+                Real_numblocks = 0;
+                Data = null;
 
-                if (len != 0)
-                    numblocks = (len - 1) / 0x400 + 1;
+                if (Len != 0)
+                    Numblocks = (Len - 1) / 0x400 + 1;
                 else
-                    numblocks = 0;
+                    Numblocks = 0;
 
                 // в таблице свободных блоков в разделе blocks может быть больше блоков, чем numblocks
                 // numblocks - кол-во блоков с реальными данными
                 // оставшиеся real_numblocks - numblocks блоки принадлежат объекту, но не содержат данных
-                while (t.blocks[real_numblocks] != 0)
-                    real_numblocks++;
-                if (real_numblocks != 0)
+                while (t.Blocks[Real_numblocks] != 0)
+                    Real_numblocks++;
+                if (Real_numblocks != 0)
                 {
-                    blocks = new UInt32[real_numblocks];
+                    Blocks = new UInt32[Real_numblocks];
                     //memcpy(blocks, t->blocks, real_numblocks * sizeof(*blocks));
-                    Array.Copy(t.blocks, 0, blocks, 0, real_numblocks * 4);
+                    Array.Copy(t.Blocks, 0, Blocks, 0, Real_numblocks * 4);
                 }
                 else
-                    blocks = null;
+                    Blocks = null;
 
                 b = null;
 
@@ -638,20 +699,20 @@ namespace _1STool1CD
         /// </summary>
         public void Init()
         {
-            len = 0;
-            version.version_1 = 0;
-            version.version_2 = 0;
-            version_rec.version_1 = 0;
-            version_rec.version_2 = 0;
-            new_version_recorded = false;
-            numblocks = 0;
-            real_numblocks = 0;
-            blocks = null;
-            block = 999999;
-            data = null;
-            lockinmemory = false;
-            type = V8objtype.unknown;
-            fatlevel = 0;
+            Len = 0;
+            Version.Version_1 = 0;
+            Version.Version_2 = 0;
+            Version_rec.Version_1 = 0;
+            Version_rec.Version_2 = 0;
+            New_version_recorded = false;
+            Numblocks = 0;
+            Real_numblocks = 0;
+            Blocks = null;
+            Block = 999999;
+            Data = null;
+            Lockinmemory = false;
+            Type = V8objtype.unknown;
+            Fatlevel = 0;
         }
 
         /// <summary>
@@ -670,42 +731,42 @@ namespace _1STool1CD
             UInt32 curlen = 0;
 
             //lastdataget = GetTickCount();
-            if (len == 0)
+            if (Len == 0)
                 return null;
 
-            if (data != null)
-                return data;
+            if (Data != null)
+                return Data;
 
-            if (type == V8objtype.free80)
+            if (Type == V8objtype.free80)
             {
-                l = (UInt32)len * 4;
-                data = new byte[l];
-                tt = data;
+                l = (UInt32)Len * 4;
+                Data = new byte[l];
+                tt = Data;
                 i = 0;
                 while (l > PAGE4K)
                 {
-                    _base.Getblock(ref tt, blocks[i++]);
+                    Base.Getblock(ref tt, Blocks[i++]);
                     // tt += PAGE4K; TODO: Надо понять что с этим сделать
                     l -= (UInt32)PAGE4K;
                 }
-                _base.Getblock(ref tt, blocks[i], (Int32)l);
+                Base.Getblock(ref tt, Blocks[i], (Int32)l);
             }
-            else if (type == V8objtype.data80)
+            else if (Type == V8objtype.data80)
             {
-                l = (UInt32)len;
-                data = new byte[l];
-                tt = data;
-                for (i = 0; i < numblocks; i++)
+                l = (UInt32)Len;
+                Data = new byte[l];
+                tt = Data;
+                for (i = 0; i < Numblocks; i++)
                 {
                     //b = (objtab*)base->getblock(blocks[i]);
-                    b = ByteArrayToObjtab(_base.Getblock(blocks[i]));
+                    b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
 
 
                     for (j = 0; j < b.Numblocks; j++)
                     {
                         //curlen = std::min(DEFAULT_PAGE_SIZE, l);
                         curlen = (UInt32)Math.Min(PAGE4K, l);
-                        _base.Getblock(ref tt, b.Blocks[j], (Int32)curlen);
+                        Base.Getblock(ref tt, b.Blocks[j], (Int32)curlen);
                         if (l <= curlen)
                             break;
                         l -= curlen;
@@ -714,23 +775,23 @@ namespace _1STool1CD
                     if (l <= curlen) break;
                 }
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
-                pagesize = (Int32)_base.Pagesize;
+                pagesize = (Int32)Base.Pagesize;
                 blocksperpage = pagesize / 4;
-                ll = len;
-                data = new byte[ll];
-                tt = data;
-                if (fatlevel != 0)
+                ll = Len;
+                Data = new byte[ll];
+                tt = Data;
+                if (Fatlevel != 0)
                 {
-                    for (i = 0; i < numblocks; i++)
+                    for (i = 0; i < Numblocks; i++)
                     {
                         //bb = (objtab838*)base->getblock(blocks[i]);
-                        bb = ByteArrayToObjtab838(_base.Getblock(blocks[i]));
+                        bb = ByteArrayToObjtab838(Base.Getblock(Blocks[i]));
                         for (j = 0; j < blocksperpage; j++)
                         {
                             curlen = ll > (UInt32)pagesize ? (UInt32)pagesize : (UInt32)ll;
-                            _base.Getblock(ref tt, bb.blocks[j], (Int32)curlen);
+                            Base.Getblock(ref tt, bb.Blocks[j], (Int32)curlen);
                             if (ll <= curlen) break;
                             ll -= curlen;
 
@@ -741,11 +802,11 @@ namespace _1STool1CD
                 }
                 else
                 {
-                    for (i = 0; i < numblocks; i++)
+                    for (i = 0; i < Numblocks; i++)
                     {
                         //curlen = ll > pagesize ? pagesize : ll;
                         curlen = ll > (UInt32)pagesize ? (UInt32)pagesize : (UInt32)ll;
-                        _base.Getblock(ref tt, blocks[i], (Int32)curlen);
+                        Base.Getblock(ref tt, Blocks[i], (Int32)curlen);
                         if (ll <= curlen)
                             break;
                         ll -= curlen;
@@ -753,11 +814,11 @@ namespace _1STool1CD
                     }
                 }
             }
-            else if (type == V8objtype.free838)
+            else if (Type == V8objtype.free838)
             {
                 // TODO: реализовать v8object::getdata() для файла свободных страниц формата 8.3.8
             }
-            return data;
+            return Data;
 
             //return new byte[100];
 
@@ -786,18 +847,18 @@ namespace _1STool1CD
             UInt32 curobjblock = 0;
             UInt32 curoffobjblock = 0;
 
-            if (data != null)
+            if (Data != null)
             {
                 //memcpy(buf, data + _start, _length);
-                Array.Copy(data, (int)_start, buf, 0, (int)_length);
+                Array.Copy(Data, (int)_start, buf, 0, (int)_length);
             }
             else
             {
-                if (type == V8objtype.free80)
+                if (Type == V8objtype.free80)
                 {
-                    if (_start + _length > len * 4)
+                    if (_start + _length > Len * 4)
                     {
-                        Console.WriteLine($"Попытка чтения данных за пределами объекта. Номер блока объекта, {block}. Длина объекта, {len * 4}. Начало читаемых данных, {_start}. Длина читаемых данных {_length}");
+                        Console.WriteLine($"Попытка чтения данных за пределами объекта. Номер блока объекта, {Block}. Длина объекта, {Len * 4}. Начало читаемых данных, {_start}. Длина читаемых данных {_length}");
                         return null;
                     }
                     curblock = (UInt32)_start >> 12;
@@ -809,7 +870,7 @@ namespace _1STool1CD
 
                     while (_length != 0)
                     {
-                        _bu = _base.Getblock(blocks[curblock++]);
+                        _bu = Base.Getblock(Blocks[curblock++]);
                         if (_bu == null)
                             return null;
 
@@ -822,11 +883,11 @@ namespace _1STool1CD
                     }
 
                 }
-                else if (type == V8objtype.data80)
+                else if (Type == V8objtype.data80)
                 {
-                    if (_start + _length > len)
+                    if (_start + _length > Len)
                     {
-                        Console.WriteLine($"Попытка чтения данных за пределами объекта. Номер блока объекта, {block}. Длина объекта, {len * 4}. Начало читаемых данных, {_start}. Длина читаемых данных {_length}");
+                        Console.WriteLine($"Попытка чтения данных за пределами объекта. Номер блока объекта, {Block}. Длина объекта, {Len * 4}. Начало читаемых данных, {_start}. Длина читаемых данных {_length}");
                         return null;
                     }
 
@@ -837,7 +898,7 @@ namespace _1STool1CD
 
                     curobjblock = curblock / 1023;
                     curoffobjblock = curblock - curobjblock * 1023;
-                    b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock++]));
+                    b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
                     /*
                     if (!b)
                     {
@@ -846,7 +907,7 @@ namespace _1STool1CD
                     */
                     while (_length != 0)
                     {
-                        _bu = _base.Getblock(b.Blocks[curoffobjblock++]);
+                        _bu = Base.Getblock(b.Blocks[curoffobjblock++]);
                         if (_bu == null)
                         {
                             return null;
@@ -864,33 +925,33 @@ namespace _1STool1CD
                             if (curoffobjblock >= 1023)
                             {
                                 curoffobjblock = 0;
-                                b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock++]));
+                                b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
                             }
                         }
                     }
                 }
-                else if (type == V8objtype.data838)
+                else if (Type == V8objtype.data838)
                 {
-                    if (_start + _length > len)
+                    if (_start + _length > Len)
                     {
-                        Console.WriteLine($"Попытка чтения данных за пределами объекта. Номер блока объекта, {block}. Длина объекта, {len * 4}. Начало читаемых данных, {_start}. Длина читаемых данных {_length}");
+                        Console.WriteLine($"Попытка чтения данных за пределами объекта. Номер блока объекта, {Block}. Длина объекта, {Len * 4}. Начало читаемых данных, {_start}. Длина читаемых данных {_length}");
                         return null;
                     }
 
-                    curblock = (UInt32)_start / _base.Pagesize;
+                    curblock = (UInt32)_start / Base.Pagesize;
 
                     //_buf = (char*)buf;
                     Array.Copy(_buf, buf, buf.Length);
-                    offsperpage = _base.Pagesize / 4;
-                    curoffblock = (UInt32)_start - (curblock * _base.Pagesize);
+                    offsperpage = Base.Pagesize / 4;
+                    curoffblock = (UInt32)_start - (curblock * Base.Pagesize);
                     //curlen = std::min(static_cast<uint64_t>(base->pagesize - curoffblock), _length);
-                    curlen = Math.Min((UInt32)(_base.Pagesize - curoffblock), (UInt32)_length);
-                    if (fatlevel != 0)
+                    curlen = Math.Min((UInt32)(Base.Pagesize - curoffblock), (UInt32)_length);
+                    if (Fatlevel != 0)
                     {
                         curobjblock = curblock / offsperpage;
                         curoffobjblock = curblock - curobjblock * offsperpage;
 
-                        bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                        bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                         /*
                         if (!bb)
                         {
@@ -899,7 +960,7 @@ namespace _1STool1CD
                         */
                         while (_length != 0)
                         {
-                            _bu = _base.Getblock(bb.blocks[curoffobjblock++]);
+                            _bu = Base.Getblock(bb.Blocks[curoffobjblock++]);
                             if (_bu == null)
                             {
                                 return null;
@@ -911,13 +972,13 @@ namespace _1STool1CD
                             _length -= curlen;
                             curoffblock = 0;
                             //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                            curlen = Math.Min((UInt32)(_base.Pagesize - curoffblock), (UInt32)_length);
+                            curlen = Math.Min((UInt32)(Base.Pagesize - curoffblock), (UInt32)_length);
                             if (_length > 0)
                             {
                                 if (curoffobjblock >= offsperpage)
                                 {
                                     curoffobjblock = 0;
-                                    bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                                    bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                                 }
                             }
                         }
@@ -927,7 +988,7 @@ namespace _1STool1CD
                         destIndex = 0;
                         while (_length != 0)
                         {
-                            _bu = _base.Getblock(blocks[curblock++]);
+                            _bu = Base.Getblock(Blocks[curblock++]);
                             if (_bu == null)
                             {
                                 return null;
@@ -939,13 +1000,13 @@ namespace _1STool1CD
                             _length -= curlen;
                             curoffblock = 0;
                             //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                            curlen = Math.Min((UInt32)(_base.Pagesize - curoffblock), (UInt32)_length);
+                            curlen = Math.Min((UInt32)(Base.Pagesize - curoffblock), (UInt32)_length);
                         }
 
                     }
 
                 }
-                else if (type == V8objtype.free838)
+                else if (Type == V8objtype.free838)
                 {
                     // TODO: реализовать V8Object::getdata для файла свободных страниц формата 8.3.8
                 }
@@ -973,28 +1034,28 @@ namespace _1STool1CD
             UInt32 offsperpage;
             UInt32 destIndex = 0;
 
-            if (_base.ReadOnly)
+            if (Base.ReadOnly)
             {
-                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {block}");
+                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {Block}");
                 return false;
             }
 
-            if (type == V8objtype.free80 || type == V8objtype.free838)
+            if (Type == V8objtype.free80 || Type == V8objtype.free838)
             {
-                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {block}");
+                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
             }
 
             //lastdataget = GetTickCount();
 
 
-            data = null;
-            if (_start + _length > len)
+            Data = null;
+            if (_start + _length > Len)
             {
                 Set_len(_start + _length);
             }
 
-            if (type == V8objtype.data80)
+            if (Type == V8objtype.data80)
             {
                 curblock = (UInt32)_start >> 12;
 
@@ -1009,11 +1070,11 @@ namespace _1STool1CD
                 curoffobjblock = curblock - curobjblock * 1023;
 
                 //objtab* b = (objtab*)base->getblock(blocks[curobjblock++]);
-                Objtab b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock++]));
+                Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
                 while (_length != 0)
                 {
                     //memcpy((char*)(base->getblock_for_write(b->blocks[curoffobjblock++], curlen != DEFAULT_PAGE_SIZE)) + curoffblock, _buf, curlen);
-                    Array.Copy(_buf, destIndex, _base.Getblock_for_write(b.Blocks[curoffobjblock++], curlen != PAGE4K), curoffblock, curlen);
+                    Array.Copy(_buf, destIndex, Base.Getblock_for_write(b.Blocks[curoffobjblock++], curlen != PAGE4K), curoffblock, curlen);
 
                     //_buf += curlen; TODO : Надо что-то с этим делать
                     destIndex += curlen;
@@ -1029,7 +1090,7 @@ namespace _1STool1CD
                         {
                             curoffobjblock = 0;
                             //b = (objtab*)base->getblock(blocks[curobjblock++]);
-                            b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock++]));
+                            b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
                         }
                     }
                 }
@@ -1037,46 +1098,46 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
-                curblock = (UInt32)_start / _base.Pagesize;
+                curblock = (UInt32)_start / Base.Pagesize;
 
                 //_buf = (char*)buf;
                 _buf = buf;
 
-                curoffblock = (UInt32)_start - (curblock * _base.Pagesize);
+                curoffblock = (UInt32)_start - (curblock * Base.Pagesize);
 
                 //curlen = std::min(static_cast<uint64_t>(base->pagesize - curoffblock), _length);
-                curlen = (UInt32)Math.Min((UInt64)_base.Pagesize - curoffblock, _length);
+                curlen = (UInt32)Math.Min((UInt64)Base.Pagesize - curoffblock, _length);
 
-                if (fatlevel != 0)
+                if (Fatlevel != 0)
                 {
-                    offsperpage = _base.Pagesize / 4;
+                    offsperpage = Base.Pagesize / 4;
                     curobjblock = curblock / offsperpage;
                     curoffobjblock = curblock - curobjblock * offsperpage;
 
                     //objtab838* bb = (objtab838*)base->getblock(blocks[curobjblock++]);
-                    Objtab838 bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                     destIndex = 0;
                     while (_length != 0)
                     {
                         //memcpy((char*)(base->getblock_for_write(bb->blocks[curoffobjblock++], curlen != base->pagesize)) + curoffblock, _buf, curlen);
 
-                        Array.Copy(_buf, destIndex, _base.Getblock_for_write(bb.blocks[curoffobjblock++], curlen != _base.Pagesize), curoffblock, curlen);
+                        Array.Copy(_buf, destIndex, Base.Getblock_for_write(bb.Blocks[curoffobjblock++], curlen != Base.Pagesize), curoffblock, curlen);
                         // _buf += curlen; TODO : Надо что-то с этим делать
                         destIndex += curlen;
                         _length -= curlen;
                         curoffblock = 0;
 
                         //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                        curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                        curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
                         if (_length > 0)
                         {
                             if (curoffobjblock >= offsperpage)
                             {
                                 curoffobjblock = 0;
                                 //bb = (objtab838*)base->getblock(blocks[curobjblock++]);
-                                bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                                bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                             }
                         }
                     }
@@ -1087,13 +1148,13 @@ namespace _1STool1CD
                     while (_length != 0)
                     {
                         //memcpy((char*)(base->getblock_for_write(blocks[curblock++], curlen != base->pagesize)) + curoffblock, _buf, curlen);
-                        Array.Copy(_buf, destIndex, _base.Getblock_for_write(blocks[curblock++], curlen != _base.Pagesize), curoffblock, curlen);
+                        Array.Copy(_buf, destIndex, Base.Getblock_for_write(Blocks[curblock++], curlen != Base.Pagesize), curoffblock, curlen);
                         //_buf += curlen;
                         destIndex += curlen;
                         _length -= curlen;
                         curoffblock = 0;
                         //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                        curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                        curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
                     }
                 }
 
@@ -1122,29 +1183,29 @@ namespace _1STool1CD
 
             UInt32 srcIndex = 0;
 
-            if (_base.ReadOnly)
+            if (Base.ReadOnly)
             {
-                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {block}");
+                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {Block}");
                 return false;
             }
 
-            if (type == V8objtype.free80 || type == V8objtype.free838)
+            if (Type == V8objtype.free80 || Type == V8objtype.free838)
             {
-                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {block}");
+                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
             }
 
-            data = null;
+            Data = null;
             Set_len(_length);
 
             _buf = buf;
 
-            if (type == V8objtype.data80)
+            if (Type == V8objtype.data80)
             {
-                for (UInt32 i = 0; i < numblocks; i++)
+                for (UInt32 i = 0; i < Numblocks; i++)
                 {
                     //objtab* b = (objtab*)base->getblock(blocks[i]);
-                    Objtab b = ByteArrayToObjtab(_base.Getblock(blocks[i]));
+                    Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
 
                     for (UInt32 j = 0; j < b.Numblocks; j++)
                     {
@@ -1153,7 +1214,7 @@ namespace _1STool1CD
                         curlen = (UInt32)Math.Min((UInt64)PAGE4K, _length);
 
                         //char* tt = base->getblock_for_write(b->blocks[j], false);
-                        byte[] tt = _base.Getblock_for_write(b.Blocks[j], false);
+                        byte[] tt = Base.Getblock_for_write(b.Blocks[j], false);
 
                         //memcpy(tt, buf, curlen);
                         Array.Copy(_buf, srcIndex, tt, 0, curlen);
@@ -1177,38 +1238,38 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
                 curblock = 0;
                 srcIndex = 0;
                 //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
 
-                if (fatlevel != 0)
+                if (Fatlevel != 0)
                 {
-                    offsperpage = _base.Pagesize / 4;
+                    offsperpage = Base.Pagesize / 4;
                     curobjblock = 0;
                     curoffobjblock = 0;
 
                     //objtab838* bb = (objtab838*)base->getblock(blocks[curobjblock++]);
-                    Objtab838 bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
 
                     while (_length != 0)
                     {
                         //memcpy((char*)(base->getblock_for_write(bb->blocks[curoffobjblock++], false)), buf, curlen);
-                        Array.Copy(_buf, srcIndex, _base.Getblock_for_write(bb.blocks[curoffobjblock++], false), 0, curlen);
+                        Array.Copy(_buf, srcIndex, Base.Getblock_for_write(bb.Blocks[curoffobjblock++], false), 0, curlen);
                         srcIndex += curlen;
                         //buf += curlen;
                         _length -= curlen;
                         //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                        curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                        curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
                         if (_length > 0)
                         {
                             if (curoffobjblock >= offsperpage)
                             {
                                 curoffobjblock = 0;
                                 //bb = (objtab838*)base->getblock(blocks[curobjblock++]);
-                                bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                                bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                             }
                         }
                     }
@@ -1219,11 +1280,11 @@ namespace _1STool1CD
                     while (_length != 0)
                     {
                         //memcpy((char*)(base->getblock_for_write(blocks[curblock++], false)), buf, curlen);
-                        Array.Copy(_buf, srcIndex, _base.Getblock_for_write(blocks[curblock++], false), 0, curlen);
+                        Array.Copy(_buf, srcIndex, Base.Getblock_for_write(Blocks[curblock++], false), 0, curlen);
                         srcIndex += curlen;
                         _length -= curlen;
                         //curlen = std::min(static_cast<uint64_t>(base->pagesize), _length);
-                        curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                        curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
                     }
                 }
 
@@ -1250,19 +1311,19 @@ namespace _1STool1CD
 
             UInt64 _length;
 
-            if (_base.ReadOnly)
+            if (Base.ReadOnly)
             {
-                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {block}");
+                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {Block}");
                 return false;
             }
 
-            if (type == V8objtype.free80 || type == V8objtype.free838)
+            if (Type == V8objtype.free80 || Type == V8objtype.free838)
             {
-                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {block}");
+                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
             }
 
-            data = null;
+            Data = null;
 
             //_length = stream->GetSize();
             _length = (UInt64)stream.Length;
@@ -1272,18 +1333,18 @@ namespace _1STool1CD
             //stream->Seek(0, soFromBeginning);
             stream.Seek(0, SeekOrigin.Begin);
 
-            if (type == V8objtype.data80)
+            if (Type == V8objtype.data80)
             {
-                for (UInt32 i = 0; i < numblocks; i++)
+                for (UInt32 i = 0; i < Numblocks; i++)
                 {
-                    Objtab b = ByteArrayToObjtab(_base.Getblock(blocks[i]));
+                    Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
 
                     for (UInt32 j = 0; j < b.Numblocks; j++)
                     {
                         curlen = (UInt32)Math.Min((UInt64)PAGE4K, _length);
 
                         //char* tt = base->getblock_for_write(b->blocks[j], false);
-                        byte[] tt = _base.Getblock_for_write(b.Blocks[j], false);
+                        byte[] tt = Base.Getblock_for_write(b.Blocks[j], false);
                         stream.Read(tt, 0, (Int32)curlen);
                         if (_length <= curlen)
                         {
@@ -1300,32 +1361,32 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
                 curblock = 0;
 
-                curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
 
-                if (fatlevel != 0)
+                if (Fatlevel != 0)
                 {
-                    offsperpage = _base.Pagesize / 4;
+                    offsperpage = Base.Pagesize / 4;
                     curobjblock = 0;
                     curoffobjblock = 0;
 
-                    Objtab838 bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
 
                     while (_length != 0)
                     {
-                        stream.Read(_base.Getblock_for_write(bb.blocks[curoffobjblock++], false), 0, (Int32)curlen);
+                        stream.Read(Base.Getblock_for_write(bb.Blocks[curoffobjblock++], false), 0, (Int32)curlen);
 
                         _length -= curlen;
-                        curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                        curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
                         if (_length > 0)
                         {
                             if (curoffobjblock >= offsperpage)
                             {
                                 curoffobjblock = 0;
-                                bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                                bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                             }
                         }
                     }
@@ -1334,9 +1395,9 @@ namespace _1STool1CD
                 {
                     while (_length != 0)
                     {
-                        stream.Read(_base.Getblock_for_write(blocks[curblock++], false), 0, (Int32)curlen);
+                        stream.Read(Base.Getblock_for_write(Blocks[curblock++], false), 0, (Int32)curlen);
                         _length -= curlen;
-                        curlen = (UInt32)Math.Min((UInt64)_base.Pagesize, _length);
+                        curlen = (UInt32)Math.Min((UInt64)Base.Pagesize, _length);
                     }
                 }
 
@@ -1364,27 +1425,27 @@ namespace _1STool1CD
             UInt32 curoffobjblock;
             UInt32 offsperpage;
 
-            if (_base.ReadOnly)
+            if (Base.ReadOnly)
             {
-                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {block}");
+                Console.WriteLine($"Попытка записи в файл в режиме \"Только чтение\". Номер страницы файла {Block}");
                 return false;
             }
 
-            if (type == V8objtype.free80 || type == V8objtype.free838)
+            if (Type == V8objtype.free80 || Type == V8objtype.free838)
             {
-                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {block}");
+                Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
             }
 
 
 
 
-            data = null;
+            Data = null;
 
-            if (_start + _length > len)
+            if (_start + _length > Len)
                 Set_len(_start + _length);
 
-            if (type == V8objtype.data80)
+            if (Type == V8objtype.data80)
             {
                 curblock = (UInt32)_start >> 12;
                 curoffblock = (UInt32)_start - (curblock << 12);
@@ -1394,11 +1455,11 @@ namespace _1STool1CD
                 curoffobjblock = curblock - curobjblock * 1023;
 
                 //objtab* b = (objtab*)base->getblock(blocks[curobjblock++]);
-                Objtab b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock++]));
+                Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
 
                 while (_length != 0)
                 {
-                    stream.Read(_base.Getblock_for_write(b.Blocks[curoffobjblock++], curlen != PAGE4K), (Int32)curoffblock, (Int32)curlen);
+                    stream.Read(Base.Getblock_for_write(b.Blocks[curoffobjblock++], curlen != PAGE4K), (Int32)curoffblock, (Int32)curlen);
                     _length -= curlen;
                     curoffblock = 0;
                     curlen = (UInt32)Math.Min((UInt64)PAGE4K, _length);
@@ -1407,7 +1468,7 @@ namespace _1STool1CD
                         if (curoffobjblock >= 1023)
                         {
                             curoffobjblock = 0;
-                            b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock++]));
+                            b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
                         }
                     }
                 }
@@ -1415,32 +1476,32 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
-                curblock = (UInt32)_start / _base.Pagesize;
-                curoffblock = (UInt32)_start - (curblock * _base.Pagesize);
-                curlen = (UInt32)Math.Min((UInt64)(_base.Pagesize - curoffblock), _length);
+                curblock = (UInt32)_start / Base.Pagesize;
+                curoffblock = (UInt32)_start - (curblock * Base.Pagesize);
+                curlen = (UInt32)Math.Min((UInt64)(Base.Pagesize - curoffblock), _length);
 
-                if (fatlevel != 0)
+                if (Fatlevel != 0)
                 {
-                    offsperpage = _base.Pagesize / 4;
+                    offsperpage = Base.Pagesize / 4;
                     curobjblock = curblock / offsperpage;
                     curoffobjblock = curblock - curobjblock * offsperpage;
 
-                    Objtab838 bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
 
                     while (_length != 0)
                     {
-                        stream.Read(_base.Getblock_for_write(bb.blocks[curoffobjblock++], curlen != _base.Pagesize), (Int32)curoffblock, (Int32)curlen);
+                        stream.Read(Base.Getblock_for_write(bb.Blocks[curoffobjblock++], curlen != Base.Pagesize), (Int32)curoffblock, (Int32)curlen);
                         _length -= curlen;
                         curoffblock = 0;
-                        curlen = (UInt32)Math.Min((UInt64)(_base.Pagesize), _length);
+                        curlen = (UInt32)Math.Min((UInt64)(Base.Pagesize), _length);
                         if (_length > 0)
                         {
                             if (curoffobjblock >= offsperpage)
                             {
                                 curoffobjblock = 0;
-                                bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock++]));
+                                bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                             }
                         }
                     }
@@ -1449,10 +1510,10 @@ namespace _1STool1CD
                 {
                     while (_length != 0)
                     {
-                        stream.Read(_base.Getblock_for_write(blocks[curblock++], curlen != _base.Pagesize), (Int32)curoffblock, (Int32)curlen);
+                        stream.Read(Base.Getblock_for_write(Blocks[curblock++], curlen != Base.Pagesize), (Int32)curoffblock, (Int32)curlen);
                         _length -= curlen;
                         curoffblock = 0;
-                        curlen = (UInt32)Math.Min((UInt64)(_base.Pagesize), _length);
+                        curlen = (UInt32)Math.Min((UInt64)(Base.Pagesize), _length);
                     }
                 }
 
@@ -1470,7 +1531,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public UInt64 Getlen()
         {
-            return (type == V8objtype.free80) ? (len * 4) : len;
+            return (Type == V8objtype.free80) ? (Len * 4) : Len;
         }
 
         /// <summary>
@@ -1479,7 +1540,7 @@ namespace _1STool1CD
         /// <param name="_filename"></param>
         public void SaveToFile(String _filename)
         {
-            UInt64 pagesize = _base.Pagesize;
+            UInt64 pagesize = Base.Pagesize;
             FileStream fs = new FileStream(_filename, FileMode.CreateNew);
 
             //char* buf = new char[pagesize];
@@ -1526,13 +1587,13 @@ namespace _1STool1CD
             UInt32 curoffobjblock;
             UInt32 offsperpage;
 
-            if (type == V8objtype.free80)
+            if (Type == V8objtype.free80)
             {
                 curblock = _start >> 12;
                 curoffblock = _start - (curblock << 12);
-                return (((UInt64)(blocks[curblock])) << 12) + curoffblock;
+                return (((UInt64)(Blocks[curblock])) << 12) + curoffblock;
             }
-            else if (type == V8objtype.data80)
+            else if (Type == V8objtype.data80)
             {
                 curblock = _start >> 12;
                 curoffblock = _start - (curblock << 12);
@@ -1541,30 +1602,30 @@ namespace _1STool1CD
                 curoffobjblock = curblock - curobjblock * 1023;
 
                 //b = (objtab*)base->getblock(blocks[curobjblock]);
-                b = ByteArrayToObjtab(_base.Getblock(blocks[curobjblock]));
+                b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock]));
 
                 return (((UInt64)(b.Blocks[curoffobjblock])) << 12) + curoffblock;
             }
-            else if (type == V8objtype.data838)
+            else if (Type == V8objtype.data838)
             {
-                curblock = _start / _base.Pagesize;
-                curoffblock = _start - (curblock * _base.Pagesize);
-                if (fatlevel != 0)
+                curblock = _start / Base.Pagesize;
+                curoffblock = _start - (curblock * Base.Pagesize);
+                if (Fatlevel != 0)
                 {
-                    offsperpage = _base.Pagesize / 4;
+                    offsperpage = Base.Pagesize / 4;
                     curobjblock = curblock / offsperpage;
                     curoffobjblock = curblock - curobjblock * offsperpage;
                     //bb = (objtab838*)base->getblock(blocks[curobjblock]);
-                    bb = ByteArrayToObjtab838(_base.Getblock(blocks[curobjblock]));
-                    return (((UInt64)(bb.blocks[curoffobjblock])) * _base.Pagesize) + curoffblock;
+                    bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock]));
+                    return (((UInt64)(bb.Blocks[curoffobjblock])) * Base.Pagesize) + curoffblock;
                 }
                 else
                 {
-                    return (((UInt64)(blocks[curblock])) * _base.Pagesize) + curoffblock;
+                    return (((UInt64)(Blocks[curblock])) * Base.Pagesize) + curoffblock;
                 }
             }
 
-            else if (type == V8objtype.free838)
+            else if (Type == V8objtype.free838)
             {
                 // TODO: реализовать v8object::get_fileoffset для файла свободных страниц формата 8.3.8
                 return 0;
@@ -1579,37 +1640,37 @@ namespace _1STool1CD
         /// <param name="block_number"></param>
         public void Set_block_as_free(UInt32 block_number)
         {
-            if (block != 1)
+            if (Block != 1)
             {
                 // Таблица свободных блоков
-                Console.WriteLine($"Попытка установки свободного блока в объекте, не являющимся таблицей свободных блоков. Блок объекта {block}");
+                Console.WriteLine($"Попытка установки свободного блока в объекте, не являющимся таблицей свободных блоков. Блок объекта {Block}");
                 return;
             }
 
-            Int32 j = (Int32)len >> 10;   // length / 1024
-            Int32 i = (Int32)len & 0x3ff; // length % 1024
+            Int32 j = (Int32)Len >> 10;   // length / 1024
+            Int32 i = (Int32)Len & 0x3ff; // length % 1024
 
             //v8ob ob = (v8ob*)base->getblock_for_write(block, true);
-            V8ob ob = ByteArrayToV8ob(_base.Getblock_for_write(block, true));
+            V8ob ob = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
 
-            if (real_numblocks > j)
+            if (Real_numblocks > j)
             {
-                len++;
-                ob.len = (UInt32)len;
+                Len++;
+                ob.Len = (UInt32)Len;
                 //uint32_t* b = (uint32_t*)base->getblock_for_write(blocks[j], true);
-                byte[] b = _base.Getblock_for_write(blocks[j], true);
+                byte[] b = Base.Getblock_for_write(Blocks[j], true);
                 b[i] = (byte)block_number;
-                if (numblocks <= (UInt32)j)
-                    numblocks = (UInt32)j + 1;
+                if (Numblocks <= (UInt32)j)
+                    Numblocks = (UInt32)j + 1;
             }
             else
             {
-                ob.blocks[real_numblocks] = block_number;
-                blocks = null;
-                real_numblocks++;
-                blocks = new UInt32[real_numblocks];
+                ob.Blocks[Real_numblocks] = block_number;
+                Blocks = null;
+                Real_numblocks++;
+                Blocks = new UInt32[Real_numblocks];
                 //memcpy(blocks, ob->blocks, real_numblocks * 4);
-                Array.Copy(ob.blocks, blocks, real_numblocks * 4);
+                Array.Copy(ob.Blocks, Blocks, Real_numblocks * 4);
             }
 
         }
@@ -1620,27 +1681,27 @@ namespace _1STool1CD
         /// <returns></returns>
         public UInt32 Get_free_block()
         {
-            if (block != 1)
+            if (Block != 1)
             {
                 // Таблица свободных блоков
-                Console.WriteLine($"Попытка получения свободного блока в объекте, не являющимся таблицей свободных блоков. Блок объекта {block}");
+                Console.WriteLine($"Попытка получения свободного блока в объекте, не являющимся таблицей свободных блоков. Блок объекта {Block}");
                 return 0;
             }
 
-            if (len != 0)
+            if (Len != 0)
             {
-                len--;
-                UInt32 j = (UInt32)len >> 10;    // length / 1024
-                UInt32 i = (UInt32)len & 0x3ff;  // length % 1024
-                byte[] b = _base.Getblock_for_write(blocks[j], true);
+                Len--;
+                UInt32 j = (UInt32)Len >> 10;    // length / 1024
+                UInt32 i = (UInt32)Len & 0x3ff;  // length % 1024
+                byte[] b = Base.Getblock_for_write(Blocks[j], true);
 
                 UInt32 k = b[i];
                 b[i] = 0;
 
                 //v8ob* ob = (v8ob*)base->getblock_for_write(block, true);
-                V8ob ob = ByteArrayToV8ob(_base.Getblock_for_write(block, true));
+                V8ob ob = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
 
-                ob.len = (UInt32)len;
+                ob.Len = (UInt32)Len;
 
                 return k;
             }
@@ -1648,7 +1709,7 @@ namespace _1STool1CD
             {
                 //unsigned i = MemBlock::get_numblocks();
                 UInt32 i = 10000000; // TODO: надо доработать
-                _base.Getblock_for_write(i, false);
+                Base.Getblock_for_write(i, false);
 
                 return i;
             }
@@ -1661,10 +1722,10 @@ namespace _1STool1CD
         /// <param name="ver"></param>
         public void Get_version_rec_and_increase(_version ver)
         {
-            ver.version_1 = version_rec.version_1;
-            ver.version_2 = version_rec.version_2;
+            ver.Version_1 = Version_rec.Version_1;
+            ver.Version_2 = Version_rec.Version_2;
 
-            version_rec.version_2++;
+            Version_rec.Version_2++;
         }
 
         /// <summary>
@@ -1673,8 +1734,8 @@ namespace _1STool1CD
         /// <param name="ver"></param>
         public void Get_version(_version ver)
         {
-            ver.version_1 = version.version_1;
-            ver.version_2 = version.version_2;
+            ver.Version_1 = Version.Version_1;
+            ver.Version_2 = Version.Version_2;
         }
 
         /// <summary>
@@ -1683,15 +1744,15 @@ namespace _1STool1CD
         public void Write_new_version()
         {
             _version new_ver;
-            if (new_version_recorded) return;
-            Int32 veroffset = type == V8objtype.data80 || type == V8objtype.free80 ? 12 : 4;
+            if (New_version_recorded) return;
+            Int32 veroffset = Type == V8objtype.data80 || Type == V8objtype.free80 ? 12 : 4;
 
-            new_ver.version_1 = version.version_1 + 1;
-            new_ver.version_2 = version.version_2;
+            new_ver.Version_1 = Version.Version_1 + 1;
+            new_ver.Version_2 = Version.Version_2;
             //memcpy(base->getblock_for_write(block, true) + veroffset, &new_ver, 8);
             // TODO: надо доработать
             //Array.Copy();
-            new_version_recorded = true;
+            New_version_recorded = true;
         }
 
         /// <summary>
@@ -1700,7 +1761,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public static V8object Get_first()
         {
-            return first;
+            return First;
         }
 
         /// <summary>
@@ -1709,7 +1770,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public static V8object Get_last()
         {
-            return last;
+            return Last;
         }
 
         /// <summary>
@@ -1718,7 +1779,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public V8object Get_next()
         {
-            return next;
+            return Next;
         }
 
         /// <summary>
@@ -1727,7 +1788,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public UInt32 Get_block_number()
         {
-            return block;
+            return Block;
         }
 
         /// <summary>
@@ -1753,14 +1814,14 @@ namespace _1STool1CD
             startlen = (UInt32)_str.Position;
             if (_startblock == 0 && _length != 0)
             {
-                Console.WriteLine($"Попытка чтения нулевого блока файла Blob. Номер страницы файла {block}");
+                Console.WriteLine($"Попытка чтения нулевого блока файла Blob. Номер страницы файла {Block}");
                 return _str;
             }
 
-            _numblock = (UInt32)len >> 8;
-            if (_numblock << 8 != len)
+            _numblock = (UInt32)Len >> 8;
+            if (_numblock << 8 != Len)
             {
-                Console.WriteLine($"Длина файла Blob не кратна 0x100. Номер страницы файла {block}. Длина файла {len}");
+                Console.WriteLine($"Длина файла Blob не кратна 0x100. Номер страницы файла {Block}. Длина файла {Len}");
             }
 
             _curb = new byte[0x100];
@@ -1770,7 +1831,7 @@ namespace _1STool1CD
             {
                 if (_curblock >= _numblock)
                 {
-                    Console.WriteLine($"Попытка чтения блока файла Blob за пределами файла. Номер страницы файла {block}. Всего блоков {_numblock}. Читаемый блок {_curblock}");
+                    Console.WriteLine($"Попытка чтения блока файла Blob за пределами файла. Номер страницы файла {Block}. Всего блоков {_numblock}. Читаемый блок {_curblock}");
                     return _str;
                 }
                 Getdata(_curb, _curblock << 8, 0x100);
@@ -1781,7 +1842,7 @@ namespace _1STool1CD
 
                 if (_curlen > 0xfa)
                 {
-                    Console.WriteLine($"Попытка чтения из блока файла Blob более 0xfa байт. Номер страницы файла {block}. Индекс блока {_curblock}. Читаемый байт {_curlen}");
+                    Console.WriteLine($"Попытка чтения из блока файла Blob более 0xfa байт. Номер страницы файла {Block}. Индекс блока {_curblock}. Читаемый байт {_curlen}");
                     return _str;
                 }
                 _str.Write(_curb, 6, _curlen);
@@ -1796,7 +1857,7 @@ namespace _1STool1CD
             if (_length != UInt32.MaxValue)
                 if (_str.Length - startlen != _length)
                 {
-                    Console.WriteLine($"Несовпадение длины Blob-поля, указанного в записи, с длиной практически прочитанных данных. Номер страницы файла {block}. Длина поля {_length}. Прочитано {_str.Length - startlen}");
+                    Console.WriteLine($"Несовпадение длины Blob-поля, указанного в записи, с длиной практически прочитанных данных. Номер страницы файла {Block}. Длина поля {_length}. Прочитано {_str.Length - startlen}");
                 }
 
             return _str;

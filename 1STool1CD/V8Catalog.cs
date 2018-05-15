@@ -14,9 +14,13 @@ namespace _1STool1CD
     /// </summary>
     public struct Fat_item
     {
-        public UInt32 header_start;
-        public UInt32 data_start;
-        public UInt32 ff;            // всегда 7fffffff
+        private UInt32 header_start;
+        private UInt32 data_start;
+        private UInt32 ff;            // всегда 7fffffff
+
+        public uint Header_start { get { return header_start; } set { header_start = value; } }
+        public uint Data_start { get { return data_start; } set { data_start = value; } }
+        public uint Ff { get { return ff; } set { ff = value; } }
     }
 
     /// <summary>
@@ -35,26 +39,26 @@ namespace _1STool1CD
         {
             is_cfu = false;
             iscatalogdefined = false;
-            file = f;
+            File = f;
             
-            file.Open();
-            data = file.data;
+            File.Open();
+            Data = File.Data;
             zipped = false;
 
             if (IsCatalog()) initialize();
             else
             {
-                first = null;
-                last = null;
+                First = null;
+                Last = null;
                 start_empty = 0;
                 page_size = 0;
                 version = 0;
                 zipped = false;
 
-                is_fatmodified = false;
+                Is_fatmodified = false;
                 is_emptymodified = false;
                 is_modified = false;
-                is_destructed = false;
+                Is_destructed = false;
                 flushed = false;
                 leave_data = false;
             }
@@ -78,11 +82,11 @@ namespace _1STool1CD
                 is_cfu = true;
                 zipped = false;
                 //data = new MemoryStream();
-                data = new MemoryTributary();
-                if (!File.Exists(name))
+                Data = new MemoryTributary();
+                if (!System.IO.File.Exists(name))
                 {
                     //data.WriteBuffer(_EMPTY_CATALOG_TEMPLATE, CATALOG_HEADER_LEN);
-                    data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
+                    Data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
                     cfu = new FileStream(name, FileMode.Create);
                 }
                 else
@@ -96,37 +100,37 @@ namespace _1STool1CD
                 zipped = ext == str_cf || ext == str_epf || ext == str_erf || ext == str_cfe;
                 is_cfu = false;
 
-                if (!File.Exists(name))
+                if (!System.IO.File.Exists(name))
                 {
                     FileStream data1 = new FileStream(name, FileMode.Create);
                     data1.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
                     //data1 = null;
                     data1.Dispose();
                 }
-                data = new FileStream(name, FileMode.Append);
+                Data = new FileStream(name, FileMode.Append);
             }
 
-            file = null;
+            File = null;
             if (IsCatalog()) initialize();
             else
             {
-                first = null;
-                last = null;
+                First = null;
+                Last = null;
                 start_empty = 0;
                 page_size = 0;
                 version = 0;
                 zipped = false;
 
-                is_fatmodified = false;
+                Is_fatmodified = false;
                 is_emptymodified = false;
                 is_modified = false;
-                is_destructed = false;
+                Is_destructed = false;
                 flushed = false;
                 leave_data = false;
             }
 
             cfu.Dispose();
-            data.Dispose();
+            Data.Dispose();
 
         } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
 
@@ -142,33 +146,33 @@ namespace _1STool1CD
             is_cfu = false;
             zipped = _zipped;
 
-            if (!File.Exists(name))
+            if (!System.IO.File.Exists(name))
             {
                 FileStream data = new FileStream(name, FileMode.Create);
                 data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
                 data.Dispose();
             }
-            data = new FileStream(name, FileMode.Append);
-            file = null;
+            Data = new FileStream(name, FileMode.Append);
+            File = null;
             if (IsCatalog()) initialize();
             else
             {
-                first = null;
-                last = null;
+                First = null;
+                Last = null;
                 start_empty = 0;
                 page_size = 0;
                 version = 0;
                 zipped = false;
 
-                is_fatmodified = false;
+                Is_fatmodified = false;
                 is_emptymodified = false;
                 is_modified = false;
-                is_destructed = false;
+                Is_destructed = false;
                 flushed = false;
                 leave_data = false;
             }
 
-            data.Dispose();
+            Data.Dispose();
 
         } // создать каталог из физического файла (cf, epf, erf, hbk, cfu)
 
@@ -184,27 +188,27 @@ namespace _1STool1CD
             is_cfu = false;
             iscatalogdefined = false;
             zipped = _zipped;
-            data = stream;
-            file = null;
+            Data = stream;
+            File = null;
 
-            if (data.Length != 0)
-                data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
+            if (Data.Length != 0)
+                Data.Write(StringToByteArr(_EMPTY_CATALOG_TEMPLATE, Encoding.UTF8), 0, CATALOG_HEADER_LEN2);
 
             if (IsCatalog())
                 initialize();
             else
             {
-                first = null;
-                last = null;
+                First = null;
+                Last = null;
                 start_empty = 0;
                 page_size = 0;
                 version = 0;
                 zipped = false;
 
-                is_fatmodified = false;
+                Is_fatmodified = false;
                 is_emptymodified = false;
                 is_modified = false;
-                is_destructed = false;
+                Is_destructed = false;
                 flushed = false;
             }
             leave_data = leave_stream;
@@ -232,11 +236,11 @@ namespace _1STool1CD
             iscatalog = false;
 
             // эмпирический метод?
-            _filelen = data.Length;
+            _filelen = Data.Length;
             if (_filelen == CATALOG_HEADER_LEN2)
             {
-                data.Seek(0, SeekOrigin.Begin);
-                data.Read(_t, 0, CATALOG_HEADER_LEN2);
+                Data.Seek(0, SeekOrigin.Begin);
+                Data.Read(_t, 0, CATALOG_HEADER_LEN2);
                 //if (memcmp(_t, _EMPTY_CATALOG_TEMPLATE, CATALOG_HEADER_LEN) != 0)
                 if (!_t.ToString().StartsWith(_EMPTY_CATALOG_TEMPLATE))
                     {
@@ -251,7 +255,7 @@ namespace _1STool1CD
                 }
             }
 
-            data.Seek(0, SeekOrigin.Begin);
+            Data.Seek(0, SeekOrigin.Begin);
             //data->Read(&_startempty, 4); TODO: ХЗ что с этим делать
             if (_startempty != LAST_BLOCK)
             {
@@ -260,8 +264,8 @@ namespace _1STool1CD
                     
                     return false;
                 }
-                data.Seek(0, SeekOrigin.Begin);
-                data.Read(_t, 0, 31);
+                Data.Seek(0, SeekOrigin.Begin);
+                Data.Read(_t, 0, 31);
                 if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
                 {
                     
@@ -274,8 +278,8 @@ namespace _1STool1CD
                 return false;
             }
             
-            data.Seek(CATALOG_HEADER_LEN, SeekOrigin.Begin);
-            data.Read(_t, 0, 31);
+            Data.Seek(CATALOG_HEADER_LEN, SeekOrigin.Begin);
+            Data.Read(_t, 0, 31);
             if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
             {
                 
@@ -297,7 +301,7 @@ namespace _1STool1CD
         {
             v8file ret = null;
 
-            foreach (KeyValuePair<String, v8file> kvp in files)
+            foreach (KeyValuePair<String, v8file> kvp in Files)
             {
                 if (kvp.Key.Equals(FileName))
                 { 
@@ -316,7 +320,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public v8file GetFirst()
         {
-            return first;
+            return First;
         }
 
         /// <summary>
@@ -334,10 +338,10 @@ namespace _1STool1CD
             if ( f != null)
             {
                 SetCurrentTime(v8t);
-                f = new v8file(this, FileName, last, 0, 0, v8t, v8t);
-                f.selfzipped = _selfzipped;
-                last = f;
-                is_fatmodified = true;
+                f = new v8file(this, FileName, Last, 0, 0, v8t, v8t);
+                f.Selfzipped = _selfzipped;
+                Last = f;
+                Is_fatmodified = true;
             }
             
             return f;
@@ -376,18 +380,18 @@ namespace _1STool1CD
         /// <param name="FileName"></param>
         public void DeleteFile(String FileName)
         {
-            v8file f = first;
+            v8file f = First;
             while (f != null)
             {
                 //if (!f.name.CompareIC(FileName))
-                if (String.Compare(f.name, FileName, true) != 0)
+                if (String.Compare(f.Name, FileName, true) != 0)
                 {
                     f.DeleteFile();
                     f = null;
                 }
 
                 if (f != null)
-                    f = f.next;
+                    f = f.Next;
             }
         }
 
@@ -397,9 +401,9 @@ namespace _1STool1CD
         /// <returns></returns>
         public V8catalog GetParentCatalog()
         {
-            if (file != null)
+            if (File != null)
             {
-                return file.parent;
+                return File.Parent;
             }
             else
             {
@@ -413,7 +417,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public v8file GetSelfFile()
         {
-            return file;
+            return File;
         }
 
         /// <summary>
@@ -423,7 +427,7 @@ namespace _1STool1CD
         public void SaveToDir(String DirName)
         {
 
-            v8file f = first;
+            v8file f = First;
 
             DirectoryInfo di = new DirectoryInfo(DirName);
 
@@ -435,11 +439,11 @@ namespace _1STool1CD
             while (f != null)
             {
                 if (f.IsCatalog())
-                    f.GetCatalog().SaveToDir(DirName + f.name);
+                    f.GetCatalog().SaveToDir(DirName + f.Name);
                 else
-                    f.SaveToFile(DirName + f.name);
+                    f.SaveToFile(DirName + f.Name);
                 f.Close();
-                f = f.next;
+                f = f.Next;
             }
 
 
@@ -473,7 +477,7 @@ namespace _1STool1CD
         /// </summary>
         public void Flush()
         {
-            Fat_item fi;
+            Fat_item fi = new Fat_item();
             v8file f;
 
             
@@ -484,60 +488,60 @@ namespace _1STool1CD
             }
             flushed = true;
 
-            f = first;
+            f = First;
             while (f != null)
             {
                 f.Flush();
-                f = f.next;
+                f = f.Next;
             }
 
-            if (data != null)
+            if (Data != null)
             {
-                if (is_fatmodified)
+                if (Is_fatmodified)
                 {
                     MemoryStream fat = new MemoryStream();
-                    fi.ff = LAST_BLOCK2;
-                    f = first;
+                    fi.Ff = LAST_BLOCK2;
+                    f = First;
                     while (f != null)
                     {
-                        fi.header_start = (uint)f.start_header;
-                        fi.data_start = (uint)f.start_data;
+                        fi.Header_start = (uint)f.Start_header;
+                        fi.Data_start = (uint)f.Start_data;
                         //fat.Write(fi, 0, 12); TODO: Подумать
-                        f = f.next;
+                        f = f.Next;
                     }
                     write_block(fat, CATALOG_HEADER_LEN2, true);
-                    is_fatmodified = false;
+                    Is_fatmodified = false;
                 }
 
                 if (is_emptymodified)
                 {
-                    data.Seek(0, SeekOrigin.Begin);
+                    Data.Seek(0, SeekOrigin.Begin);
                     // data.Write(start_empty, 0, 4); TODO: Подумать
                     is_emptymodified = false;
                 }
                 if (is_modified)
                 {
                     version++;
-                    data.Seek(0, SeekOrigin.Begin);
+                    Data.Seek(0, SeekOrigin.Begin);
                     // data.Write(version, 0, 4); TODO: Подумать
                 }
             }
 
-            if (file != null)
+            if (File != null)
             {
                 if (is_modified)
                 {
-                    file.is_datamodified = true;
+                    File.Is_datamodified = true;
                 }
-                file.Flush();
+                File.Flush();
             }
             else
             {
                 if (is_cfu)
                 {
-                    if (data != null && cfu != null && is_modified)
+                    if (Data != null && cfu != null && is_modified)
                     {
-                        data.Seek(0, SeekOrigin.Begin);
+                        Data.Seek(0, SeekOrigin.Begin);
                         cfu.Seek(0, SeekOrigin.Begin);
 
                         //ZDeflateStream(data, cfu);
@@ -566,7 +570,7 @@ namespace _1STool1CD
             else
             {
                 
-                data = null;
+                Data = null;
             }
             
         }
@@ -581,7 +585,7 @@ namespace _1STool1CD
             if (is_cfu)
                 cfu = new FileStream(name, FileMode.Append);
             else
-                data = new FileStream(name, FileMode.Append);
+                Data = new FileStream(name, FileMode.Append);
             
         }
 
@@ -591,7 +595,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public v8file get_first_file()
         {
-            return first;
+            return First;
         }
 
         /// <summary>
@@ -600,7 +604,7 @@ namespace _1STool1CD
         /// <param name="value"></param>
         public void first_file(v8file value)
         {
-            first = value;
+            First = value;
         }
 
         /// <summary>
@@ -609,7 +613,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public v8file get_last_file()
         {
-            return last;
+            return Last;
         }
 
         /// <summary>
@@ -618,22 +622,22 @@ namespace _1STool1CD
         /// <param name="value"></param>
         public void last_file(v8file value)
         {
-            last = value;
+            Last = value;
         }
 
         #endregion
 
         #region private
 
-        public v8file file;  // файл, которым является каталог. Для корневого каталога NULL
-        public Stream data; // поток каталога. Если file не NULL (каталог не корневой), совпадает с file->data
+        private v8file file;  // файл, которым является каталог. Для корневого каталога NULL
+        private Stream data; // поток каталога. Если file не NULL (каталог не корневой), совпадает с file->data
         private Stream cfu;  // поток файла cfu. Существует только при is_cfu == true
         private void initialize() { }
         //private v8file first; // первый файл в каталоге
-        public v8file first; // первый файл в каталоге
-        public v8file last;  // последний файл в каталоге
+        private v8file first; // первый файл в каталоге
+        private v8file last;  // последний файл в каталоге
         //private SortedDictionary<String, v8file> files; // Соответствие имен и файлов
-        public SortedDictionary<String, v8file> files; // Соответствие имен и файлов
+        private SortedDictionary<String, v8file> files; // Соответствие имен и файлов
         private Int64 start_empty; // начало первого пустого блока
         private int page_size;   // размер страницы по умолчанию
         private int version;     // версия
@@ -642,7 +646,7 @@ namespace _1STool1CD
         private bool iscatalog;
         private bool iscatalogdefined;
 
-        public bool is_fatmodified;
+        private bool is_fatmodified;
         private bool is_emptymodified;
         private bool is_modified;
 
@@ -654,9 +658,23 @@ namespace _1STool1CD
         public MemoryTributary read_datablock(int start) { return null; }
         public Int64 get_nextblock(Int64 start) { return 0; }
 
-        public bool is_destructed; // признак, что работает деструктор
+        private bool is_destructed; // признак, что работает деструктор
         private bool flushed;       // признак, что происходит сброс
         private bool leave_data;    // признак, что не нужно удалять основной поток (data) при уничтожении объекта
+
+        public v8file File { get { return file; } set { file = value; } }
+
+        public Stream Data { get { return data; } set { data = value; } }
+
+        public v8file First { get { return first; } set { first = value; } }
+
+        public v8file Last { get { return last; } set { last = value; } }
+
+        public SortedDictionary<string, v8file> Files { get { return files; } set { files = value; } }
+
+        public bool Is_fatmodified { get { return is_fatmodified; } set { is_fatmodified = value; } }
+
+        public bool Is_destructed { get { return is_destructed; } set { is_destructed = value; } }
 
         #endregion
     }

@@ -129,36 +129,36 @@ namespace _1STool1CD
         {
             is_destructed = false;
             flushed       = false;
-            parent        = _parent;
-            name          = _name;
+            Parent        = _parent;
+            Name          = _name;
             previous      = _previous;
-            next          = null;
-            data          = null;
-            start_data    = _start_data;
-            start_header  = _start_header;
+            Next          = null;
+            Data          = null;
+            Start_data    = _start_data;
+            Start_header  = _start_header;
 
             //is_datamodified = !start_data;
-            is_datamodified = !(start_data == 0) ? true : false;
+            Is_datamodified = !(Start_data == 0) ? true : false;
 
             //is_headermodified = !start_header;
-            is_headermodified = !(start_header == 0) ? true : false;
+            is_headermodified = !(Start_header == 0) ? true : false;
 
             if (previous != null)
-                previous.next = this;
+                previous.Next = this;
             else
-                parent.first = this;
+                Parent.First = this;
 
             iscatalog = FileIsCatalog.unknown;
-            self      = null;
+            Self      = null;
             is_opened = false;
 
             time_create = _time_create;
             time_modify = _time_modify;
 
-            selfzipped = false;
+            Selfzipped = false;
 
-            if (parent != null)
-                parent.files[name.ToUpper()] = this;
+            if (Parent != null)
+                Parent.Files[Name.ToUpper()] = this;
 
         }
 
@@ -178,11 +178,11 @@ namespace _1STool1CD
                 {
                     return false;
                 }
-                _filelen = data.Length;
+                _filelen = Data.Length;
                 if (_filelen == CATALOG_HEADER_LEN)
                 {
-                    data.Seek(0, SeekOrigin.Begin);
-                    data.Read(_t, 0, (int)CATALOG_HEADER_LEN);
+                    Data.Seek(0, SeekOrigin.Begin);
+                    Data.Read(_t, 0, (int)CATALOG_HEADER_LEN);
                     if (!_t.ToString().StartsWith(_EMPTY_CATALOG_TEMPLATE))
                     {
                         iscatalog = FileIsCatalog.no;
@@ -195,7 +195,7 @@ namespace _1STool1CD
                     }
 
                 }
-                data.Seek(0, SeekOrigin.Begin);
+                Data.Seek(0, SeekOrigin.Begin);
                 //data.Read(&_startempty, 4);  TODO: ХЗ что с этим делать
                 if (_startempty != LAST_BLOCK)
                 {
@@ -204,8 +204,8 @@ namespace _1STool1CD
                         iscatalog = FileIsCatalog.no;
                         return false;
                     }
-                    data.Seek(_startempty, SeekOrigin.Begin);
-                    data.Read(_t, 0, 31);
+                    Data.Seek(_startempty, SeekOrigin.Begin);
+                    Data.Read(_t, 0, 31);
                     if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
                     {
                         iscatalog = FileIsCatalog.no;
@@ -217,8 +217,8 @@ namespace _1STool1CD
                     iscatalog = FileIsCatalog.no;
                     return false;
                 }
-                data.Seek(CATALOG_HEADER_LEN, SeekOrigin.Begin);
-                data.Read(_t, 0, 31);
+                Data.Seek(CATALOG_HEADER_LEN, SeekOrigin.Begin);
+                Data.Read(_t, 0, 31);
                 if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
                 {
                     iscatalog = FileIsCatalog.no;
@@ -238,11 +238,11 @@ namespace _1STool1CD
             
             if (IsCatalog())
             {
-                if (self != null)
+                if (Self != null)
                 {
-                    self = new V8catalog(this);
+                    Self = new V8catalog(this);
                 }
-                ret = self;
+                ret = Self;
             }
             else
                 ret = null;
@@ -259,7 +259,7 @@ namespace _1STool1CD
                 return ret;
             }
 
-            ret = data.Length;
+            ret = Data.Length;
             
             return ret;
             
@@ -275,8 +275,8 @@ namespace _1STool1CD
                 return ret;
             }
 
-            data.Seek(Start, SeekOrigin.Begin);
-            data.Read(Buffer, Start, Length);
+            Data.Seek(Start, SeekOrigin.Begin);
+            Data.Read(Buffer, Start, Length);
             
             return ret;
             
@@ -299,9 +299,9 @@ namespace _1STool1CD
             }
             SetCurrentTime(time_modify);
             is_headermodified = true;
-            is_datamodified   = true;
-            data.Seek(Start, SeekOrigin.Begin);
-            data.Write(Buffer, Start, Length);
+            Is_datamodified   = true;
+            Data.Seek(Start, SeekOrigin.Begin);
+            Data.Write(Buffer, Start, Length);
             ret = Length;
 
             return ret;
@@ -323,12 +323,12 @@ namespace _1STool1CD
             }
             SetCurrentTime(time_modify);
             is_headermodified = true;
-            is_datamodified   = true;
-            if (data.Length > Length)
-                data.SetLength(Length);
+            Is_datamodified   = true;
+            if (Data.Length > Length)
+                Data.SetLength(Length);
 
-            data.Seek(0, SeekOrigin.Begin);
-            data.Write(Buffer, 0, Length);
+            Data.Seek(0, SeekOrigin.Begin);
+            Data.Write(Buffer, 0, Length);
             ret = Length;
 
             return ret;
@@ -350,9 +350,9 @@ namespace _1STool1CD
             }
             SetCurrentTime(time_modify);
             is_headermodified = true;
-            is_datamodified   = true;
-            data.Seek(Start, SeekOrigin.Begin);
-            Stream_.CopyTo(data, Length);
+            Is_datamodified   = true;
+            Data.Seek(Start, SeekOrigin.Begin);
+            Stream_.CopyTo(Data, Length);
             ret = Length;
 
             return ret;
@@ -372,86 +372,86 @@ namespace _1STool1CD
             }
             SetCurrentTime(time_modify);
             is_headermodified = true;
-            is_datamodified   = true;
-            if (data.Length > Stream_.Length)
-                data.SetLength(Stream_.Length);
-            data.Seek(0, SeekOrigin.Begin);
-            Stream_.CopyTo(data);
-            ret = data.Length;
+            Is_datamodified   = true;
+            if (Data.Length > Stream_.Length)
+                Data.SetLength(Stream_.Length);
+            Data.Seek(0, SeekOrigin.Begin);
+            Stream_.CopyTo(Data);
+            ret = Data.Length;
 
             return ret;
         }
 
-        public String GetFileName() { return name; }
+        public String GetFileName() { return Name; }
 
         public String GetFullName()
         {
-            if (parent != null)
+            if (Parent != null)
             { 
-                if (parent.file != null)
+                if (Parent.File != null)
                 {
-                    String fulln = parent.file.GetFullName();
+                    String fulln = Parent.File.GetFullName();
                     if (!String.IsNullOrEmpty(fulln))
                     {
                         fulln += "\\";
-                        fulln += name;
+                        fulln += Name;
                         return fulln;
                     }
                 }
             }
-            return name;
+            return Name;
         }
 
         public void SetFileName(String _name)
         {
-            name = _name;
+            Name = _name;
             is_headermodified = true;
         }
 
-        public V8catalog GetParentCatalog() { return parent; }
+        public V8catalog GetParentCatalog() { return Parent; }
 
         public void DeleteFile()
         {
-            if (parent != null)
+            if (Parent != null)
             {
-                if (next != null)
+                if (Next != null)
                 {
-                    next.previous = previous;
+                    Next.previous = previous;
                 }
-                else parent.last = previous;
+                else Parent.Last = previous;
                 if (previous != null)
                 {
-                    previous.next = next;
+                    previous.Next = Next;
                 }
                 else
-                    parent.first = next;
+                    Parent.First = Next;
 
-                parent.is_fatmodified = true;
-                parent.free_block(start_data);
-                parent.free_block(start_header);
+                Parent.Is_fatmodified = true;
+                Parent.free_block(Start_data);
+                Parent.free_block(Start_header);
                 //parent.files.erase(name.UpperCase());  TODO: что-то надо с этим делать
-                parent = null;
+                Parent = null;
             }
-            data = null;
-            data = null;
-            if (self != null)
+            Data = null;
+            Data = null;
+            if (Self != null)
             {
-                this.self.data = null;
-                this.self.data = null;
-                self = null;
+                this.Self.Data = null;
+                this.Self.Data = null;
+                Self = null;
             }
             iscatalog = FileIsCatalog.no;
-            next = null;
+            Next = null;
             previous = null;
             is_opened = false;
-            start_data = 0;
-            start_header = 0;
-            is_datamodified = false;
+            Start_data = 0;
+            Start_header = 0;
+            Is_datamodified = false;
             is_headermodified = false;
 
         }
 
-        public v8file GetNext() { return next; }
+        public v8file GetNext() { return Next; }
 
         /// <summary>
         /// Открыть файл
@@ -459,16 +459,16 @@ namespace _1STool1CD
         /// <returns></returns>
         public bool Open()
         {
-            if (parent == null)
+            if (Parent == null)
                 return false;
             
             if (is_opened)
             {
                 return true;
             }
-            if (parent != null)
+            if (Parent != null)
             {
-                data = parent.read_datablock(start_data);
+                Data = Parent.read_datablock(Start_data);
                 is_opened = true;
             }
             return true;
@@ -481,27 +481,27 @@ namespace _1STool1CD
         {
             int _t = 0;
 
-            if (parent == null) return;
+            if (Parent == null) return;
             
             if (!is_opened) return;
 
-            if (self != null) if (!self.is_destructed)
+            if (Self != null) if (!Self.Is_destructed)
                 {
-                    self = null;
+                    Self = null;
                 }
 
-            self = null;
+            Self = null;
 
-            if (parent != null)
+            if (Parent != null)
             {
-                if (parent.data != null)
+                if (Parent.Data != null)
                 {
-                    if (is_datamodified || is_headermodified)
+                    if (Is_datamodified || is_headermodified)
                     {
 
-                        if (is_datamodified)
+                        if (Is_datamodified)
                         {
-                            start_data = parent.write_datablock(this.data, start_data, selfzipped);
+                            Start_data = Parent.write_datablock(this.Data, Start_data, Selfzipped);
                         }
                         if (is_headermodified)
                         {
@@ -530,10 +530,10 @@ namespace _1STool1CD
                     }
                 }
             }
-            data = null;
+            Data = null;
             iscatalog = FileIsCatalog.unknown;
             is_opened = false;
-            is_datamodified = false;
+            Is_datamodified = false;
             is_headermodified = false;
         }
 
@@ -553,19 +553,19 @@ namespace _1STool1CD
                 return 0;
             }
 
-            if (parent == null)
+            if (Parent == null)
             {
                 return 0;
             }
 
-            if (self != null) 
-                self = null;
+            if (Self != null) 
+                Self = null;
 
-            data = null;
+            Data = null;
 
-            if (parent != null)
+            if (Parent != null)
             {
-                if (parent.data != null)
+                if (Parent.Data != null)
                 {
                     /* TODO: Что-то с этим надо сделать
                      * 
@@ -589,7 +589,7 @@ namespace _1STool1CD
             }
             iscatalog = FileIsCatalog.unknown;
             is_opened         = false;
-            is_datamodified   = false;
+            Is_datamodified   = false;
             is_headermodified = false;
 
             if (Length == -1)
@@ -678,7 +678,7 @@ namespace _1STool1CD
                 return;
             }
 
-            data.CopyTo(stream);
+            Data.CopyTo(stream);
         }
 
         public TV8FileStream Get_stream(bool own = false)
@@ -695,7 +695,7 @@ namespace _1STool1CD
                 return;
             }
 
-            if ( parent == null )
+            if ( Parent == null )
             {
                 return;
             }
@@ -705,19 +705,19 @@ namespace _1STool1CD
             }
 
             flushed = true;
-            if (self != null) self.Flush();
+            if (Self != null) Self.Flush();
 
-            if (parent != null)
+            if (Parent != null)
             {
-                if (parent.data != null)
+                if (Parent.Data != null)
                 {
-                    if (is_datamodified || is_headermodified)
+                    if (Is_datamodified || is_headermodified)
                     {
 
-                        if (is_datamodified)
+                        if (Is_datamodified)
                         {
-                            start_data = parent.write_datablock(data, start_data, selfzipped);
-                            is_datamodified = false;
+                            Start_data = Parent.write_datablock(Data, Start_data, Selfzipped);
+                            Is_datamodified = false;
                         }
                         if (is_headermodified)
                         {
@@ -754,28 +754,43 @@ namespace _1STool1CD
             return (is_opened ? true : Open());
         }
 
-        public String name;
+        private String name;
         private Int64 time_create;
         private Int64 time_modify;
-        
-        public MemoryTributary data;
-        public V8catalog parent;
+
+        private MemoryTributary data;
+        private V8catalog parent;
         private FileIsCatalog iscatalog;
 
-        public V8catalog self;          // указатель на каталог, если файл является каталогом
-        public v8file next;            // следующий файл в каталоге
+        private V8catalog self;          // указатель на каталог, если файл является каталогом
+        private v8file next;            // следующий файл в каталоге
         private v8file previous;        // предыдущий файл в каталоге
         private bool is_opened;         // признак открытого файла (инициализирован поток data)
-        public int start_data;         // начало блока данных файла в каталоге (0 означает, что файл в каталоге не записан)
-        public int start_header;       // начало блока заголовка файла в каталоге
-        public bool is_datamodified;   // признак модифицированности данных файла (требуется запись в каталог при закрытии)
+        private int start_data;         // начало блока данных файла в каталоге (0 означает, что файл в каталоге не записан)
+        private int start_header;       // начало блока заголовка файла в каталоге
+        private bool is_datamodified;   // признак модифицированности данных файла (требуется запись в каталог при закрытии)
         private bool is_headermodified; // признак модифицированности заголовка файла (требуется запись в каталог при закрытии)
         private bool is_destructed;     // признак, что работает деструктор
         private bool flushed;           // признак, что происходит сброс
-        public bool selfzipped;        // Признак, что файл является запакованным независимо от признака zipped каталога
+        private bool selfzipped;        // Признак, что файл является запакованным независимо от признака zipped каталога
 
         // private std::set<TV8FileStream*> streams; ХЗ пока что это
         private SortedSet<TV8FileStream> streams;
 
+        public string Name { get { return name; } set { name = value; } }
+
+        public MemoryTributary Data { get { return data; } set { data = value; } }
+
+        public V8catalog Parent { get { return parent; } set { parent = value; } }
+
+        public V8catalog Self { get { return self; } set { self = value; } }
+
+        public v8file Next { get { return next; } set { next = value; } }
+
+        public int Start_data { get { return start_data; } set { start_data = value; } }
+
+        public int Start_header { get { return start_header; } set { start_header = value; } }
+        public bool Is_datamodified { get { return is_datamodified; } set { is_datamodified = value; } }
+        public bool Selfzipped { get { return selfzipped; } set { selfzipped = value; } }
     }
 }

@@ -10,15 +10,21 @@ namespace _1STool1CD
     {
         public struct Index_record
         {
-            public V8Field field;
-            public Int32 len;
+            private V8Field field;
+            private Int32 len;
+
+            public V8Field Field { get { return field; } set { field = value; } }
+
+            public int Len { get { return len; } set { len = value; } }
         }
 
         public struct Unpack_index_record
         {
             UInt32 _record_number; // номер (индекс) записи в таблице записей
                                    //unsigned char _index[1]; // значение индекса записи. Реальная длина значения определяется полем length класса index
-            public byte[] _index;
+            private byte[] index;
+
+            public byte[] Index { get { return index; } set { index = value; } }
         }
         /// <summary>
         /// Версии формата базы 1С
@@ -55,37 +61,52 @@ namespace _1STool1CD
 
         public struct Leaf_page_header
         {
-            public Int16 flags; // offset 0
-            public UInt16 number_indexes; // offset 2
-            public UInt32 prev_page; // offset 4 // для 8.3.8 - это номер страницы (реальное смещение = prev_page * pagesize), до 8.3.8 - это реальное смещение
-            public UInt32 next_page; // offset 8 // для 8.3.8 - это номер страницы (реальное смещение = next_page * pagesize), до 8.3.8 - это реальное смещение
-            public UInt16 freebytes; // offset 12
-            public UInt32 numrecmask; // offset 14
-            public UInt16 leftmask; // offset 18
-            public UInt16 rightmask; // offset 20
-            public UInt16 numrecbits; // offset 22
-            public UInt16 leftbits; // offset 24
-            public UInt16 rightbits; // offset 26
-            public UInt16 recbytes; // offset 28
+            private Int16 flags; // offset 0
+            private UInt16 number_indexes; // offset 2
+            private UInt32 prev_page; // offset 4 // для 8.3.8 - это номер страницы (реальное смещение = prev_page * pagesize), до 8.3.8 - это реальное смещение
+            private UInt32 next_page; // offset 8 // для 8.3.8 - это номер страницы (реальное смещение = next_page * pagesize), до 8.3.8 - это реальное смещение
+            private UInt16 freebytes; // offset 12
+            private UInt32 numrecmask; // offset 14
+            private UInt16 leftmask; // offset 18
+            private UInt16 rightmask; // offset 20
+            private UInt16 numrecbits; // offset 22
+            private UInt16 leftbits; // offset 24
+            private UInt16 rightbits; // offset 26
+            private UInt16 recbytes; // offset 28
+
+            public short Flags { get { return flags; } set { flags = value; } }
+
+            public ushort Number_indexes { get { return number_indexes; } set { number_indexes = value; } }
+
+            public uint Prev_page    { get { return prev_page;  } set { prev_page = value;  }  }
+            public uint Next_page    { get { return next_page;  } set { next_page = value;  }  }
+            public ushort Freebytes  { get { return freebytes;  } set { freebytes = value;  }  }
+            public uint Numrecmask   { get { return numrecmask; } set { numrecmask = value; }  }
+            public ushort Leftmask   { get { return leftmask;   } set { leftmask = value;   }  }
+            public ushort Rightmask  { get { return rightmask;  } set { rightmask = value;  }  }
+            public ushort Numrecbits { get { return numrecbits; } set { numrecbits = value; }  }
+            public ushort Leftbits   { get { return leftbits;   } set { leftbits = value;   }  }
+            public ushort Rightbits  { get { return rightbits;  } set { rightbits = value;  }  }
+            public ushort Recbytes   { get { return recbytes;   } set { recbytes = value;   }  }
         }
 
         public static Leaf_page_header ByteArrayToLeafPageHeader(byte[] src)
         {
 
-            Leaf_page_header Res;
+            Leaf_page_header Res = new Leaf_page_header();
 
-            Res.flags = BitConverter.ToInt16(src, 0);
-            Res.number_indexes = BitConverter.ToUInt16(src, 2);
-            Res.prev_page = BitConverter.ToUInt32(src, 4);
-            Res.next_page = BitConverter.ToUInt32(src, 8);
-            Res.freebytes = BitConverter.ToUInt16(src, 12);
-            Res.numrecmask = BitConverter.ToUInt32(src, 14);
-            Res.leftmask = BitConverter.ToUInt16(src, 18);
-            Res.rightmask = BitConverter.ToUInt16(src, 20);
-            Res.numrecbits = BitConverter.ToUInt16(src, 22);
-            Res.leftbits = BitConverter.ToUInt16(src, 24);
-            Res.rightbits = BitConverter.ToUInt16(src, 26);
-            Res.recbytes = BitConverter.ToUInt16(src, 28);
+            Res.Flags = BitConverter.ToInt16(src, 0);
+            Res.Number_indexes = BitConverter.ToUInt16(src, 2);
+            Res.Prev_page = BitConverter.ToUInt32(src, 4);
+            Res.Next_page = BitConverter.ToUInt32(src, 8);
+            Res.Freebytes = BitConverter.ToUInt16(src, 12);
+            Res.Numrecmask = BitConverter.ToUInt32(src, 14);
+            Res.Leftmask = BitConverter.ToUInt16(src, 18);
+            Res.Rightmask = BitConverter.ToUInt16(src, 20);
+            Res.Numrecbits = BitConverter.ToUInt16(src, 22);
+            Res.Leftbits = BitConverter.ToUInt16(src, 24);
+            Res.Rightbits = BitConverter.ToUInt16(src, 26);
+            Res.Recbytes = BitConverter.ToUInt16(src, 28);
 
             return Res;
 
@@ -104,9 +125,9 @@ namespace _1STool1CD
         {
             Objtab838 Res;
 
-            Res.blocks = new UInt32[1023];
-            Array.Clear(Res.blocks, 0, Res.blocks.Length);
-            Array.Copy(src, 0, Res.blocks, 0, src.Length);
+            Res.Blocks = new UInt32[1023];
+            Array.Clear(Res.Blocks, 0, Res.Blocks.Length);
+            Array.Copy(src, 0, Res.Blocks, 0, src.Length);
 
             return Res;
         }
@@ -120,14 +141,14 @@ namespace _1STool1CD
 
             V8ob Res;
 
-            Res.sig = Encoding.UTF8.GetChars(src, 0, 8);
-            Res.len = BitConverter.ToUInt32(src, 8);
-            Res.version.version_1 = BitConverter.ToUInt32(src, 12);
-            Res.version.version_2 = BitConverter.ToUInt32(src, 16);
-            Res.version.version_3 = BitConverter.ToUInt32(src, 20);
-            Res.blocks = new UInt32[1018];
-            Array.Clear(Res.blocks, 0, Res.blocks.Length);
-            Array.Copy(src, 24, Res.blocks, 0, src.Length - 24);
+            Res.Sig = Encoding.UTF8.GetChars(src, 0, 8);
+            Res.Len = BitConverter.ToUInt32(src, 8);
+            Res.Version.Version_1 = BitConverter.ToUInt32(src, 12);
+            Res.Version.Version_2 = BitConverter.ToUInt32(src, 16);
+            Res.Version.Version_3 = BitConverter.ToUInt32(src, 20);
+            Res.Blocks = new UInt32[1018];
+            Array.Clear(Res.Blocks, 0, Res.Blocks.Length);
+            Array.Copy(src, 24, Res.Blocks, 0, src.Length - 24);
 
             return Res;
         }
@@ -144,19 +165,19 @@ namespace _1STool1CD
 
             //Res.sig = Encoding.UTF8.GetChars(src, 0, 2);
 
-            Res.sig = new byte[2];
-            Array.Copy(src, 0, Res.sig, 0, 2);
+            Res.Sig = new byte[2];
+            Array.Copy(src, 0, Res.Sig, 0, 2);
 
-            Res.fatlevel = BitConverter.ToInt16(src, 2);
-            Res.version.version_1 = BitConverter.ToUInt32(src, 4);
-            Res.version.version_2 = BitConverter.ToUInt32(src, 8);
-            Res.version.version_3 = BitConverter.ToUInt32(src, 12);
-            Res.len = BitConverter.ToUInt64(src, 16);
+            Res.Fatlevel = BitConverter.ToInt16(src, 2);
+            Res.Version.Version_1 = BitConverter.ToUInt32(src, 4);
+            Res.Version.Version_2 = BitConverter.ToUInt32(src, 8);
+            Res.Version.Version_3 = BitConverter.ToUInt32(src, 12);
+            Res.Len = BitConverter.ToUInt64(src, 16);
             //Res.blocks = new UInt32[16378];
-            Res.blocks = new UInt32[1];
-            Array.Clear(Res.blocks, 0, Res.blocks.Length);
+            Res.Blocks = new UInt32[1];
+            Array.Clear(Res.Blocks, 0, Res.Blocks.Length);
             //Array.Copy(src, 24, Res.blocks, 0, src.Length - 20);
-            Array.Copy(src, 24, Res.blocks, 0, 1);
+            Array.Copy(src, 24, Res.Blocks, 0, 1);
 
             return Res;
 
@@ -172,15 +193,15 @@ namespace _1STool1CD
             V838ob_free Res;
 
             //Res.sig = Encoding.UTF8.GetChars(src, 0, 2);
-            Res.sig = new byte[2];
-            Array.Copy(src, 0, Res.sig, 0, 2);
-            Res.fatlevel = BitConverter.ToInt16(src, 2);
-            Res.version = BitConverter.ToUInt32(src, 4);
+            Res.Sig = new byte[2];
+            Array.Copy(src, 0, Res.Sig, 0, 2);
+            Res.Fatlevel = BitConverter.ToInt16(src, 2);
+            Res.Version = BitConverter.ToUInt32(src, 4);
             //Res.blocks = new UInt32[16378];
-            Res.blocks = new UInt32[1];
-            Array.Clear(Res.blocks, 0, Res.blocks.Length);
+            Res.Blocks = new UInt32[1];
+            Array.Clear(Res.Blocks, 0, Res.Blocks.Length);
             //Array.Copy(src, 8, Res.blocks, 0, src.Length - 4);
-            Array.Copy(src, 8, Res.blocks, 0, 1);
+            Array.Copy(src, 8, Res.Blocks, 0, 1);
 
             return Res;
 

@@ -12,23 +12,23 @@ namespace _1STool1CD
         #region Конструктора
         public V8Field(V8Table _parent)
         {
-            if (!null_index_initialized)
+            if (!Null_index_initialized)
             {
-                Array.Clear(null_index, 0, 0x1000);
-                null_index_initialized = true;
+                Array.Clear(Null_index, 0, 0x1000);
+                Null_index_initialized = true;
             }
 
-            parent = _parent;
-            len = 0;
-            offset = 0;
-            name = "";
+            Parent = _parent;
+            Len = 0;
+            Offset = 0;
+            Name = "";
 
         }
 
         static V8Field()
         {
-            null_index_initialized = false;
-            null_index = new byte[PAGE4K];
+            Null_index_initialized = false;
+            Null_index = new byte[PAGE4K];
         }
         #endregion
 
@@ -38,12 +38,12 @@ namespace _1STool1CD
         /// <returns></returns>
         public Int32 Getlen() 
         {
-            return (null_exists ? 1 : 0) + type_manager.Getlen();
+            return (Null_exists ? 1 : 0) + Type_manager.Getlen();
         }
 
         public String Getname()
         {
-            return name;
+            return Name;
         }
 
         public String Get_presentation(byte[] rec, bool EmptyNull = false, char Delimiter = '0', bool ignore_showGUID = false, bool detailed = false)
@@ -55,8 +55,8 @@ namespace _1STool1CD
         {
             //const char* fr = rec + offset;
             byte[] fr = new byte[rec.Length];
-            Array.Copy(rec, offset, fr, 0,rec.Length);
-            if (null_exists)
+            Array.Copy(rec, Offset, fr, 0,rec.Length);
+            if (Null_exists)
             {
                 if (fr[0] == 0)
                 {
@@ -65,15 +65,15 @@ namespace _1STool1CD
                 //fr++; // пока не очень понятно что с этим делать
             }
             byte[] fr_char = new byte[fr.Length];
-            return type_manager.Get_XML_presentation(fr_char, parent, ignore_showGUID);
+            return Type_manager.Get_XML_presentation(fr_char, Parent, ignore_showGUID);
         }
 
         public bool Get_binary_value(byte[] binary_value, bool NULL, String value)
         {
             //memset(binary_value, 0, len);
-            Array.Clear(binary_value, 0, len);
+            Array.Clear(binary_value, 0, Len);
 
-            if (null_exists)
+            if (Null_exists)
             {
                 if (NULL)
                 {
@@ -83,49 +83,49 @@ namespace _1STool1CD
                 binary_value[0] = 1;
                 //binary_value++; // пока не очень понятно что с этим делать
             }
-            return type_manager.Get_binary_value(binary_value, value);
+            return Type_manager.Get_binary_value(binary_value, value);
 
             
         }
 
         public Type_fields Gettype()
         {
-            return type_manager.Gettype();
+            return Type_manager.Gettype();
         }
         
         public V8Table Getparent()
         {
-            return parent;
+            return Parent;
         }
 
         public bool Getnull_exists()
         {
-            return null_exists;
+            return Null_exists;
         }
 
         public Int32 Getlength()
         {
-            return type_manager.Getlength();
+            return Type_manager.Getlength();
         }
 
         public Int32 Getprecision()
         {
-            return type_manager.Getprecision();
+            return Type_manager.Getprecision();
         }
 
         public bool Getcase_sensitive()
         {
-            return type_manager.Getcase_sensitive();
+            return Type_manager.Getcase_sensitive();
         }
 
         public Int32 Getoffset()
         {
-            return offset;
+            return Offset;
         }
 
         public String Get_presentation_type()
         {
-            return type_manager.Get_presentation_type();
+            return Type_manager.Get_presentation_type();
         }
 
         public bool Save_blob_to_file(byte[] rec, String filename, bool unpack)
@@ -358,16 +358,16 @@ namespace _1STool1CD
         {
             //const char* fr = rec + offset;
             byte[] fr = new byte[rec.Length];
-            Array.Copy(rec, offset, fr, 0, rec.Length);
+            Array.Copy(rec, Offset, fr, 0, rec.Length);
 
-            if (null_exists)
+            if (Null_exists)
             {
                 if (fr[0] == 0)
                 {
                     //*(SortKey++) = 0;
                     //SortKey[1] = 0;
                     //memcpy(SortKey, (void*)null_index, len);
-                    Array.Copy(null_index, 0, SortKey, 0, len);
+                    Array.Copy(Null_index, 0, SortKey, 0, Len);
                     return 0;
                 }
                 //*(SortKey++) = 1;
@@ -379,11 +379,11 @@ namespace _1STool1CD
 
             try
             {
-                return type_manager.GetSortKey(fr, SortKey, maxlen);
+                return Type_manager.GetSortKey(fr, SortKey, maxlen);
             }
             catch
             {
-                throw new Exception($"Таблица {parent.Name}, поле {name}");
+                throw new Exception($"Таблица {Parent.Name}, поле {Name}");
             }
             
         }
@@ -396,7 +396,7 @@ namespace _1STool1CD
             {
                 throw new Exception("Ошибка получения имени поля таблицы. Узел не является строкой.");
             }
-            fld.name = field_tree.Get_value();
+            fld.Name = field_tree.Get_value();
 
             field_tree = field_tree.Get_next();
 
@@ -409,33 +409,48 @@ namespace _1STool1CD
             }
             catch
             {
-                throw new Exception($"Поле {fld.name}");
+                throw new Exception($"Поле {fld.Name}");
             }
 
-            fld.type = type_declaration.Type;
-            fld.null_exists = type_declaration.Null_exists;
-            fld.type_manager = FieldType.Create_type_manager(type_declaration);
+            fld.Type = type_declaration.Type;
+            fld.Null_exists = type_declaration.Null_exists;
+            fld.Type_manager = FieldType.Create_type_manager(type_declaration);
 
-            if (fld.type == Type_fields.tf_version)
+            if (fld.Type == Type_fields.tf_version)
             {
                 has_version = true;
             }
             return fld;
             }
 
-        public String name;
+        private String name;
 
-        public Type_fields type;
-        public bool null_exists = false;
-        public FieldType type_manager;
+        private Type_fields type;
+        private bool null_exists = false;
+        private FieldType type_manager;
 
-        public V8Table parent;
-        public Int32 len; // длина поля в байтах
-        public Int32 offset; // смещение поля в записи
-        public static char[] buf;
+        private V8Table parent;
+        private Int32 len; // длина поля в байтах
+        private Int32 offset; // смещение поля в записи
+        private static char[] buf;
         //public static char[] null_index;
-        public static byte[] null_index;
-        public static bool null_index_initialized;
+        private static byte[] null_index;
+        private static bool null_index_initialized;
 
+        public string Name { get { return name; } set { name = value; } }
+
+        public Type_fields Type { get { return type; } set { type = value; } }
+
+        public bool Null_exists { get { return null_exists; } set { null_exists = value; } }
+
+        public FieldType Type_manager { get { return type_manager; } set { type_manager = value; } }
+
+        public V8Table Parent { get { return parent; } set { parent = value; } }
+
+        public int Len { get { return len; } set { len = value; } }
+        public int Offset { get { return offset; } set { offset = value; } }
+        public static char[] Buf { get { return buf; } set { buf = value; } }
+        public static byte[] Null_index { get { return null_index; } set { null_index = value; } }
+        public static bool Null_index_initialized { get { return null_index_initialized; } set { null_index_initialized = value; } }
     }
 }
