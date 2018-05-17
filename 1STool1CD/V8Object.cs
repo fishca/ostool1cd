@@ -34,6 +34,12 @@ namespace _1STool1CD
         public uint Version_1 { get { return version_1; } set { version_1 = value; } }
         public uint Version_2 { get { return version_2; } set { version_2 = value; } }
         public uint Version_3 { get { return version_3; } set { version_3 = value; } }
+        public _version(UInt32 v1, UInt32 v2, UInt32 v3)
+        {
+            version_1 = v1;
+            version_2 = v2;
+            version_3 = v3;
+        }
     }
 
     /// <summary>
@@ -536,11 +542,32 @@ namespace _1STool1CD
                 }
 
                 Len = t.Len;
+
+                _version VV = new _version();
+                VV.Version_1 = t.Version.Version_1;
+                VV.Version_2 = t.Version.Version_2;
+                VV.Version_3 = t.Version.Version_3;
+
+                /*
                 Version.Version_1 = t.Version.Version_1;
                 Version.Version_2 = t.Version.Version_2;
                 Version.Version_3 = t.Version.Version_3;
+                */
+                Version = VV;
+
+
+                _version_rec VR = new _version_rec();
+
+                /*
                 Version_rec.Version_1 = Version.Version_1 + 1;
                 Version_rec.Version_2 = 0;
+                */
+
+                VR.Version_1 = Version.Version_1 + 1;
+                VR.Version_2 = 0;
+                Version_rec = VR;
+
+
                 New_version_recorded = false;
                 Block = (UInt32)blockNum;
                 Real_numblocks = 0;
@@ -606,11 +633,33 @@ namespace _1STool1CD
                     Console.WriteLine($"Ошибка получения файла из страницы. Длина файла больше допустимой при одноуровневой таблице размещения. Блок {blockNum}. Длина файла {Len}");
                     return;
                 }
+
+                _version VV = new _version();
+
+                VV.Version_1 = t.Version.Version_1;
+                VV.Version_2 = t.Version.Version_2;
+                VV.Version_3 = t.Version.Version_3;
+                
+                /*                
                 Version.Version_1 = t.Version.Version_1;
                 Version.Version_2 = t.Version.Version_2;
                 Version.Version_3 = t.Version.Version_3;
+                */
+
+                Version = VV;
+
+                _version_rec VR = new _version_rec();
+
+                VR.Version_2 = Version.Version_1 + 1;
+                VR.Version_2 = 0;
+                
+                /*
                 Version_rec.Version_1 = Version.Version_1 + 1;
                 Version_rec.Version_2 = 0;
+                */
+
+                Version_rec = VR;
+
                 New_version_recorded = false;
                 Block = (UInt32)blockNum;
                 Real_numblocks = 0;
@@ -661,9 +710,27 @@ namespace _1STool1CD
 
                 Len = 0; // ВРЕМЕННО! Пока не понятна структура файла свободных страниц
 
-                Version.Version_1 = t.Version;
+
+                _version VV = new _version();
+
+                VV.Version_1 = t.Version;
+
+                //Version.Version_1 = t.Version;
+
+                Version = VV;
+
+                /*
                 Version_rec.Version_1 = Version.Version_1 + 1;
                 Version_rec.Version_2 = 0;
+                */
+
+                _version_rec VR = new _version_rec();
+
+                VR.Version_1 = Version.Version_1 + 1;
+                VR.Version_2 = 0;
+
+                Version_rec = VR;
+
                 New_version_recorded = false;
                 Block = (UInt32)blockNum;
                 Real_numblocks = 0;
@@ -700,10 +767,28 @@ namespace _1STool1CD
         public void Init()
         {
             Len = 0;
+
+            _version VV = new _version();
+
+            VV.Version_1 = 0;
+            VV.Version_2 = 0;
+
+            Version = VV;
+            /*
             Version.Version_1 = 0;
             Version.Version_2 = 0;
+            
+
             Version_rec.Version_1 = 0;
             Version_rec.Version_2 = 0;
+            */
+            _version_rec VR = new _version_rec();
+            VR.Version_1 = 0;
+            VR.Version_2 = 0;
+            Version_rec = VR;
+
+
+
             New_version_recorded = false;
             Numblocks = 0;
             Real_numblocks = 0;
@@ -1725,7 +1810,15 @@ namespace _1STool1CD
             ver.Version_1 = Version_rec.Version_1;
             ver.Version_2 = Version_rec.Version_2;
 
-            Version_rec.Version_2++;
+            _version_rec VR = new _version_rec();
+
+            VR.Version_1 = Version_rec.Version_1;
+            VR.Version_2++;
+
+            Version_rec = VR;
+
+            //Version_rec.Version_2++;
+
         }
 
         /// <summary>
@@ -1743,7 +1836,7 @@ namespace _1STool1CD
         /// </summary>
         public void Write_new_version()
         {
-            _version new_ver;
+            _version new_ver = new _version(0,0,0);
             if (New_version_recorded) return;
             Int32 veroffset = Type == V8objtype.data80 || Type == V8objtype.free80 ? 12 : 4;
 
