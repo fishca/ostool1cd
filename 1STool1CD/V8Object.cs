@@ -18,8 +18,11 @@ namespace _1STool1CD
         private UInt32 version_1; // версия реструктуризации
         private UInt32 version_2; // версия изменения
 
-        public uint Version_1 { get { return version_1; } set { version_1 = value; } }
-        public uint Version_2 { get { return version_2; } set { version_2 = value; } }
+        //public uint Version_1 { get { return version_1; } set { version_1 = value; } }
+        //public uint Version_2 { get { return version_2; } set { version_2 = value; } }
+        public uint Version_1 { get; set; }
+        public uint Version_2 { get; set; }
+
     }
 
     /// <summary>
