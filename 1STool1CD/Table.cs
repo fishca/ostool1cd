@@ -10,7 +10,7 @@ using static _1STool1CD.Utils1CD;
 namespace _1STool1CD
 {
 
-    public enum Type_fields
+    public enum TypeFields
     {
         tf_binary,   // B // длина = length
         tf_bool,     // L // длина = 1
@@ -26,7 +26,7 @@ namespace _1STool1CD
         tf_varbinary // VB // длина = length + 2
     }
 
-    public enum Table_info
+    public enum TableInfo
     {
         ti_description,
         ti_fields,
@@ -168,7 +168,7 @@ namespace _1STool1CD
             {
                 Int32 i;
                 V8Field f;
-                Type_fields tf;
+                TypeFields tf;
                 Stream b = null;
 
                 if (Rec != null && Fields != null)
@@ -177,7 +177,7 @@ namespace _1STool1CD
                         {
                             f = Parent.fields[i];
                             tf = f.Gettype();
-                            if (tf == Type_fields.tf_image || tf == Type_fields.tf_string || tf == Type_fields.tf_text)
+                            if (tf == TypeFields.tf_image || tf == TypeFields.tf_string || tf == TypeFields.tf_text)
                             {
                                 //b = *(TStream**)(rec + f.getoffset() + (f.getnull_exists() ? 1 : 0));
                                 // b.Dispose(); - что-то непонятное здесь
@@ -200,7 +200,7 @@ namespace _1STool1CD
         public uint Numrecords_review { get { return numrecords_review; } set { numrecords_review = value; } }
         public uint Numrecords_found { get { return numrecords_found; } set { numrecords_found = value; } }
 
-        public T_1CD Base_ { get { return base_; } set { base_ = value; } }
+        public Tools1CD Base_ { get { return base_; } set { base_ = value; } }
 
         public string Name { get { return name; } set { name = value; } }
 
@@ -253,7 +253,7 @@ namespace _1STool1CD
             Init();
         }
 
-        public V8Table(T_1CD _base, Int32 block_descr)
+        public V8Table(Tools1CD _base, Int32 block_descr)
         {
             Base_ = _base;
 
@@ -263,7 +263,7 @@ namespace _1STool1CD
             Init(block_descr);
         }
 
-        public V8Table(T_1CD _base, String _descr, Int32 block_descr = 0)
+        public V8Table(Tools1CD _base, String _descr, Int32 block_descr = 0)
         {
             Base_ = _base;
 
@@ -561,7 +561,7 @@ namespace _1STool1CD
                         return;
                     }
 
-                    ind.Records = new Index_record[numrec];
+                    ind.Records = new IndexRecord[numrec];
                     for (j = 0; j < numrec; j++)
                     {
                         index_tree = index_tree.Get_next();
@@ -787,7 +787,7 @@ namespace _1STool1CD
                     {
                         for (i = 1; i <= num_indexes; i++)
                         {
-                            if ((int)Base_.Version < (int)Db_ver.ver8_3_8_0)
+                            if ((int)Base_.Version < (int)DBVer.ver8_3_8_0)
                             {
                                 if (buf[i] >= File_index.Getlen())
                                 {
@@ -825,7 +825,7 @@ namespace _1STool1CD
                            // сначала идут поля (поле) с типом "версия"
             for (i = 0; i < num_fields; i++)
             {
-                if (fields[i].Type_manager.Gettype() == Type_fields.tf_version || fields[i].Type_manager.Gettype() == Type_fields.tf_version8)
+                if (fields[i].Type_manager.Gettype() == TypeFields.tf_version || fields[i].Type_manager.Gettype() == TypeFields.tf_version8)
                 {
                     fields[i].Offset = recordlen;
                     recordlen += fields[i].Getlen();
@@ -835,7 +835,7 @@ namespace _1STool1CD
             // затем идут все остальные поля
             for (i = 0; i < num_fields; i++)
             {
-                if (fields[i].Type_manager.Gettype() != Type_fields.tf_version && fields[i].Type_manager.Gettype() != Type_fields.tf_version8)
+                if (fields[i].Type_manager.Gettype() != TypeFields.tf_version && fields[i].Type_manager.Gettype() != TypeFields.tf_version8)
                 {
                     fields[i].Offset = recordlen;
                     recordlen += fields[i].Getlen();
@@ -1310,7 +1310,7 @@ namespace _1STool1CD
             return s;
         } 
 
-        public T_1CD Getbase() { return Base_; }
+        public Tools1CD Getbase() { return Base_; }
 
         public void Begin_edit() { } // переводит таблицу в режим редактирования
 
@@ -1407,18 +1407,18 @@ namespace _1STool1CD
                 l = f.Getlength();
                 switch (f.Gettype())
                 {
-                    case Type_fields.tf_binary: // B // длина = length
+                    case TypeFields.tf_binary: // B // длина = length
                         //memset(curp, 1, BLOB_RECORD_LEN * l);
                         for (int ii = 0; ii < curp.Length; ii++)
                         {
                             curp[ii] = 1;
                         }
                         break;
-                    case Type_fields.tf_bool: // L // длина = 1
+                    case TypeFields.tf_bool: // L // длина = 1
                         curp[0] = 1;
                         curp[1] = 1;
                         break;
-                    case Type_fields.tf_numeric: // N // длина = (length + 2) / 2
+                    case TypeFields.tf_numeric: // N // длина = (length + 2) / 2
                         j = (l + 2) / 2;
                         for (; j > 0; --j)
                         {
@@ -1428,14 +1428,14 @@ namespace _1STool1CD
                             */
                         }
                         break;
-                    case Type_fields.tf_char: // NC // длина = length * 2
+                    case TypeFields.tf_char: // NC // длина = length * 2
                         //memset(curp, 1, BLOB_RECORD_LEN * 2 * l);
                         for (int ii = 0; ii < curp.Length; ii++)
                         {
                             curp[ii] = 1;
                         }
                         break;
-                    case Type_fields.tf_varchar: // NVC // длина = length * 2 + 2
+                    case TypeFields.tf_varchar: // NVC // длина = length * 2 + 2
                         if (l > 255)
                             j = (Int32)BLOB_RECORD_LEN;
                         else
@@ -1450,19 +1450,19 @@ namespace _1STool1CD
                         memset(curp, 1, BLOB_RECORD_LEN * 2 * l);
                         */
                         break;
-                    case Type_fields.tf_version: // RV // 16, 8 версия создания и 8 версия модификации ? каждая версия int32_t(изменения) + int32_t(реструктуризация)
+                    case TypeFields.tf_version: // RV // 16, 8 версия создания и 8 версия модификации ? каждая версия int32_t(изменения) + int32_t(реструктуризация)
                         //memset(curp, 1, BLOB_RECORD_LEN * 16);
                         break;
-                    case Type_fields.tf_string: // NT // 8 (unicode text)
+                    case TypeFields.tf_string: // NT // 8 (unicode text)
                         //memset(curp, 1, BLOB_RECORD_LEN * 8);
                         break;
-                    case Type_fields.tf_text: // T // 8 (ascii text)
+                    case TypeFields.tf_text: // T // 8 (ascii text)
                         //memset(curp, 1, BLOB_RECORD_LEN * 8);
                         break;
-                    case Type_fields.tf_image: // I // 8 (image = bynary data)
+                    case TypeFields.tf_image: // I // 8 (image = bynary data)
                         //memset(curp, 1, BLOB_RECORD_LEN * 8);
                         break;
-                    case Type_fields.tf_datetime: // DT //7
+                    case TypeFields.tf_datetime: // DT //7
                         if (String.Compare(f.Getname(), "_DATE_TIME") == 0)
                             required = true;
                         else if (String.Compare(f.Getname(), "_NUMBERPREFIX") == 0)
@@ -1485,10 +1485,10 @@ namespace _1STool1CD
                         memcpy(curp, DATE67_TEST_TEMPLATE, BLOB_RECORD_LEN);
                         */
                         break;
-                    case Type_fields.tf_version8: // 8, скрытое поле при recordlock == false и отсутствии поля типа tf_version
+                    case TypeFields.tf_version8: // 8, скрытое поле при recordlock == false и отсутствии поля типа tf_version
                         //memset(curp, 1, BLOB_RECORD_LEN * 8);
                         break;
-                    case Type_fields.tf_varbinary: // VB // длина = length + 2
+                    case TypeFields.tf_varbinary: // VB // длина = length + 2
                         if (l > 255)
                             j = (Int32)BLOB_RECORD_LEN;
                         else
@@ -1560,7 +1560,7 @@ namespace _1STool1CD
         }
 
         #region private
-        private T_1CD base_;
+        private Tools1CD base_;
 
         private V8object descr_table; // объект с описанием структуры таблицы (только для версий с 8.0 до 8.2.14)
         private String description;

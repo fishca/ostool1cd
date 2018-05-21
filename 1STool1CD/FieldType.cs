@@ -9,13 +9,13 @@ namespace _1STool1CD
 {
     public struct Field_type_declaration
     {
-        private Type_fields type;
+        private TypeFields type;
         private bool null_exists;
         private Int32 length;
         private Int32 precision;
         private bool case_sensitive;
 
-        public Type_fields Type { get { return type; } set { type = value; } }
+        public TypeFields Type { get { return type; } set { type = value; } }
 
         public bool Null_exists { get { return null_exists; } set { null_exists = value; } }
 
@@ -30,7 +30,7 @@ namespace _1STool1CD
 
     public class FieldType
     {
-        public virtual Type_fields Gettype() { return Type_fields.tf_binary; }
+        public virtual TypeFields Gettype() { return TypeFields.tf_binary; }
         public virtual Int32 Getlength() { return 0; }
         public virtual Int32 Getlen() { return 0; }
         public virtual Int32 Getprecision() { return 0; }
@@ -65,7 +65,7 @@ namespace _1STool1CD
             //declaration.type = Constants.type_fields.
         }
 
-        public override Type_fields Gettype()
+        public override TypeFields Gettype()
 	    {
             return Type;
 	    }
@@ -89,18 +89,18 @@ namespace _1STool1CD
 	    {
 		    switch(Type)
 		    {
-			case Type_fields.tf_binary:    return "binary";
-			case Type_fields.tf_bool:      return "bool";
-			case Type_fields.tf_numeric:   return "number";
-			case Type_fields.tf_char:      return "fixed string";
-			case Type_fields.tf_varchar:   return "string";
-			case Type_fields.tf_version:   return "version";
-			case Type_fields.tf_string:    return "memo";
-			case Type_fields.tf_text:      return "text";
-			case Type_fields.tf_image:     return "image";
-			case Type_fields.tf_datetime:  return "datetime";
-			case Type_fields.tf_version8:  return "hidden version";
-			case Type_fields.tf_varbinary: return "var binary";
+			case TypeFields.tf_binary:    return "binary";
+			case TypeFields.tf_bool:      return "bool";
+			case TypeFields.tf_numeric:   return "number";
+			case TypeFields.tf_char:      return "fixed string";
+			case TypeFields.tf_varchar:   return "string";
+			case TypeFields.tf_version:   return "version";
+			case TypeFields.tf_string:    return "memo";
+			case TypeFields.tf_text:      return "text";
+			case TypeFields.tf_image:     return "image";
+			case TypeFields.tf_datetime:  return "datetime";
+			case TypeFields.tf_version8:  return "hidden version";
+			case TypeFields.tf_varbinary: return "var binary";
 		}
 		return "{?}";
 	}
@@ -112,18 +112,18 @@ namespace _1STool1CD
 
 		    switch(Type)
 		    {
-			    case Type_fields.tf_binary:    len += length;            break;
-			    case Type_fields.tf_bool:      len += 1;                 break;
-			    case Type_fields.tf_numeric:   len += (length + 2) >> 1; break;
-			    case Type_fields.tf_char:      len += length* 2;         break;
-			    case Type_fields.tf_varchar:   len += length* 2 + 2;     break;
-			    case Type_fields.tf_version:   len += 16;                break;
-			    case Type_fields.tf_string:    len += 8;                 break;
-			    case Type_fields.tf_text:      len += 8;                 break;
-			    case Type_fields.tf_image:     len += 8;                 break;
-			    case Type_fields.tf_datetime:  len += 7;                 break;
-			    case Type_fields.tf_version8:  len += 8;                 break;
-			    case Type_fields.tf_varbinary: len += length + 2;        break;
+			    case TypeFields.tf_binary:    len += length;            break;
+			    case TypeFields.tf_bool:      len += 1;                 break;
+			    case TypeFields.tf_numeric:   len += (length + 2) >> 1; break;
+			    case TypeFields.tf_char:      len += length* 2;         break;
+			    case TypeFields.tf_varchar:   len += length* 2 + 2;     break;
+			    case TypeFields.tf_version:   len += 16;                break;
+			    case TypeFields.tf_string:    len += 8;                 break;
+			    case TypeFields.tf_text:      len += 8;                 break;
+			    case TypeFields.tf_image:     len += 8;                 break;
+			    case TypeFields.tf_datetime:  len += 7;                 break;
+			    case TypeFields.tf_version8:  len += 8;                 break;
+			    case TypeFields.tf_varbinary: len += length + 2;        break;
 		    }
 		    return len;
 	    }
@@ -159,13 +159,13 @@ namespace _1STool1CD
             return 0;
         }
 
-        private Type_fields type = Type_fields.tf_binary;
+        private TypeFields type = TypeFields.tf_binary;
         int length = 0;
         int precision = 0;
         bool case_sensitive = false;
 
         int len = 0;
 
-        public Type_fields Type { get { return type; } set { type = value; } }
+        public TypeFields Type { get { return type; } set { type = value; } }
     }
 }

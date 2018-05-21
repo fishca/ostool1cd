@@ -8,7 +8,7 @@ namespace _1STool1CD
 {
     public static class Utils1CD
     {
-        public struct Index_record
+        public struct IndexRecord
         {
             private V8Field field;
             private Int32 len;
@@ -18,7 +18,7 @@ namespace _1STool1CD
             public int Len { get { return len; } set { len = value; } }
         }
 
-        public struct Unpack_index_record
+        public struct UnpackIndexRecord
         {
             UInt32 _record_number; // номер (индекс) записи в таблице записей
                                    //unsigned char _index[1]; // значение индекса записи. Реальная длина значения определяется полем length класса index
@@ -26,10 +26,11 @@ namespace _1STool1CD
 
             public byte[] Index { get { return index; } set { index = value; } }
         }
+        
         /// <summary>
         /// Версии формата базы 1С
         /// </summary>
-        public enum Db_ver
+        public enum DBVer
         {
             ver8_0_3_0  = 1,
         	ver8_0_5_0  = 2,
@@ -39,7 +40,7 @@ namespace _1STool1CD
 	        ver8_3_8_0  = 6
         }
 
-        public enum Node_type
+        public enum NodeType
         {
             nd_empty      = 0,	// пусто
 	        nd_string     = 1,	// строка
@@ -59,7 +60,10 @@ namespace _1STool1CD
         /// </summary>
         public static readonly Int32 LAST_PAGE = Int32.MaxValue;
 
-        public struct Leaf_page_header
+        /// <summary>
+        /// Заголовок страницы
+        /// </summary>
+        public struct LeafPageHeader
         {
             private Int16 flags; // offset 0
             private UInt16 number_indexes; // offset 2
@@ -90,10 +94,11 @@ namespace _1STool1CD
             public ushort Recbytes   { get { return recbytes;   } set { recbytes = value;   }  }
         }
 
-        public static Leaf_page_header ByteArrayToLeafPageHeader(byte[] src)
+
+        public static LeafPageHeader ByteArrayToLeafPageHeader(byte[] src)
         {
 
-            Leaf_page_header Res = new Leaf_page_header();
+            LeafPageHeader Res = new LeafPageHeader();
 
             Res.Flags = BitConverter.ToInt16(src, 0);
             Res.Number_indexes = BitConverter.ToUInt16(src, 2);
@@ -111,9 +116,10 @@ namespace _1STool1CD
             return Res;
 
         }
-        public static Objtab ByteArrayToObjtab(byte[] src)
+
+        public static ObjTab ByteArrayToObjtab(byte[] src)
         {
-            Objtab Res = new Objtab(0, new UInt32[1023]);
+            ObjTab Res = new ObjTab(0, new UInt32[1023]);
 
             Res.Numblocks = BitConverter.ToInt32(src, 0);
             Array.Copy(src, 4, Res.Blocks, 0, Res.Numblocks);

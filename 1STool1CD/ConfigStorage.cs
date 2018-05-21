@@ -35,7 +35,7 @@ namespace _1STool1CD
     /// </summary>
     public class Container_file
     {
-        private Table_file file;
+        private TableFile file;
         private String name; // Приведенное имя (очищенное от динамического обновления)
         private Stream stream;
         private Stream rstream; // raw stream (нераспакованный поток)
@@ -43,7 +43,7 @@ namespace _1STool1CD
         private table_file_packed packed;
         private int dynno; // Номер (индекс) динамического обновления (0, 1 и т.д.). Если без динамического обновления, то -1, если UID динамического обновления не найден, то -2. Для пропускаемых файлов -3.
 
-        public Table_file File { get { return file; } set { file = value; } }
+        public TableFile File { get { return file; } set { file = value; } }
 
         public string Name { get { return name; } set { name = value; } }
 
@@ -57,7 +57,7 @@ namespace _1STool1CD
 
         public int Dynno { get { return dynno; } set { dynno = value; } }
 
-        public Container_file(Table_file _f, String _name)
+        public Container_file(TableFile _f, String _name)
         {
             File = _f;
             Name = _name;
@@ -134,7 +134,7 @@ namespace _1STool1CD
     public class ConfigStorageTable : ConfigStorage
     {
 
-        public ConfigStorageTable(T_1CD _base = null) : base(){}
+        public ConfigStorageTable(Tools1CD _base = null) : base(){}
 
         public override ConfigFile readfile(String path) { return new ConfigFile(); }
         public override bool writefile(String path, Stream str) { return true; }
@@ -153,7 +153,7 @@ namespace _1STool1CD
 
         protected bool ready = false;
 
-	    private T_1CD base_; // установлена, если база принадлежит адаптеру конфигурации
+	    private Tools1CD base_; // установлена, если база принадлежит адаптеру конфигурации
     }
     /// <summary>
     /// Класс адаптера таблицы - контейнера конфигурации CONFIG (конфигурации базы данных)
@@ -161,7 +161,7 @@ namespace _1STool1CD
     public class ConfigStorageTableConfig : ConfigStorageTable
     {
 
-        public ConfigStorageTableConfig(TableFiles tabf, T_1CD _base = null) { }
+        public ConfigStorageTableConfig(TableFiles tabf, Tools1CD _base = null) { }
         public override String presentation() { return " "; }
 
         private String present;
@@ -173,7 +173,7 @@ namespace _1STool1CD
     public class ConfigStorageTableConfigSave : ConfigStorageTable
     {
 
-        public ConfigStorageTableConfigSave(TableFiles tabc, TableFiles tabcs, T_1CD _base = null) { }
+        public ConfigStorageTableConfigSave(TableFiles tabc, TableFiles tabcs, Tools1CD _base = null) { }
         public override String presentation() { return " "; }
 
         private String present;
@@ -185,7 +185,7 @@ namespace _1STool1CD
     public class ConfigStorageTableConfigCas : ConfigStorageTable
     {
 
-        public ConfigStorageTableConfigCas(TableFiles tabc, String configver, T_1CD _base = null) { }
+        public ConfigStorageTableConfigCas(TableFiles tabc, String configver, Tools1CD _base = null) { }
         public override String presentation() { return " "; }
 
         private String present;
@@ -196,7 +196,7 @@ namespace _1STool1CD
     /// </summary>
     public class ConfigStorageTableConfigCasSave : ConfigStorageTable
     {
-        public ConfigStorageTableConfigCasSave(TableFiles tabc, TableFiles tabcs, Guid uid, String configver, T_1CD _base = null) { }
+        public ConfigStorageTableConfigCasSave(TableFiles tabc, TableFiles tabcs, Guid uid, String configver, Tools1CD _base = null) { }
         public override String presentation() { return " "; }
 
         private	String present;

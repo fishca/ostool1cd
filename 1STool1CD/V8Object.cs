@@ -126,7 +126,7 @@ namespace _1STool1CD
     public class V8object
     {
 
-        private T_1CD _base;
+        private Tools1CD _base;
 
         private UInt64 len;                 // длина объекта. Для типа таблицы свободных страниц - количество свободных блоков
         private _version version;           // текущая версия объекта
@@ -169,7 +169,7 @@ namespace _1STool1CD
         private UInt32 lastdataget;          // время (Windows time, в миллисекундах) последнего обращения к данным объекта (data)
         private bool lockinmemory;
 
-        public T_1CD Base { get { return _base; } set { _base = value; } }
+        public Tools1CD Base { get { return _base; } set { _base = value; } }
 
         public ulong Len { get { return len; } set { len = value; } }
 
@@ -255,7 +255,7 @@ namespace _1STool1CD
                 }
                 if (num_data_blocks > cur_data_blocks)
                 {
-                    Objtab ot = new Objtab(0,null);
+                    ObjTab ot = new ObjTab(0,null);
                     // Увеличение длины объекта
                     if (Numblocks != 0)
                     {
@@ -283,7 +283,7 @@ namespace _1STool1CD
                 else if (num_data_blocks < cur_data_blocks)
                 {
                     // Уменьшение длины объекта
-                    Objtab ot = ByteArrayToObjtab(Base.Getblock_for_write(b.Blocks[Numblocks - 1], true));
+                    ObjTab ot = ByteArrayToObjtab(Base.Getblock_for_write(b.Blocks[Numblocks - 1], true));
 
                     for (cur_data_blocks--; cur_data_blocks >= num_data_blocks; cur_data_blocks--)
                     {
@@ -459,7 +459,7 @@ namespace _1STool1CD
         /// Конструктор нового (еще не существующего) объекта
         /// </summary>
         /// <param name="_base"></param>
-        public V8object(T_1CD _base)
+        public V8object(Tools1CD _base)
         {
             UInt32 blockNum;
             byte[] b;
@@ -469,7 +469,7 @@ namespace _1STool1CD
 
             //memset(b, 0, _base->pagesize);
 
-            if (_base.Version < Db_ver.ver8_3_8_0)
+            if (_base.Version < DBVer.ver8_3_8_0)
             {
                 //memcpy(((v8ob*)b)->sig, SIG_OBJ, 8);
 
@@ -490,7 +490,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="_base"></param>
         /// <param name="blockNum"></param>
-        public V8object(T_1CD _base, Int32 blockNum)
+        public V8object(Tools1CD _base, Int32 blockNum)
         {
             Init(_base, blockNum);
         }
@@ -500,7 +500,7 @@ namespace _1STool1CD
         /// </summary>
         /// <param name="_base"></param>
         /// <param name="blockNum"></param>
-        public void Init(T_1CD _base, Int32 blockNum)
+        public void Init(Tools1CD _base, Int32 blockNum)
         {
             this.Base = _base;
             Prev = Last;
@@ -513,7 +513,7 @@ namespace _1STool1CD
             Last = this;
             if (blockNum == 1)
             {
-                if ((int)this.Base.Version < (int)Db_ver.ver8_3_8_0)
+                if ((int)this.Base.Version < (int)DBVer.ver8_3_8_0)
                     Type = V8objtype.free80;
                 else
                     Type = V8objtype.free838;
@@ -521,7 +521,7 @@ namespace _1STool1CD
             }
             else
             {
-                if ((int)this.Base.Version < (int)Db_ver.ver8_3_8_0)
+                if ((int)this.Base.Version < (int)DBVer.ver8_3_8_0)
                     Type = V8objtype.data80;
                 else
                     Type = V8objtype.data838;
@@ -811,7 +811,7 @@ namespace _1STool1CD
         {
 
             byte[] tt;
-            Objtab b;
+            ObjTab b;
             Objtab838 bb;
             UInt32 i, l;
             Int32 j, pagesize, blocksperpage;
@@ -930,7 +930,7 @@ namespace _1STool1CD
             UInt32 destIndex = 0;
             UInt32 offsperpage = 0;
 
-            Objtab b;
+            ObjTab b;
             Objtab838 bb;
             UInt32 curobjblock = 0;
             UInt32 curoffobjblock = 0;
@@ -1158,7 +1158,7 @@ namespace _1STool1CD
                 curoffobjblock = curblock - curobjblock * 1023;
 
                 //objtab* b = (objtab*)base->getblock(blocks[curobjblock++]);
-                Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
+                ObjTab b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
                 while (_length != 0)
                 {
                     //memcpy((char*)(base->getblock_for_write(b->blocks[curoffobjblock++], curlen != DEFAULT_PAGE_SIZE)) + curoffblock, _buf, curlen);
@@ -1293,7 +1293,7 @@ namespace _1STool1CD
                 for (UInt32 i = 0; i < Numblocks; i++)
                 {
                     //objtab* b = (objtab*)base->getblock(blocks[i]);
-                    Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
+                    ObjTab b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
 
                     for (UInt32 j = 0; j < b.Numblocks; j++)
                     {
@@ -1425,7 +1425,7 @@ namespace _1STool1CD
             {
                 for (UInt32 i = 0; i < Numblocks; i++)
                 {
-                    Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
+                    ObjTab b = ByteArrayToObjtab(Base.Getblock(Blocks[i]));
 
                     for (UInt32 j = 0; j < b.Numblocks; j++)
                     {
@@ -1543,7 +1543,7 @@ namespace _1STool1CD
                 curoffobjblock = curblock - curobjblock * 1023;
 
                 //objtab* b = (objtab*)base->getblock(blocks[curobjblock++]);
-                Objtab b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
+                ObjTab b = ByteArrayToObjtab(Base.Getblock(Blocks[curobjblock++]));
 
                 while (_length != 0)
                 {
@@ -1667,7 +1667,7 @@ namespace _1STool1CD
         public UInt64 Get_fileoffset(UInt64 offset)
         {
             UInt32 _start = (UInt32)offset;
-            Objtab b;
+            ObjTab b;
             Objtab838 bb;
             UInt32 curblock;
             UInt32 curoffblock;

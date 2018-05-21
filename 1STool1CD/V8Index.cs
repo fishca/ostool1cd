@@ -24,7 +24,7 @@ namespace _1STool1CD
             Length = 0;
             Recordsindex_complete = false;
             Pagesize = Tbase.Base_.Pagesize;
-            Version = (Db_ver)Tbase.Base_.Version;
+            Version = (DBVer)Tbase.Base_.Version;
 
         }
 
@@ -47,7 +47,7 @@ namespace _1STool1CD
             return Num_records;
         }
 
-        public Index_record[] Get_records()
+        public IndexRecord[] Get_records()
         {
             return Records;
         }
@@ -93,7 +93,7 @@ namespace _1STool1CD
                     //rootblock = *(UInt32*)buf;
                     Rootblock = buf[0]; // скорее всего не правильно
 
-                if (Version >= Db_ver.ver8_3_8_0)
+                if (Version >= DBVer.ver8_3_8_0)
                     Rootblock *= Pagesize;
 
                 //length = *(int16_t*)(buf + 4); 
@@ -147,7 +147,7 @@ namespace _1STool1CD
                 //rootblock = *(uint32_t*)buf;
                 Rootblock = buf[0]; // не понятно что с этим делать
 
-                if (Version >= Db_ver.ver8_3_8_0)
+                if (Version >= DBVer.ver8_3_8_0)
                     Rootblock *= Pagesize;
                 
             }
@@ -202,7 +202,7 @@ namespace _1STool1CD
             byte[] rbuf = new byte[page.Length];
             byte[] ibuf = new byte[page.Length];
             byte[] obuf = new byte[number_indexes * (Length + 4)];
-            Leaf_page_header header;
+            LeafPageHeader header;
 
             UInt32 i, j, step;
 
@@ -281,10 +281,10 @@ namespace _1STool1CD
         }
 
         private V8Table tbase;
-        private Db_ver version; // версия базы
+        private DBVer version; // версия базы
         private UInt32 pagesize; // размер одной страницы (до версии 8.2.14 всегда 0x1000 (4K), начиная с версии 8.3.8 от 0x1000 (4K) до 0x10000 (64K))
 
-        private Index_record[] records;
+        private IndexRecord[] records;
 
         private UInt64 start; // Смещение в файле индексов блока описания индекса
         private UInt64 rootblock; // Смещение в файле индексов корневого блока индекса
@@ -301,11 +301,11 @@ namespace _1STool1CD
 
         public V8Table Tbase { get { return tbase; } set { tbase = value; } }
 
-        public Db_ver Version { get { return version; } set { version = value; } }
+        public DBVer Version { get { return version; } set { version = value; } }
 
         public uint Pagesize { get { return pagesize; } set { pagesize = value; } }
 
-        public Index_record[] Records { get { return records; } set { records = value; } }
+        public IndexRecord[] Records { get { return records; } set { records = value; } }
 
         public ulong Start { get { return start; } set { start = value; } }
 

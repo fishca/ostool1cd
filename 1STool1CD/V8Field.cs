@@ -88,7 +88,7 @@ namespace _1STool1CD
             
         }
 
-        public Type_fields Gettype()
+        public TypeFields Gettype()
         {
             return Type_manager.Gettype();
         }
@@ -416,7 +416,7 @@ namespace _1STool1CD
             fld.Null_exists = type_declaration.Null_exists;
             fld.Type_manager = FieldType.Create_type_manager(type_declaration);
 
-            if (fld.Type == Type_fields.tf_version)
+            if (fld.Type == TypeFields.tf_version)
             {
                 has_version = true;
             }
@@ -425,7 +425,7 @@ namespace _1STool1CD
 
         private String name;
 
-        private Type_fields type;
+        private TypeFields type;
         private bool null_exists = false;
         private FieldType type_manager;
 
@@ -439,7 +439,7 @@ namespace _1STool1CD
 
         public string Name { get { return name; } set { name = value; } }
 
-        public Type_fields Type { get { return type; } set { type = value; } }
+        public TypeFields Type { get { return type; } set { type = value; } }
 
         public bool Null_exists { get { return null_exists; } set { null_exists = value; } }
 
