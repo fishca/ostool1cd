@@ -4,69 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static _1STool1CD.Constants;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
     public static class Utils1CD
     {
                 
-
-        /// <summary>
-        /// Заголовок страницы
-        /// </summary>
-        public struct LeafPageHeader
-        {
-            private Int16 flags; // offset 0
-            private UInt16 number_indexes; // offset 2
-            private UInt32 prev_page; // offset 4 // для 8.3.8 - это номер страницы (реальное смещение = prev_page * pagesize), до 8.3.8 - это реальное смещение
-            private UInt32 next_page; // offset 8 // для 8.3.8 - это номер страницы (реальное смещение = next_page * pagesize), до 8.3.8 - это реальное смещение
-            private UInt16 freebytes; // offset 12
-            private UInt32 numrecmask; // offset 14
-            private UInt16 leftmask; // offset 18
-            private UInt16 rightmask; // offset 20
-            private UInt16 numrecbits; // offset 22
-            private UInt16 leftbits; // offset 24
-            private UInt16 rightbits; // offset 26
-            private UInt16 recbytes; // offset 28
-
-            public short Flags { get { return flags; } set { flags = value; } }
-
-            public ushort Number_indexes { get { return number_indexes; } set { number_indexes = value; } }
-
-            public uint Prev_page    { get { return prev_page;  } set { prev_page = value;  }  }
-            public uint Next_page    { get { return next_page;  } set { next_page = value;  }  }
-            public ushort Freebytes  { get { return freebytes;  } set { freebytes = value;  }  }
-            public uint Numrecmask   { get { return numrecmask; } set { numrecmask = value; }  }
-            public ushort Leftmask   { get { return leftmask;   } set { leftmask = value;   }  }
-            public ushort Rightmask  { get { return rightmask;  } set { rightmask = value;  }  }
-            public ushort Numrecbits { get { return numrecbits; } set { numrecbits = value; }  }
-            public ushort Leftbits   { get { return leftbits;   } set { leftbits = value;   }  }
-            public ushort Rightbits  { get { return rightbits;  } set { rightbits = value;  }  }
-            public ushort Recbytes   { get { return recbytes;   } set { recbytes = value;   }  }
-        }
-
-
-        public static LeafPageHeader ByteArrayToLeafPageHeader(byte[] src)
-        {
-
-            LeafPageHeader Res = new LeafPageHeader();
-
-            Res.Flags = BitConverter.ToInt16(src, 0);
-            Res.Number_indexes = BitConverter.ToUInt16(src, 2);
-            Res.Prev_page = BitConverter.ToUInt32(src, 4);
-            Res.Next_page = BitConverter.ToUInt32(src, 8);
-            Res.Freebytes = BitConverter.ToUInt16(src, 12);
-            Res.Numrecmask = BitConverter.ToUInt32(src, 14);
-            Res.Leftmask = BitConverter.ToUInt16(src, 18);
-            Res.Rightmask = BitConverter.ToUInt16(src, 20);
-            Res.Numrecbits = BitConverter.ToUInt16(src, 22);
-            Res.Leftbits = BitConverter.ToUInt16(src, 24);
-            Res.Rightbits = BitConverter.ToUInt16(src, 26);
-            Res.Recbytes = BitConverter.ToUInt16(src, 28);
-
-            return Res;
-
-        }
 
         public static ObjTab ByteArrayToObjtab(byte[] src)
         {

@@ -46,21 +46,6 @@ namespace _1STool1CD
         //public static readonly UInt32[] SIG_ZIP = { 0x53, 0x4b, 0x6f, 0xf4, 0x88, 0x8d, 0xc1, 0x4e, 0xa0, 0xd5, 0xeb, 0xb6, 0xbd, 0xa0, 0xa7, 0x0d };
 
 
-        public enum TypeFields
-        {
-            tf_binary,   // B   // длина = length
-	        tf_bool,     // L   // длина = 1
-	        tf_numeric,  // N   // длина = (length + 2) / 2
-	        tf_char,     // NC  // длина = length * 2
-	        tf_varchar,  // NVC // длина = length * 2 + 2
-	        tf_version,  // RV  // 16, 8 версия создания и 8 версия модификации ? каждая версия int32_t(изменения) + int32_t(реструктуризация)
-	        tf_string,   // NT  // 8 (unicode text)
-	        tf_text,     // T   // 8 (ascii text)
-	        tf_image,    // I   // 8 (image = bynary data)
-	        tf_datetime, // DT  // 7
-	        tf_version8, // 8, скрытое поле при recordlock == false и отсутствии поля типа tf_version
-	        tf_varbinary // VB  // длина = length + 2
-        };
 
         #region Размеры страницы в файле
         public static readonly UInt32 PAGE_SIZE_4K  = 4096;  // 0x1000

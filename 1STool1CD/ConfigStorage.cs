@@ -4,31 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
-    /// <summary>
-    /// Структура открытого файла адаптера контейнера конфигурации
-    /// </summary>
-    public struct ConfigFile
-    {
-        private Stream str;
-        private char[] addin;
-
-        public Stream Str { get { return str; } set { str = value; } }
-
-        public char[] Addin { get { return addin; } set { addin = value; } }
-    }
-
-    /// <summary>
-    /// Перечисление признака упакованности файла
-    /// </summary>
-    public enum table_file_packed
-    {
-        unknown,
-	    no,
-	    yes
-    }
 
     /// <summary>
     /// Структура файла контейнера файлов

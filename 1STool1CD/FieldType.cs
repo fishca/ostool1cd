@@ -4,29 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static _1STool1CD.Constants;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
-    public struct Field_type_declaration
-    {
-        private TypeFields type;
-        private bool null_exists;
-        private Int32 length;
-        private Int32 precision;
-        private bool case_sensitive;
-
-        public TypeFields Type { get { return type; } set { type = value; } }
-
-        public bool Null_exists { get { return null_exists; } set { null_exists = value; } }
-
-        public int Length { get { return length; } set { length = value; } }
-
-        public int Precision { get { return precision; } set { precision = value; } }
-
-        public bool Case_sensitive { get { return case_sensitive; } set { case_sensitive = value; } }
-
-        public static Field_type_declaration Parse_tree(Tree field_tree) { return new Field_type_declaration(); }
-    }
 
     public class FieldType
     {

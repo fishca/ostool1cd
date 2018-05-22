@@ -448,7 +448,7 @@ namespace _1STool1CD
         /// Файл открыт?
         /// </summary>
         /// <returns></returns>
-        public bool isOpen()
+        public bool IsOpen()
         {
             return IsCatalog();
         }
@@ -574,7 +574,7 @@ namespace _1STool1CD
         /// Получить первый файл
         /// </summary>
         /// <returns></returns>
-        public v8file get_first_file()
+        public v8file GetFirstFile()
         {
             return First;
         }
@@ -583,7 +583,7 @@ namespace _1STool1CD
         /// Установить первый файл
         /// </summary>
         /// <param name="value"></param>
-        public void first_file(v8file value)
+        public void FirstFile(v8file value)
         {
             First = value;
         }
@@ -592,7 +592,7 @@ namespace _1STool1CD
         /// Получить последний файл
         /// </summary>
         /// <returns></returns>
-        public v8file get_last_file()
+        public v8file GetLastFile()
         {
             return Last;
         }
@@ -601,7 +601,7 @@ namespace _1STool1CD
         /// Последний файл
         /// </summary>
         /// <param name="value"></param>
-        public void last_file(v8file value)
+        public void LastFile(v8file value)
         {
             Last = value;
         }

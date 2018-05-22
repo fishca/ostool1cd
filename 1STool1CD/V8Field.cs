@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static _1STool1CD.Constants;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
@@ -36,12 +37,12 @@ namespace _1STool1CD
         /// возвращает длину поля в байтах
         /// </summary>
         /// <returns></returns>
-        public Int32 Getlen() 
+        public Int32 GetLen() 
         {
             return (Null_exists ? 1 : 0) + Type_manager.Getlen();
         }
 
-        public String Getname()
+        public String GetName()
         {
             return Name;
         }

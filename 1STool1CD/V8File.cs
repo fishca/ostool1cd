@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static _1STool1CD.APIcfBase;
+using static _1STool1CD.Structures;
 
 
 namespace _1STool1CD
 {
-    public enum FileIsCatalog { unknown, yes, no }
+    
 
     public class v8file
     {

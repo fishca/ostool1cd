@@ -10,94 +10,7 @@ using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
-
-    public enum TypeFields
-    {
-        tf_binary,   // B // длина = length
-        tf_bool,     // L // длина = 1
-        tf_numeric,  // N // длина = (length + 2) / 2
-        tf_char,     // NC // длина = length * 2
-        tf_varchar,  // NVC // длина = length * 2 + 2
-        tf_version,  // RV // 16, 8 версия создания и 8 версия модификации ? каждая версия int32_t(изменения) + int32_t(реструктуризация)
-        tf_string,   // NT // 8 (unicode text)
-        tf_text,     // T // 8 (ascii text)
-        tf_image,    // I // 8 (image = bynary data)
-        tf_datetime, // DT //7
-        tf_version8, // 8, скрытое поле при recordlock == false и отсутствии поля типа tf_version
-        tf_varbinary // VB // длина = length + 2
-    }
-
-    public enum TableInfo
-    {
-        ti_description,
-        ti_fields,
-        ti_indexes,
-        ti_physical_view,
-        ti_logical_view
-    }
-
-    // типы измененных записей
-    public enum Changed_rec_type
-    {
-        not_changed,
-	    changed,
-	    inserted,
-	    deleted
-    }
-
-
-    // структура одного блока в файле file_blob
-    public struct Blob_block
-    {
-        private UInt32 nextblock;
-        private Int16 length;
-        //public char[] data[BLOB_RECORD_DATA_LEN];
-        private char[] data;
-
-        public uint Nextblock { get { return nextblock; } set { nextblock = value; } }
-
-        public short Length { get { return length; } set { length = value; } }
-
-        public char[] Data { get { return data; } set { data = value; } }
-    };
-
-    // структура root файла экспорта/импорта таблиц
-    public struct Export_import_table_root
-    {
-        private bool has_data;
-        private bool has_blob;
-        private bool has_index;
-        private bool has_descr;
-        private Int32 data_version_1; // версия реструктуризации
-        private Int32 data_version_2; // версия изменения
-        private Int32 blob_version_1; // версия реструктуризации
-        private Int32 blob_version_2; // версия изменения
-        private Int32 index_version_1; // версия реструктуризации
-        private Int32 index_version_2; // версия изменения
-        private Int32 descr_version_1; // версия реструктуризации
-        private Int32 descr_version_2; // версия изменения
-
-        public bool Has_data { get { return has_data; } set { has_data = value; } }
-        public bool Has_blob { get { return has_blob; } set { has_blob = value; } }
-
-        public bool Has_index { get { return has_index; } set { has_index = value; } }
-
-        public bool Has_descr { get { return has_descr; } set { has_descr = value; } }
-
-        public int Data_version_1 { get { return data_version_1; } set { data_version_1 = value; } }
-        public int Data_version_2 { get { return data_version_2; } set { data_version_2 = value; } }
-
-        public int Blob_version_1 { get { return blob_version_1; } set { blob_version_1 = value; } }
-        public int Blob_version_2 { get { return blob_version_2; } set { blob_version_2 = value; } }
-
-        public int Index_version_1 { get { return index_version_1; } set { index_version_1 = value; } }
-        public int Index_version_2 { get { return index_version_2; } set { index_version_2 = value; } }
-
-        public int Descr_version_1 { get { return descr_version_1; } set { descr_version_1 = value; } }
-        public int Descr_version_2 { get { return descr_version_2; } set { descr_version_2 = value; } }
-    };
-
-
+    
     /// <summary>
     /// Класс таблиц
     /// </summary>
@@ -829,7 +742,7 @@ namespace _1STool1CD
                 if (fields[i].Type_manager.Gettype() == TypeFields.tf_version || fields[i].Type_manager.Gettype() == TypeFields.tf_version8)
                 {
                     fields[i].Offset = recordlen;
-                    recordlen += fields[i].Getlen();
+                    recordlen += fields[i].GetLen();
                 }
             }
 
@@ -839,7 +752,7 @@ namespace _1STool1CD
                 if (fields[i].Type_manager.Gettype() != TypeFields.tf_version && fields[i].Type_manager.Gettype() != TypeFields.tf_version8)
                 {
                     fields[i].Offset = recordlen;
-                    recordlen += fields[i].Getlen();
+                    recordlen += fields[i].GetLen();
                 }
             }
             if (recordlen < 5) recordlen = 5; // Длина одной записи не может быть меньше 5 байт (1 байт признак, что запись свободна, 4 байт - индекс следующей следующей свободной записи)
@@ -1259,7 +1172,7 @@ namespace _1STool1CD
             {
                 if (s.Length != 0)
                     s += "_";
-                s += fields[num_field].Getname();
+                s += fields[num_field].GetName();
             }
             return s;
 
@@ -1464,9 +1377,9 @@ namespace _1STool1CD
                         //memset(curp, 1, BLOB_RECORD_LEN * 8);
                         break;
                     case TypeFields.tf_datetime: // DT //7
-                        if (String.Compare(f.Getname(), "_DATE_TIME") == 0)
+                        if (String.Compare(f.GetName(), "_DATE_TIME") == 0)
                             required = true;
-                        else if (String.Compare(f.Getname(), "_NUMBERPREFIX") == 0)
+                        else if (String.Compare(f.GetName(), "_NUMBERPREFIX") == 0)
                             required = true;
                         /*
                         memcpy(curp, DATE1_TEST_TEMPLATE, BLOB_RECORD_LEN);
@@ -1519,7 +1432,7 @@ namespace _1STool1CD
             {
                 fld = fields[j];
                 
-                if (String.Compare(fld.Getname(), fieldname) == 0)
+                if (String.Compare(fld.GetName(), fieldname) == 0)
                 {
                     return fld;
                 }

@@ -4,37 +4,13 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
     class Parse_Tree
     {
     }
-
-    public enum Node_type
-    {
-        nd_empty = 0,       // пусто
-        nd_string = 1,      // строка
-        nd_number = 2,      // число
-        nd_number_exp = 3,  // число с показателем степени
-        nd_guid = 4,        // уникальный идентификатор
-        nd_list = 5,        // список
-        nd_binary = 6,      // двоичные данные (с префиксом #base64:)
-        nd_binary2 = 7,     // двоичные данные формата 8.2 (без префикса)
-        nd_link = 8,        // ссылка
-        nd_binary_d = 9,    // двоичные данные (с префиксом #data:)
-        nd_unknown          // неизвестный тип
-    }
-
-    public enum _state
-    {
-        s_value,              // ожидание начала значения
-        s_delimitier,         // ожидание разделителя
-        s_string,             // режим ввода строки
-        s_quote_or_endstring, // режим ожидания конца строки или двойной кавычки
-        s_nonstring           // режим ввода значения не строки
-    }
-
 
 
     public class Tree
