@@ -149,7 +149,7 @@ namespace _1STool1CD
             else
                 Parent.First = this;
 
-            iscatalog = FileIsCatalog.unknown;
+            iscatalog = FileIsCatalog.Unknown;
             Self      = null;
             is_opened = false;
 
@@ -172,7 +172,7 @@ namespace _1STool1CD
             byte[] _t = new byte[BLOCK_HEADER_LEN];
 
 
-            if (iscatalog == FileIsCatalog.unknown)
+            if (iscatalog == FileIsCatalog.Unknown)
             {
                 // эмпирический метод?
                 if (!Try_open())
@@ -186,12 +186,12 @@ namespace _1STool1CD
                     Data.Read(_t, 0, (int)CATALOG_HEADER_LEN);
                     if (!_t.ToString().StartsWith(_EMPTY_CATALOG_TEMPLATE))
                     {
-                        iscatalog = FileIsCatalog.no;
+                        iscatalog = FileIsCatalog.No;
                         return false;
                     }
                     else
                     {
-                        iscatalog = FileIsCatalog.yes;
+                        iscatalog = FileIsCatalog.Yes;
                         return true;
                     }
 
@@ -202,34 +202,34 @@ namespace _1STool1CD
                 {
                     if (_startempty + 31 >= _filelen)
                     {
-                        iscatalog = FileIsCatalog.no;
+                        iscatalog = FileIsCatalog.No;
                         return false;
                     }
                     Data.Seek(_startempty, SeekOrigin.Begin);
                     Data.Read(_t, 0, 31);
                     if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
                     {
-                        iscatalog = FileIsCatalog.no;
+                        iscatalog = FileIsCatalog.No;
                         return false;
                     }
                 }
                 if (_filelen < (BLOCK_HEADER_LEN - 1 + CATALOG_HEADER_LEN))
                 {
-                    iscatalog = FileIsCatalog.no;
+                    iscatalog = FileIsCatalog.No;
                     return false;
                 }
                 Data.Seek(CATALOG_HEADER_LEN, SeekOrigin.Begin);
                 Data.Read(_t, 0, 31);
                 if (_t[0] != 0xd || _t[1] != 0xa || _t[10] != 0x20 || _t[19] != 0x20 || _t[28] != 0x20 || _t[29] != 0xd || _t[30] != 0xa)
                 {
-                    iscatalog = FileIsCatalog.no;
+                    iscatalog = FileIsCatalog.No;
                     return false;
                 }
-                iscatalog = FileIsCatalog.yes;
+                iscatalog = FileIsCatalog.Yes;
                 return true;
             }
 
-            return iscatalog == FileIsCatalog.yes;
+            return iscatalog == FileIsCatalog.Yes;
 
         }
 
@@ -441,7 +441,7 @@ namespace _1STool1CD
                 this.Self.Data = null;
                 Self = null;
             }
-            iscatalog = FileIsCatalog.no;
+            iscatalog = FileIsCatalog.No;
             Next = null;
             previous = null;
             is_opened = false;
@@ -532,7 +532,7 @@ namespace _1STool1CD
                 }
             }
             Data = null;
-            iscatalog = FileIsCatalog.unknown;
+            iscatalog = FileIsCatalog.Unknown;
             is_opened = false;
             Is_datamodified = false;
             is_headermodified = false;
@@ -588,7 +588,7 @@ namespace _1STool1CD
                     */
                 }
             }
-            iscatalog = FileIsCatalog.unknown;
+            iscatalog = FileIsCatalog.Unknown;
             is_opened         = false;
             Is_datamodified   = false;
             is_headermodified = false;

@@ -56,7 +56,7 @@ namespace _1STool1CD
             public short Length { get { return length; } set { length = value; } }
 
             public char[] Data { get { return data; } set { data = value; } }
-        };
+        }
 
         // структура root файла экспорта/импорта таблиц
         public struct Export_import_table_root
@@ -92,7 +92,7 @@ namespace _1STool1CD
 
             public int Descr_version_1 { get { return descr_version_1; } set { descr_version_1 = value; } }
             public int Descr_version_2 { get { return descr_version_2; } set { descr_version_2 = value; } }
-        };
+        }
 
         /// <summary>
         /// структура версии
@@ -295,7 +295,7 @@ namespace _1STool1CD
                 ss += ver4;
                 return ss;
             }
-        };
+        }
 
         /// <summary>
         /// Структура страницы размещения уровня 1 версий от 8.0 до 8.2.14
@@ -324,7 +324,7 @@ namespace _1STool1CD
                 Blocks = _blocks;
             }
 
-        };
+        }
 
         public struct Root_80
         {
@@ -349,7 +349,7 @@ namespace _1STool1CD
                 get { return blocks; }
                 set { blocks = value; }
             }
-        };
+        }
 
         public struct Root_81
         {
@@ -374,7 +374,7 @@ namespace _1STool1CD
                 get { return blocks; }
                 set { blocks = value; }
             }
-        };
+        }
 
         /// <summary>
         /// Структура принадлежности страницы
@@ -409,7 +409,7 @@ namespace _1STool1CD
                 Type = _type;
                 Number = 0;
             }
-        };
+        }
 
         /// <summary>
         /// Структура файла таблицы контейнера файлов
@@ -499,7 +499,7 @@ namespace _1STool1CD
             public int Partno { get { return partno; } set { partno = value; } }
             public DateTime Ft_create { get { return ft_create; } set { ft_create = value; } }
             public DateTime Ft_modify { get { return ft_modify; } set { ft_modify = value; } }
-        };
+        }
 
 
         #endregion
@@ -564,7 +564,12 @@ namespace _1STool1CD
             free838 = 4  // файл свободных страниц формата 8.3.8
         }
 
-        public enum FileIsCatalog { unknown, yes, no }
+        public enum FileIsCatalog
+        {
+            Unknown,
+            Yes,
+            No
+        }
 
         public enum TypeFields
         {
@@ -580,7 +585,7 @@ namespace _1STool1CD
             tf_datetime, // DT  // 7
             tf_version8, // 8, скрытое поле при recordlock == false и отсутствии поля типа tf_version
             tf_varbinary // VB  // длина = length + 2
-        };
+        }
 
 
         public enum Node_type
@@ -632,7 +637,7 @@ namespace _1STool1CD
             blobroot,      // корневая страница файла blob таблицы
             bloballoc,     // страница размещения файла blob таблицы
             blob           // страница данных файла blob таблицы
-        };
+        }
 
         /// <summary>
         /// Версии файлов shapshot
@@ -641,7 +646,7 @@ namespace _1STool1CD
         {
             Ver1 = 1,
             Ver2 = 2
-        };
+        }
 
         /// <summary>
         /// Известные версии хранилища конфигурации
@@ -653,7 +658,7 @@ namespace _1STool1CD
             Ver5 = 5, // 0500000000000000
             Ver6 = 6, // 0600000000000000
             Ver7 = 7  // 0700000000000000
-        };
+        }
 
         /// <summary>
         /// Перечисление признака упакованности файла

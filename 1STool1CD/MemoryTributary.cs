@@ -28,7 +28,7 @@ namespace _1STool1CD
                 Position = 0;
             }
 
-            /* length is ignored because capacity has no meaning unless we implement an artifical limit */
+            /* length is ignored because capacity has No meaning unless we implement an artifical limit */
             public MemoryTributary(int length)
             {
                 SetLength(length);
