@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using static _1STool1CD.Constants;
 using static _1STool1CD.Utils1CD;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {

@@ -3,12 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static _1STool1CD.Structures;
 
 namespace _1STool1CD
 {
     public static class Constants
     {
         public static readonly UInt32 LIVE_CASH = 5; // время жизни кешированных данных в минутах
+
+        /// <summary>
+        /// Длина строкового представления GUID-а
+        /// </summary>
+        public static readonly UInt32 GUID_LEN = 36;
+
+        /// <summary>
+        /// Шестнадцатеричные символы
+        /// </summary>
+        public static readonly String hexdecode = "0123456789abcdef";
+
+        /// <summary>
+        /// 0x7FFFFFFF - Обозначение последней страницы
+        /// </summary>
+        public static readonly Int32 LAST_PAGE = Int32.MaxValue;
+
 
         #region Сигнатура файла 1CD
         /*

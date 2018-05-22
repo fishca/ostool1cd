@@ -5,23 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static _1STool1CD.APIcfBase;
+using static _1STool1CD.Structures;
 
 
 namespace _1STool1CD
 {
-    /// <summary>
-    /// Структура заголовка
-    /// </summary>
-    public struct Fat_item
-    {
-        private UInt32 header_start;
-        private UInt32 data_start;
-        private UInt32 ff;            // всегда 7fffffff
-
-        public uint Header_start { get { return header_start; } set { header_start = value; } }
-        public uint Data_start { get { return data_start; } set { data_start = value; } }
-        public uint Ff { get { return ff; } set { ff = value; } }
-    }
 
     /// <summary>
     /// Класс v8catalog  
@@ -329,7 +317,7 @@ namespace _1STool1CD
         /// <param name="FileName"></param>
         /// <param name="_selfzipped"></param>
         /// <returns></returns>
-        public v8file createFile(String FileName, bool _selfzipped = false)
+        public v8file CreateFile(String FileName, bool _selfzipped = false)
         {
             Int64 v8t = 0; ;
             v8file f;
@@ -358,7 +346,7 @@ namespace _1STool1CD
         {
             V8catalog ret;
             
-            v8file f = createFile(FileName, _selfzipped);
+            v8file f = CreateFile(FileName, _selfzipped);
             if (f.GetFileLength() > 0)
             {
                 if (f.IsCatalog()) ret = f.GetCatalog();
@@ -401,14 +389,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public V8catalog GetParentCatalog()
         {
-            if (File != null)
-            {
-                return File.Parent;
-            }
-            else
-            {
-                return null;
-            }
+            return File?.Parent;
         }
 
         /// <summary>

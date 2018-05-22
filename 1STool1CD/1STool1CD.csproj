@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="APIcfBase.cs" />
     <Compile Include="BinaryDecimalNumber.cs" />
+    <Compile Include="Structures.cs" />
     <Compile Include="Class_1CD.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="ConfigStorage.cs" />
