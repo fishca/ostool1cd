@@ -12,16 +12,16 @@ namespace _1STool1CD
     {
         #region Константы
 
-        public static readonly string str_cfu = ".cfu";
-        public static readonly string str_cfe = ".cfe";
-        public static readonly string str_cf = ".cf";
-        public static readonly string str_epf = ".epf";
-        public static readonly string str_erf = ".erf";
-        public static readonly string str_backslash = "\\";
+        public static readonly String str_cfu = ".cfu";
+        public static readonly String str_cfe = ".cfe";
+        public static readonly String str_cf = ".cf";
+        public static readonly String str_epf = ".epf";
+        public static readonly String str_erf = ".erf";
+        public static readonly String str_backslash = "\\";
 
         // шаблон заголовка блока
-        public static readonly string _BLOCK_HEADER_TEMPLATE  = "\r\n00000000 00000000 00000000 \r\n";
-        public static readonly string _EMPTY_CATALOG_TEMPLATE = "FFFFFF7F020000000000";
+        public static readonly String _BLOCK_HEADER_TEMPLATE  = "\r\n00000000 00000000 00000000 \r\n";
+        public static readonly String _EMPTY_CATALOG_TEMPLATE = "FFFFFF7F020000000000";
 
         public static readonly Int32  LAST_BLOCK  = 0x7FFFFFFF;
         public static readonly UInt32 LAST_BLOCK2 = 0x7FFFFFFF;
@@ -36,60 +36,22 @@ namespace _1STool1CD
         #endregion
 
         #region Struct
-        public struct V8header_struct
+        public struct V8HeaderStruct
         {
-            private Int64 time_create;
-            private Int64 time_modify;
-            private Int64 zero;
-
-            public long Time_create
-            {
-                get { return time_create; }
-                set { time_create = value; }
-            }
-            public long Time_modify
-            {
-                get { return time_modify;  }
-                set { time_modify = value; }
-            }
-            public long Zero
-            {
-                get { return zero;  }
-                set { zero = value; }
-
-            }
+            public Int64 TimeCreate { get; set; }
+            public Int64 TimeModify { get; set; }
+            public Int64 Zero       { get; set; }
         }
 
-        public struct Catalog_header
+        public struct CatalogHeader
         {
-            private Int32 start_empty; // начало первого пустого блока
-            private Int32 page_size;   // размер страницы по умолчанию
-            private Int32 version;     // версия
-            private Int32 zero;        // всегда ноль?
-
-            public int Start_empty
-            {
-                get { return start_empty; }
-                set { start_empty = value; }
-            }
-            public int Page_size
-            {
-                get { return page_size; }
-                set { page_size = value; }
-            }
-            public int Version
-            {
-                get { return version; }
-                set { version = value; }
-            }
-            public int Zero
-            {
-                get { return zero; }
-                set { zero = value; }
-            }
+            public Int32 StartEmpty { get; set; }
+            public Int32 PageSize   { get; set; }
+            public Int32 Version    { get; set; }
+            public Int32 Zero       { get; set; }
         }
 
-        public enum Block_header : int
+        public enum BlockHeader : Int32
         {
             doc_len   = 2,
 	        block_len = 11,
@@ -456,7 +418,7 @@ namespace _1STool1CD
 
             int indxdest = ahex_len.Length-1;
 
-            Array.Copy(temp_buf, (int)Block_header.doc_len, ahex_len, indxdest, HEX_INT_LEN);
+            Array.Copy(temp_buf, (int)BlockHeader.doc_len, ahex_len, indxdest, HEX_INT_LEN);
 
             len = HexStringToInt(hex_len);
 
@@ -469,7 +431,7 @@ namespace _1STool1CD
 
             int indxdest_curlen = ahex_curlen.Length - 1;
 
-            Array.Copy(temp_buf, (int)Block_header.block_len, ahex_curlen, indxdest_curlen, HEX_INT_LEN);
+            Array.Copy(temp_buf, (int)BlockHeader.block_len, ahex_curlen, indxdest_curlen, HEX_INT_LEN);
 
             curlen = HexStringToInt(ahex_curlen.ToString());
                         
@@ -479,7 +441,7 @@ namespace _1STool1CD
 
             int indxdest_hex_start = ahex_start.Length - 1;
 
-            Array.Copy(temp_buf, (int)Block_header.nextblock, ahex_start, indxdest_hex_start, HEX_INT_LEN);
+            Array.Copy(temp_buf, (int)BlockHeader.nextblock, ahex_start, indxdest_hex_start, HEX_INT_LEN);
 
             start = HexStringToInt(ahex_start.ToString());
 
@@ -501,7 +463,7 @@ namespace _1STool1CD
 
                 int indxdest_curlen1 = ahex_curlen1.Length - 1;
 
-                Array.Copy(temp_buf, (int)Block_header.block_len, ahex_curlen1, indxdest_curlen1, HEX_INT_LEN);
+                Array.Copy(temp_buf, (int)BlockHeader.block_len, ahex_curlen1, indxdest_curlen1, HEX_INT_LEN);
 
                 curlen = HexStringToInt(ahex_curlen1.ToString());
 
@@ -511,7 +473,7 @@ namespace _1STool1CD
 
                 int indxdest_hex_start1 = ahex_start.Length - 1;
 
-                Array.Copy(temp_buf, (int)Block_header.nextblock, ahex_start1, indxdest_hex_start1, HEX_INT_LEN);
+                Array.Copy(temp_buf, (int)BlockHeader.nextblock, ahex_start1, indxdest_hex_start1, HEX_INT_LEN);
 
                 start = HexStringToInt(ahex_start1.ToString());
 
