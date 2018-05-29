@@ -13,9 +13,6 @@ using static _1STool1CD.Structures;
 namespace _1STool1CD
 {
 
-    
-
-
     // класс конфигурации поставщика
     public class SupplierConfig
     {
@@ -26,26 +23,26 @@ namespace _1STool1CD
 
         public TableFile File
         {
-            get { return file; }
-            set { file = value; }
+            get;
+            set;
         }
 
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get;
+            set;
         }
 
         public string Supplier
         {
-            get { return supplier; }
-            set { supplier = value; }
+            get;
+            set;
         }
 
         public string Version
         {
-            get { return version; }
-            set { version = value; }
+            get;
+            set;
         }
     };
 

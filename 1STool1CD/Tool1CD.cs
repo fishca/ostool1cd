@@ -23,13 +23,24 @@ namespace _1STool1CD
         /// <summary>
         /// Версия базы 1CD.
         /// </summary>
-        [ContextProperty("СвойствоДляЧтения", "ReadonlyProperty")]
+        [ContextProperty("Версия1CD", "ReadonlyProperty")]
         public string ReadonlyProperty
         {
             get
             {
                 return "0.0.0.1";
             }
+        }
+
+        [ContextMethod("ПолучитьТаблицу", "GetTable")]
+        public string GetTable(string tbl)
+        {
+            if (tbl == "config")
+                return "Таблица № 1 Configs";
+            if (tbl == "users")
+                return "Таблица № 2 users";
+            else
+                return "";
         }
 
         /// <summary>
@@ -41,7 +52,5 @@ namespace _1STool1CD
         {
             return new Tool1CD();
         }
-
-
     }
 }
