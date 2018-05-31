@@ -203,10 +203,56 @@ namespace _1STool1CD
         /// <summary>
         ///  Конструктор 
         /// </summary>
-        public Tools1CD()
+        public Tools1CD(String FileName1C)
         {
+            Root_81 root81 = new Root_81();
+            root81.Blocks = new UInt32[1];
+            root81.Numblocks = 0;
+
+            Data1CD = new FileStream(FileName1C, FileMode.Open);
+
+            ReadPage0();
+
+            String verDB = Page0.getver();
+
+            if (verDB == "8.2.14.0")
+            {
+                version = DBVer.ver8_2_14_0;
+            }
+            else if (verDB == "8.3.8.0")
+            {
+                version = DBVer.ver8_3_8_0;
+                pagesize = Page0.pagesize;
+            }
+
             
+
+
         }
+
+        V8Con Page0;
+
+        public void ReadPage0()
+        {
+
+            BinaryReader br = new BinaryReader(data1CD);
+            byte[] buf = new byte[100];
+
+            buf = br.ReadBytes(8);
+
+            Page0.sig = Encoding.UTF8.GetChars(buf, 0, 8);
+
+            Page0.ver1 = br.ReadByte();
+            Page0.ver2 = br.ReadByte();
+            Page0.ver3 = br.ReadByte();
+            Page0.ver4 = br.ReadByte();
+
+            Page0.length     = br.ReadUInt32();
+            Page0.firstblock = br.ReadUInt32();
+            Page0.pagesize   = br.ReadUInt32();
+
+        }
+
 
         public static Tree Get_treeFromV8file(v8file f)
         {

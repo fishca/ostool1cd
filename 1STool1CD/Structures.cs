@@ -275,14 +275,14 @@ namespace _1STool1CD
         public struct V8Con
         {
             // восемь символов
-            char[] sig; // сигнатура SIG_CON
-            char ver1;
-            char ver2;
-            char ver3;
-            char ver4;
-            UInt32 length;
-            UInt32 firstblock;
-            UInt32 pagesize;
+            public Char[] sig; // сигнатура SIG_CON
+            public Byte ver1;
+            public Byte ver2;
+            public Byte ver3;
+            public Byte ver4;
+            public UInt32 length;
+            public UInt32 firstblock;
+            public UInt32 pagesize;
 
             public String getver()
             {

@@ -7,6 +7,7 @@ using ScriptEngine.HostedScript.Library; // только если подключ
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
+using System.IO;
 
 namespace _1STool1CD
 {
@@ -16,15 +17,32 @@ namespace _1STool1CD
     [ContextClass("Утилита1CD", "Tool1CD")]
     public class Tool1CD : AutoContext<Tool1CD>
     {
-        public Tool1CD()
+        private String Version; // Версия формата открытого файла
+        private Int32 PageSize; // Размер страницы открытого файла
+        private String Data1CD; // Полный путь к файлу базы данных
+        
+
+        public Tool1CD(IValue F1CD)
         {
+            Data1CD = F1CD.ToString();
+            try
+            {
+                Tools1CD Data1C = new Tools1CD(Data1CD);
+                Version = Data1C.Version.ToString();
+            }
+            finally
+            {
+
+            }
+
         }
 
+        #region 123
         /// <summary>
         /// Версия базы 1CD.
         /// </summary>
         [ContextProperty("Версия1CD", "ReadonlyProperty")]
-        public string ReadonlyProperty
+        public String ReadonlyProperty
         {
             get
             {
@@ -33,39 +51,46 @@ namespace _1STool1CD
         }
 
         [ContextProperty("ВерсияФормата1CD", "Version1CD")]
-        public string Version1CD
+        public String Version1CD
         {
+            /*
+            set
+            {
+                Version = value;
+            }
+            */
             get
             {
-                return "8.2";
+                return Version;
             }
         }
 
 
         [ContextProperty("Размер", "PSize")]
-        public string PSize
-        {
-            set
-            {
-                this.PSize = value;
-            }
-            
-            
-
-        }
-
-
-        [ContextProperty("РазмерСтраницы", "PageSize")]
-        public string PageSize
+        public String PSize
         {
             get
             {
-                return PSize;
+                return "_";
+            }
+        }
+
+
+        [ContextProperty("РазмерСтраницы", "PageSize1CD")]
+        public Int32 PageSize1CD
+        {
+            set
+            {
+                PageSize = value;
+            }
+            get
+            {
+                return PageSize;
             }
         }
 
         [ContextMethod("ПолучитьТаблицу", "GetTable")]
-        public string GetTable(string tbl)
+        public String GetTable(String tbl)
         {
             if (tbl == "config")
                 return "Таблица № 1 Configs";
@@ -75,14 +100,15 @@ namespace _1STool1CD
                 return "";
         }
 
+        #endregion
         /// <summary>
         /// Некоторый конструктор
         /// </summary>
         /// <returns></returns>
         [ScriptConstructor]
-        public static IRuntimeContextInstance Constructor()
+        public static IRuntimeContextInstance Constructor(IValue fName)
         {
-            return new Tool1CD();
+            return new Tool1CD(fName);
         }
     }
 }
