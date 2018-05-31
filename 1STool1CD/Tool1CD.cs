@@ -32,6 +32,38 @@ namespace _1STool1CD
             }
         }
 
+        [ContextProperty("ВерсияФормата1CD", "Version1CD")]
+        public string Version1CD
+        {
+            get
+            {
+                return "8.2";
+            }
+        }
+
+
+        [ContextProperty("Размер", "PSize")]
+        public string PSize
+        {
+            set
+            {
+                this.PSize = value;
+            }
+            
+            
+
+        }
+
+
+        [ContextProperty("РазмерСтраницы", "PageSize")]
+        public string PageSize
+        {
+            get
+            {
+                return PSize;
+            }
+        }
+
         [ContextMethod("ПолучитьТаблицу", "GetTable")]
         public string GetTable(string tbl)
         {
