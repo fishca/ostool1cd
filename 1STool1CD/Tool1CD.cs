@@ -29,6 +29,9 @@ namespace _1STool1CD
             {
                 Tools1CD Data1C = new Tools1CD(Data1CD);
                 Version = Data1C.Version.ToString();
+
+                
+
             }
             finally
             {
@@ -50,7 +53,7 @@ namespace _1STool1CD
             }
         }
 
-        [ContextProperty("ВерсияФормата1CD", "Version1CD")]
+        [ContextProperty("ВерсияФорматаФайла", "Version1CD")]
         public String Version1CD
         {
             /*
@@ -99,6 +102,96 @@ namespace _1STool1CD
             else
                 return "";
         }
+
+        [ContextMethod("УстановитьИмяЛогФайла", "SetLogFile")]
+        public String SetLogFile(String FileName)
+        {
+            return "";
+        }
+
+        [ContextMethod("ОткрытьНеМонопольно", "SetNotExclusively")]
+        public String SetNotExclusively(String FileName)
+        {
+            return "";
+        }
+
+        [ContextMethod("ЭкспортироватьВсеТаблицы", "ExportAllToXML")]
+        public String ExportAllToXML(String FileName)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Экспортировать по указанному пути указанные таблицы в XML. 
+        /// В списке через запятую, точку с запятой или пробел указывается список имен экспортируемых таблиц. 
+        /// Можно использовать знаки подстановки * и ? 
+        /// Если в списке содержатся пробелы, список необходимо заключать в кавычки.
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        [ContextMethod("ЭкспортироватьТаблицу", "ExportToXML")]
+        public String ExportToXML(String FileName)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Выгрузить основную конфигурацию информационной базы по указанному пути
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        [ContextMethod("ВыгрузитьОсновнуюКонфигурацию", "DumpConfig")]
+        public String DumpConfig(String FileName)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Выгрузить конфигурацию базы данных по указанному пути
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        [ContextMethod("ВыгрузитьКонфигурацию", "DumpDBConfig")]
+        public String DumpDBConfig(String FileName)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Выгрузить конфигурации поставщиков информационной базы по указанному пути
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        [ContextMethod("ВыгрузитьКонфигурацииПоставщиков", "DumpVendorsConfigs")]
+        public String DumpVendorsConfigs(String FileName)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Выгрузить все конфигурации информационной базы по указанному пути
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        [ContextMethod("ВыгрузитьВсеКонфигурации", "DumpAllConfigs")]
+        public String DumpAllConfigs(String FileName)
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Выгрузить конфигурацию хранилища заданной версии по указанному пути. 
+        /// Номер версии - это целое число. 1, 2, 3 и т.д. - выгрузить конфигурацию указанной версии, 
+        /// 0 - выгрузить последнюю версию, -1 - предпоследнюю и т.д.
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        [ContextMethod("ВыгрузитьКонфигурациюХранилища", "DumpDepotConfig")]
+        public String DumpDepotConfig(String FileName, Int32 Ver)
+        {
+            return "";
+        }
+
 
         #endregion
         /// <summary>

@@ -205,13 +205,55 @@ namespace _1STool1CD
         /// </summary>
         public Tools1CD(String FileName1C)
         {
+            pagesize = DEFAULT_PAGE_SIZE;
             Root_81 root81 = new Root_81();
             root81.Blocks = new UInt32[1];
             root81.Numblocks = 0;
 
             Data1CD = new FileStream(FileName1C, FileMode.Open);
 
-            ReadPage0();
+            ReadPage0(); // читаем структуру первой страницы контейнера
+
+            pagesize = Page0.pagesize;
+
+            //Page0.sig = Encoding.UTF8.GetChars(buf, 0, 8);
+
+            //Page0.ver1 = br.ReadByte();
+            //Page0.ver2 = br.ReadByte();
+            //Page0.ver3 = br.ReadByte();
+            //Page0.ver4 = br.ReadByte();
+
+            //Page0.length = br.ReadUInt32();
+            //Page0.firstblock = br.ReadUInt32();
+            //Page0.pagesize = br.ReadUInt32();
+
+
+            Console.WriteLine($"Сигнатура файла... {Convert.ToString(Page0.sig)}");
+            Console.WriteLine($"Ver1... {Page0.ver1}");
+            Console.WriteLine($"Ver2... {Page0.ver2}");
+            Console.WriteLine($"Ver3... {Page0.ver3}");
+            Console.WriteLine($"Ver4... {Page0.ver4}");
+            Console.WriteLine($"Page0.length... {Page0.length}");
+            Console.WriteLine($"Page0.firstblock... {Page0.firstblock}");
+            Console.WriteLine($"Page0.pagesize... {Page0.pagesize}");
+
+
+            //length = ?(pagesize != 0): (UInt32)Data1CD.Length / pagesize, 0;
+            if (pagesize != 0)
+            {
+                length = (UInt32)Data1CD.Length / pagesize;
+                //Console.WriteLine('Размер страницы определить не удается...');
+            }
+            else
+            {
+                length = 0;
+                Console.WriteLine($"Размер страницы определить не удается...");
+            }
+
+            //if (length * pagesize)
+
+
+
 
             String verDB = Page0.getver();
 
