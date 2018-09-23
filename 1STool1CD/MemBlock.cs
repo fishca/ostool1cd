@@ -21,9 +21,9 @@ namespace _1STool1CD
         {
             Numblock = _numblock;
 
-            Lastdataget = 0;
+            LastDataGet = 0;
 
-            if (Count >= Maxcount)
+            if (Count >= MaxCount)
                 First = null;  // если количество кешированных блоков превышает максимальное, удаляем последний, к которому было обращение
 
             Count++;
@@ -74,7 +74,7 @@ namespace _1STool1CD
                 fs.Read(buf, 0, (int)Pagesize);
             }
 
-            Is_changed = for_write;
+            IsChanged = for_write;
             File = fs;
 
             // регистрируем себя в массиве блоков
@@ -86,65 +86,65 @@ namespace _1STool1CD
 
         }
 
-        public static byte[] Getblock(FileStream fs, UInt32 _numblock)
+        public static byte[] GetBlock(FileStream fs, UInt32 _numblock)
         {
-            if (_numblock >= Numblocks)
+            if (_numblock >= NumBlocks)
                 return null;
             if (Memblocks[_numblock] != null)
             {
                 V8MemBlock tmpV8Mem = new V8MemBlock(fs, _numblock, false, true);
             }
             return
-                Memblocks[_numblock].Getblock(false);
+                Memblocks[_numblock].GetBlock(false);
         }
 
-        public static byte[] Getblock_for_write(FileStream fs, UInt32 _numblock, bool read)
+        public static byte[] GetBlockForWrite(FileStream fs, UInt32 _numblock, bool read)
         {
-            if (_numblock > Numblocks)
+            if (_numblock > NumBlocks)
                 return null;
-            if (_numblock == Numblocks)
-                Add_block();
+            if (_numblock == NumBlocks)
+                AddBlock();
             if (Memblocks[_numblock] != null)
             {
                 V8MemBlock tmpV8Mem = new V8MemBlock(fs, _numblock, true, read);
             }
             else
-                Memblocks[_numblock].Is_changed = true;
+                Memblocks[_numblock].IsChanged = true;
 
             return
-                Memblocks[_numblock].Getblock(true);
+                Memblocks[_numblock].GetBlock(true);
         }
 
-        public static void Create_memblocks(UInt32 _numblocks)
+        public static void CreateMemblocks(UInt32 _numblocks)
         {
-            Numblocks = _numblocks;
-            Array_numblocks = (Numblocks / Delta + 1) * Delta;
-            Memblocks = new V8MemBlock[Array_numblocks];
+            NumBlocks = _numblocks;
+            ArrayNumBlocks = (NumBlocks / Delta + 1) * Delta;
+            Memblocks = new V8MemBlock[ArrayNumBlocks];
             //memset(memblocks, 0, array_numblocks * sizeof(MemBlock*));
         }
 
-        public static void Delete_memblocks()
+        public static void DeleteMemblocks()
         {
             while (First != null)
                 First = null;
 
             Memblocks = null;
 
-            Numblocks = 0;
+            NumBlocks = 0;
 
-            Array_numblocks = 0;
+            ArrayNumBlocks = 0;
         }
 
-        public static UInt64 Get_numblocks()
+        public static UInt64 GetNumBlocks()
         {
-            return Numblocks;
+            return NumBlocks;
         }
 
         public static void Flush()
         {
             V8MemBlock cur;
             for (cur = First; cur != null; cur = cur.Next)
-                if (cur.Is_changed)
+                if (cur.IsChanged)
                     cur.Write();
         }
 
@@ -190,20 +190,20 @@ namespace _1STool1CD
         public V8MemBlock Next { get { return next; } set { next = value; } }
         public V8MemBlock Prev { get { return prev; } set { prev = value; } }
 
-        public bool Is_changed { get { return is_changed; } set { is_changed = value; } }
+        public bool IsChanged { get { return is_changed; } set { is_changed = value; } }
 
         public static V8MemBlock First { get { return first; } set { first = value; } }
         public static V8MemBlock Last { get { return last; } set { last = value; } }
-        public static uint Maxcount { get { return maxcount; } set { maxcount = value; } }
-        public static uint Numblocks { get { return numblocks; } set { numblocks = value; } }
-        public static uint Array_numblocks { get { return array_numblocks; } set { array_numblocks = value; } }
+        public static uint MaxCount { get { return maxcount; } set { maxcount = value; } }
+        public static uint NumBlocks { get { return numblocks; } set { numblocks = value; } }
+        public static uint ArrayNumBlocks { get { return array_numblocks; } set { array_numblocks = value; } }
         public static uint Delta { get { return delta; } set { delta = value; } }
-        public uint Lastdataget { get { return lastdataget; } set { lastdataget = value; } }
+        public uint LastDataGet { get { return lastdataget; } set { lastdataget = value; } }
 
         public static V8MemBlock[] Memblocks { get { return memblocks; } set { memblocks = value; } }
 
         //char* getblock(bool for_write); // получить блок для чтения или для записи
-        public byte[] Getblock(bool for_write) // получить блок для чтения или для записи
+        public byte[] GetBlock(bool for_write) // получить блок для чтения или для записи
         {
             // удаляем себя из текущего положения цепочки...
             if (Prev != null)
@@ -227,28 +227,28 @@ namespace _1STool1CD
 
             Last = this;
 
-            if (for_write) Is_changed = true;
+            if (for_write) IsChanged = true;
 
             return buf;
 
             //return new byte[0x1000];
         }
 
-        public static void Add_block()
+        public static void AddBlock()
         {
 
-            if (Numblocks < Array_numblocks)
-                Memblocks[Numblocks++] = null;
+            if (NumBlocks < ArrayNumBlocks)
+                Memblocks[NumBlocks++] = null;
             else
             {
-                V8MemBlock[] mb = new V8MemBlock[Array_numblocks + Delta];
-                for (uint i = 0; i < Array_numblocks; i++)
+                V8MemBlock[] mb = new V8MemBlock[ArrayNumBlocks + Delta];
+                for (uint i = 0; i < ArrayNumBlocks; i++)
                     mb[i] = Memblocks[i];
 
-                for (uint i = Array_numblocks; i < Array_numblocks + Delta; i++)
+                for (uint i = ArrayNumBlocks; i < ArrayNumBlocks + Delta; i++)
                     mb[i] = null;
 
-                Array_numblocks += Delta;
+                ArrayNumBlocks += Delta;
 
                 Memblocks = null;
 
@@ -259,12 +259,12 @@ namespace _1STool1CD
 
         public void Write()
         {
-            if (!Is_changed)
+            if (!IsChanged)
                 return;
 
             File.Seek(Numblock * Pagesize, SeekOrigin.Begin);
             File.Write(buf, 0, (int)Pagesize);
-            Is_changed = false;
+            IsChanged = false;
         }
 
     }

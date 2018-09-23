@@ -673,7 +673,7 @@ namespace _1STool1CD
             }
 
             V8MemBlock tmpV8MemBlock = new V8MemBlock((FileStream)Data1CD, block_number, false, true);
-            return V8MemBlock.Getblock((FileStream)Data1CD, block_number);
+            return V8MemBlock.GetBlock((FileStream)Data1CD, block_number);
         }
 
         public bool Getblock(ref byte[] buf, UInt32 block_number, Int32 blocklen = -1) // буфер принадлежит вызывающей процедуре
@@ -694,7 +694,7 @@ namespace _1STool1CD
 
 
             V8MemBlock tmp_mem_block = new V8MemBlock((FileStream)Data1CD, block_number, false, true);
-            byte[] tmp_buf = V8MemBlock.Getblock((FileStream)Data1CD, block_number);
+            byte[] tmp_buf = V8MemBlock.GetBlock((FileStream)Data1CD, block_number);
             Array.Copy(tmp_buf, buf, blocklen);
             return true;
 
