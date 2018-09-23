@@ -393,7 +393,7 @@ namespace _1STool1CD
         {
             V8Field fld = new V8Field(parent);
 
-            if (field_tree.Get_type() != Node_type.nd_string)
+            if (field_tree.Get_type() != NodeType.nd_string)
             {
                 throw new Exception("Ошибка получения имени поля таблицы. Узел не является строкой.");
             }
@@ -401,11 +401,11 @@ namespace _1STool1CD
 
             field_tree = field_tree.Get_next();
 
-            Field_type_declaration type_declaration;
+            FieldTypeDeclaration type_declaration;
             try
             {
 
-                type_declaration = Field_type_declaration.Parse_tree(field_tree);
+                type_declaration = FieldTypeDeclaration.Parse_tree(field_tree);
 
             }
             catch
@@ -414,7 +414,7 @@ namespace _1STool1CD
             }
 
             fld.Type = type_declaration.Type;
-            fld.Null_exists = type_declaration.Null_exists;
+            fld.Null_exists = type_declaration.NullExists;
             fld.Type_manager = FieldType.Create_type_manager(type_declaration);
 
             if (fld.Type == TypeFields.tf_version)

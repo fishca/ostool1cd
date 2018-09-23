@@ -27,7 +27,7 @@ namespace _1STool1CD
         public virtual UInt32 GetSortKey(byte[] rec, byte[] SortKey, Int32 maxlen) { return 0; }
 
 
-        public static FieldType Create_type_manager(Field_type_declaration type_declaration) { return (FieldType)null; }
+        public static FieldType Create_type_manager(FieldTypeDeclaration type_declaration) { return (FieldType)null; }
         public static FieldType Version8() { return (FieldType)null; }
 
         // TODO: убрать это куда-нибудь
@@ -41,7 +41,7 @@ namespace _1STool1CD
 
     public class CommonFieldType : FieldType
     {
-        public CommonFieldType(Field_type_declaration declaration) 
+        public CommonFieldType(FieldTypeDeclaration declaration) 
         {
             //declaration.type = Constants.type_fields.
         }

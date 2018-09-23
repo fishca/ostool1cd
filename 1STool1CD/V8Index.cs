@@ -94,7 +94,7 @@ namespace _1STool1CD
                     //rootblock = *(UInt32*)buf;
                     Rootblock = buf[0]; // скорее всего не правильно
 
-                if (Version >= DBVer.ver8_3_8_0)
+                if (Version >= DBVer.ver_8_3_8_0)
                     Rootblock *= Pagesize;
 
                 //length = *(int16_t*)(buf + 4); 
@@ -148,7 +148,7 @@ namespace _1STool1CD
                 //rootblock = *(uint32_t*)buf;
                 Rootblock = buf[0]; // не понятно что с этим делать
 
-                if (Version >= DBVer.ver8_3_8_0)
+                if (Version >= DBVer.ver_8_3_8_0)
                     Rootblock *= Pagesize;
                 
             }
@@ -228,12 +228,12 @@ namespace _1STool1CD
                 return null;
             }
 
-            UInt32 numrecmask =   header.Numrecmask;
-            UInt32 leftmask =   header.Leftmask;
-            UInt32 rightmask =  header.Rightmask;
-            UInt32 numrecbits = header.Numrecbits;
-            UInt32 leftbits =   header.Leftbits;
-            UInt32 recbytes =   header.Recbytes;
+            UInt32 numrecmask =   header.NumRecMask;
+            UInt32 leftmask =   header.LeftMmask;
+            UInt32 rightmask =  header.RightMask;
+            UInt32 numrecbits = header.NumRecBits;
+            UInt32 leftbits =   header.LeftBits;
+            UInt32 recbytes =   header.RecBytes;
 
             step = Length + 4;
 

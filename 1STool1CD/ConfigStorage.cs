@@ -19,7 +19,7 @@ namespace _1STool1CD
         private Stream stream;
         private Stream rstream; // raw stream (нераспакованный поток)
         private V8catalog cat;
-        private table_file_packed packed;
+        private TableFilePacked packed;
         private int dynno; // Номер (индекс) динамического обновления (0, 1 и т.д.). Если без динамического обновления, то -1, если UID динамического обновления не найден, то -2. Для пропускаемых файлов -3.
 
         public TableFile File { get { return file; } set { file = value; } }
@@ -32,7 +32,7 @@ namespace _1STool1CD
 
         public V8catalog Cat { get { return cat; } set { cat = value; } }
 
-        public table_file_packed Packed { get { return packed; } set { packed = value; } }
+        public TableFilePacked Packed { get { return packed; } set { packed = value; } }
 
         public int Dynno { get { return dynno; } set { dynno = value; } }
 
@@ -43,7 +43,7 @@ namespace _1STool1CD
             Stream = null;
             Rstream = null;
             Cat = null;
-            Packed = table_file_packed.unknown;
+            Packed = TableFilePacked.unknown;
             Dynno = -3;
         }
 

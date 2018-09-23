@@ -206,7 +206,7 @@ namespace _1STool1CD
         public Tools1CD(String FileName1C)
         {
             pagesize = DEFAULT_PAGE_SIZE;
-            Root_81 root81 = new Root_81();
+            Root81 root81 = new Root81();
             root81.Blocks = new UInt32[1];
             root81.Numblocks = 0;
 
@@ -259,11 +259,11 @@ namespace _1STool1CD
 
             if (verDB == "8.2.14.0")
             {
-                version = DBVer.ver8_2_14_0;
+                version = DBVer.ver_8_2_14_0;
             }
             else if (verDB == "8.3.8.0")
             {
-                version = DBVer.ver8_3_8_0;
+                version = DBVer.ver_8_3_8_0;
                 pagesize = Page0.pagesize;
             }
 
@@ -365,7 +365,7 @@ namespace _1STool1CD
 
         DBVer Getversion()
         {
-            return DBVer.ver8_2_14_0;
+            return DBVer.ver_8_2_14_0;
         }
 
         public bool Save_config(String filename)

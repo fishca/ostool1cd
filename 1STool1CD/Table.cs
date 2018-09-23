@@ -30,7 +30,7 @@ namespace _1STool1CD
             private UInt32 numrec;
 
             // тип изменения записи (изменена, добавлена, удалена)
-            private Changed_rec_type changed_type;
+            private ChangedRecType changed_type;
 
             // следующая измененная запись в списке измененных записей
             private Changed_rec next;
@@ -46,7 +46,7 @@ namespace _1STool1CD
 
             public uint Numrec { get { return numrec; } set { numrec = value; } }
 
-            public Changed_rec_type Changed_type { get { return changed_type; } set { changed_type = value; } }
+            public ChangedRecType Changed_type { get { return changed_type; } set { changed_type = value; } }
 
             public Changed_rec Next { get { return next; } set { next = value; } }
 
@@ -54,12 +54,12 @@ namespace _1STool1CD
 
             public char[] Rec { get { return rec; } set { rec = value; } }
 
-            public Changed_rec(V8Table _parent, Changed_rec_type crt, UInt32 phys_numrecord)
+            public Changed_rec(V8Table _parent, ChangedRecType crt, UInt32 phys_numrecord)
             {
                 Parent = _parent;
                 Numrec = phys_numrecord;
                 Changed_type = crt;
-                if (crt == Changed_rec_type.deleted)
+                if (crt == ChangedRecType.deleted)
                 {
                     Fields = null;
                     Rec = null;
@@ -274,7 +274,7 @@ namespace _1STool1CD
             }
 
             t = rt.Get_first();
-            if (t.Get_type() != Node_type.nd_string)
+            if (t.Get_type() != NodeType.nd_string)
             {
                 Console.WriteLine($"Ошибка получения имени таблицы. Узел не является строкой. Блок, {block_descr}");
                 Init();
@@ -296,7 +296,7 @@ namespace _1STool1CD
             t = t.Get_next();
             // пропускаем узел, так как там всегда содержится "0", и что это такое, неизвестно (версия формата описания таблиц?)
             t = t.Get_next();
-            if (t.Get_type() != Node_type.nd_list)
+            if (t.Get_type() != NodeType.nd_list)
             {
                 Console.WriteLine($"Ошибка получения полей таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {Name}");
                 Init();
@@ -317,7 +317,7 @@ namespace _1STool1CD
             bool has_version = false; // признак наличия поля версии
 
             f = t.Get_first();
-            if (f.Get_type() != Node_type.nd_string)
+            if (f.Get_type() != NodeType.nd_string)
             {
                 Console.WriteLine($"Ошибка получения полей таблицы. Ожидаемый узел Fields не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
@@ -367,7 +367,7 @@ namespace _1STool1CD
                 }
             }
             t = t.Get_next();
-            if (t.Get_type() != Node_type.nd_list)
+            if (t.Get_type() != NodeType.nd_list)
             {
                 Console.WriteLine($"Ошибка получения индексов таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
@@ -393,7 +393,7 @@ namespace _1STool1CD
                     indexes[i] = new V8Index(this);
 
                 f = t.Get_first();
-                if (f.Get_type() != Node_type.nd_string)
+                if (f.Get_type() != NodeType.nd_string)
                 {
                     Console.WriteLine($"Ошибка получения индексов таблицы. Ожидаемый узел Indexes не является строкой. Блок, {block_descr}, Таблица {Name}");
                     Deletefields();
@@ -428,7 +428,7 @@ namespace _1STool1CD
                     ind = indexes[i];
                     ind.Num_records = numrec;
 
-                    if (f.Get_type() != Node_type.nd_list)
+                    if (f.Get_type() != NodeType.nd_list)
                     {
                         Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является деревом. Блок, {block_descr}, Таблица {Name}, Номер индекса {i + 1}");
                         Deletefields();
@@ -438,7 +438,7 @@ namespace _1STool1CD
                         return;
                     }
                     Tree index_tree = f.Get_first();
-                    if (index_tree.Get_type() != Node_type.nd_string)
+                    if (index_tree.Get_type() != NodeType.nd_string)
                     {
                         Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}, Номер индекса {i + 1}");
                         Deletefields();
@@ -450,7 +450,7 @@ namespace _1STool1CD
                     ind.Name = index_tree.Get_value();
 
                     index_tree = index_tree.Get_next();
-                    if (index_tree.Get_type() != Node_type.nd_number)
+                    if (index_tree.Get_type() != NodeType.nd_number)
                     {
                         Console.WriteLine($"Ошибка получения очередного индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}, Номер индекса {ind.Name}");
                         Deletefields();
@@ -490,7 +490,7 @@ namespace _1STool1CD
                         }
 
 				        in_ = index_tree.Get_first();
-                        if (in_.Get_type() != Node_type.nd_string)
+                        if (in_.Get_type() != NodeType.nd_string)
 				        {
                             Console.WriteLine($"Ошибка получения имени поля индекса таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}, Индекс {ind.Name}, Номер поля индекса {j + 1}");
                             Deletefields();
@@ -521,7 +521,7 @@ namespace _1STool1CD
 
 				        in_ = in_.Get_next();
 
-                        if (in_.Get_type() != Node_type.nd_number)
+                        if (in_.Get_type() != NodeType.nd_number)
                         {
                             Console.WriteLine($"Ошибка получения длины поля индекса таблицы. Узел не является числом. Блок, {block_descr}, Таблица {Name}, Индекс {ind.Name}, Поле индекса {field_name}");
                             Deletefields();
@@ -557,7 +557,7 @@ namespace _1STool1CD
             }
 
             f = t.Get_first();
-            if (f.Get_type() != Node_type.nd_string)
+            if (f.Get_type() != NodeType.nd_string)
             {
                 Console.WriteLine($"Ошибка получения типа блокировки таблицы. Ожидаемый узел Recordlock не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
@@ -578,7 +578,7 @@ namespace _1STool1CD
             }
 
             f = f.Get_next();
-            if (f.Get_type() != Node_type.nd_string)
+            if (f.Get_type() != NodeType.nd_string)
             {
                 Console.WriteLine($"Ошибка получения типа блокировки таблицы. Узел не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
@@ -623,7 +623,7 @@ namespace _1STool1CD
             }
 
             f = t.Get_first();
-            if (f.Get_type() != Node_type.nd_string)
+            if (f.Get_type() != NodeType.nd_string)
             {
                 Console.WriteLine($"Ошибка получения файлов таблицы. Ожидаемый узел Files не является строкой. Блок, {block_descr}, Таблица {Name}");
                 Deletefields();
@@ -646,7 +646,7 @@ namespace _1STool1CD
             for (i = 0; i < 3; i++)
             {
                 f = f.Get_next();
-                if (f.Get_type() != Node_type.nd_number)
+                if (f.Get_type() != NodeType.nd_number)
                 {
                     Console.WriteLine($"Ошибка получения файлов таблицы. Узел не является числом. Блок, {block_descr}, Таблица {Name}, Номер файла {i + 1}");
                     Deletefields();
@@ -701,7 +701,7 @@ namespace _1STool1CD
                     {
                         for (i = 1; i <= num_indexes; i++)
                         {
-                            if ((int)Base_.Version < (int)DBVer.ver8_3_8_0)
+                            if ((int)Base_.Version < (int)DBVer.ver_8_3_8_0)
                             {
                                 if (buf[i] >= File_index.Getlen())
                                 {
@@ -1064,7 +1064,7 @@ namespace _1STool1CD
             for (cr = ch_rec; cr != null; cr = cr.Next)
                 if (phys_numrecord == cr.Numrec)
                 {
-                    if (cr.Changed_type != Changed_rec_type.deleted)
+                    if (cr.Changed_type != ChangedRecType.deleted)
                     {
                         Array.Copy(cr.Rec, rec, recordlen);
                         return rec;
@@ -1232,12 +1232,12 @@ namespace _1STool1CD
 
         public void End_edit() { } // переводит таблицу в режим просмотра и сохраняет все изменения
 
-        public Changed_rec_type Get_rec_type(UInt32 phys_numrecord)
+        public ChangedRecType Get_rec_type(UInt32 phys_numrecord)
         {
             Changed_rec cr;
             if (!edit)
             {
-                return Changed_rec_type.not_changed;
+                return ChangedRecType.not_changed;
             }
             cr = ch_rec;
             while (cr != null)
@@ -1246,37 +1246,37 @@ namespace _1STool1CD
                     return cr.Changed_type;
                 cr = cr.Next;
             }
-            return Changed_rec_type.not_changed;
+            return ChangedRecType.not_changed;
         }
 
-        public Changed_rec_type Get_rec_type(UInt32 phys_numrecord, Int32 numfield)
+        public ChangedRecType Get_rec_type(UInt32 phys_numrecord, Int32 numfield)
         {
             Changed_rec cr;
             if (!edit)
             {
-                return Changed_rec_type.not_changed;
+                return ChangedRecType.not_changed;
             }
             cr = ch_rec;
             while (cr != null)
             {
                 if (cr.Numrec == phys_numrecord)
                 {
-                    if (cr.Changed_type == Changed_rec_type.changed)
+                    if (cr.Changed_type == ChangedRecType.changed)
                     {
-                        return cr.Fields[numfield] != '0' ? Changed_rec_type.changed : Changed_rec_type.not_changed;
+                        return cr.Fields[numfield] != '0' ? ChangedRecType.changed : ChangedRecType.not_changed;
                     }
                     return cr.Changed_type;
                 }
                 cr = cr.Next;
             }
-            return Changed_rec_type.not_changed;
+            return ChangedRecType.not_changed;
         }
 
         public void Set_edit_value(UInt32 phys_numrecord, Int32 numfield, bool Null, String value, Stream st = null) { }
 
         public void Restore_edit_value(UInt32 phys_numrecord, Int32 numfield) { }
 
-        public void Set_rec_type(UInt32 phys_numrecord, Changed_rec_type crt) { }
+        public void Set_rec_type(UInt32 phys_numrecord, ChangedRecType crt) { }
 
         public void Export_table(String path) { }
 

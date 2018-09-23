@@ -458,7 +458,7 @@ namespace _1STool1CD
         /// </summary>
         public void Flush()
         {
-            Fat_item fi = new Fat_item();
+            FatItem fi = new FatItem();
             v8file f;
 
             

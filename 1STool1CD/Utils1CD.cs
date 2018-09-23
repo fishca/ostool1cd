@@ -22,9 +22,9 @@ namespace _1STool1CD
             return Res;
         }
 
-        public static Objtab838 ByteArrayToObjtab838(byte[] src)
+        public static ObjTab838 ByteArrayToObjtab838(byte[] src)
         {
-            Objtab838 Res = new Objtab838();
+            ObjTab838 Res = new ObjTab838();
 
             Res.Blocks = new UInt32[1023];
             Array.Clear(Res.Blocks, 0, Res.Blocks.Length);
@@ -33,7 +33,7 @@ namespace _1STool1CD
             return Res;
         }
 
-        public static V8ob ByteArrayToV8ob(byte[] src)
+        public static V8Obj ByteArrayToV8ob(byte[] src)
         {
             // public char[] sig; // сигнатура SIG_OBJ
             // public UInt32 len; // длина файла
@@ -41,13 +41,13 @@ namespace _1STool1CD
             // public UInt32[] blocks; // 1018
 
             //V8ob Res = new V8ob();
-            V8ob Res = new V8ob();
+            V8Obj Res = new V8Obj();
 
             Res.Sig = Encoding.UTF8.GetChars(src, 0, 8);
             Res.Len = BitConverter.ToUInt32(src, 8);
             //Res.Version.Version_1 = BitConverter.ToUInt32(src, 12);
 
-            _version VV = new _version(0, 0, 0);
+            _Version VV = new _Version(0, 0, 0);
             VV.Version_1 = BitConverter.ToUInt32(src, 12);
             VV.Version_2 = BitConverter.ToUInt32(src, 16);
             VV.Version_3 = BitConverter.ToUInt32(src, 20);
@@ -64,7 +64,7 @@ namespace _1STool1CD
             return Res;
         }
 
-        public static V838ob_data ByteArrayTov838ob(byte[] src)
+        public static V838ObjData ByteArrayTov838ob(byte[] src)
         {
             // public char[] sig;       // сигнатура 0x1C 0xFD (1C File Data?)  sig[2];
             // public Int16 fatlevel;   // уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
@@ -72,7 +72,7 @@ namespace _1STool1CD
             // public UInt64 len;       // длина файла
             // public UInt32[] blocks;  // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)  blocks[1];
 
-            V838ob_data Res = new V838ob_data();
+            V838ObjData Res = new V838ObjData();
 
             //Res.sig = Encoding.UTF8.GetChars(src, 0, 2);
 
@@ -81,7 +81,7 @@ namespace _1STool1CD
 
             Res.Fatlevel = BitConverter.ToInt16(src, 2);
 
-            _version VV = new _version(0, 0, 0);
+            _Version VV = new _Version(0, 0, 0);
 
 
             VV.Version_1 = BitConverter.ToUInt32(src, 4);
@@ -101,19 +101,19 @@ namespace _1STool1CD
 
         }
 
-        public static V838ob_free ByteArrayTov838ob_free(byte[] src)
+        public static V838ObjFree ByteArrayTov838ob_free(byte[] src)
         {
             // public char[] sig;     // сигнатура 0x1C 0xFF (1C File Free?)
             // public Int16 fatlevel; // 0x0000 пока! но может ... уровень таблицы размещения (0x0000 - в таблице blocks номера страниц с данными, 0x0001 - в таблице blocks номера страниц с таблицами размещения второго уровня, в которых уже, в свою очередь, находятся номера страниц с данными)
             // public UInt32 version;        // ??? предположительно...
             // public UInt32[] blocks;       // Реальная длина массива зависит от размера страницы и равна pagesize/4-6 (от это 1018 для 4К до 16378 для 64К)
 
-            V838ob_free Res = new V838ob_free();
+            V838ObjFree Res = new V838ObjFree();
 
             //Res.sig = Encoding.UTF8.GetChars(src, 0, 2);
             Res.Sig = new byte[2];
             Array.Copy(src, 0, Res.Sig, 0, 2);
-            Res.Fatlevel = BitConverter.ToInt16(src, 2);
+            Res.FatLevel = BitConverter.ToInt16(src, 2);
             Res.Version = BitConverter.ToUInt32(src, 4);
             //Res.blocks = new UInt32[16378];
             Res.Blocks = new UInt32[1];

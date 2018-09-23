@@ -21,10 +21,10 @@ namespace _1STool1CD
         private Tools1CD _base;
 
         private UInt64 len;                 // длина объекта. Для типа таблицы свободных страниц - количество свободных блоков
-        private _version version;           // текущая версия объекта
-        private _version_rec version_rec;   // текущая версия записи
+        private _Version version;           // текущая версия объекта
+        private _VersionRec version_rec;   // текущая версия записи
         private bool new_version_recorded;  // признак, что новая версия объекта записана
-        private V8objtype type;             // тип и формат файла
+        private V8ObjType type;             // тип и формат файла
         private Int32 fatlevel;             // Количество промежуточных уровней в таблице размещения
         private UInt64 numblocks;           // кол-во страниц в корневой таблице размещения объекта
         private UInt32 real_numblocks;      // реальное кол-во страниц в корневой таблице (только для файлов свободных страниц, может быть больше numblocks)
@@ -65,13 +65,13 @@ namespace _1STool1CD
 
         public ulong Len { get { return len; } set { len = value; } }
 
-        public _version Version { get { return version; } set { version = value; } }
+        public _Version Version { get { return version; } set { version = value; } }
 
-        public _version_rec Version_rec { get { return version_rec; } set { version_rec = value; } }
+        public _VersionRec Version_rec { get { return version_rec; } set { version_rec = value; } }
 
         public bool New_version_recorded { get { return new_version_recorded; } set { new_version_recorded = value; } }
 
-        public V8objtype Type { get { return type; } set { type = value; } }
+        public V8ObjType Type { get { return type; } set { type = value; } }
 
         public int Fatlevel { get { return fatlevel; } set { fatlevel = value; } }
 
@@ -109,16 +109,16 @@ namespace _1STool1CD
             UInt32 cur_data_blocks;
             UInt32 bl;
             UInt32 i;
-            V8ob b;
-            V838ob_data bd;
-            Objtab838 bb;
+            V8Obj b;
+            V838ObjData bd;
+            ObjTab838 bb;
             UInt32 offsperpage;
             UInt64 maxlen;
             Int32 newfatlevel;
 
             if (Len == _len) return;
 
-            if (Type == V8objtype.free80 || Type == V8objtype.free838)
+            if (Type == V8ObjType.free80 || Type == V8ObjType.free838)
             {
                 // Таблица свободных блоков
                 Console.WriteLine("Попытка установки длины в файле свободных страниц");
@@ -127,7 +127,7 @@ namespace _1STool1CD
 
             Data = null;
 
-            if (Type == V8objtype.data80)
+            if (Type == V8ObjType.data80)
             {
 
                 b = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
@@ -203,7 +203,7 @@ namespace _1STool1CD
                 Write_new_version();
 
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 offsperpage = Base.Pagesize / 4;
                 maxlen = Base.Pagesize * offsperpage * (offsperpage - 6);
@@ -361,7 +361,7 @@ namespace _1STool1CD
 
             //memset(b, 0, _base->pagesize);
 
-            if (_base.Version < DBVer.ver8_3_8_0)
+            if (_base.Version < DBVer.ver_8_3_8_0)
             {
                 //memcpy(((v8ob*)b)->sig, SIG_OBJ, 8);
 
@@ -405,24 +405,24 @@ namespace _1STool1CD
             Last = this;
             if (blockNum == 1)
             {
-                if ((int)this.Base.Version < (int)DBVer.ver8_3_8_0)
-                    Type = V8objtype.free80;
+                if ((int)this.Base.Version < (int)DBVer.ver_8_3_8_0)
+                    Type = V8ObjType.free80;
                 else
-                    Type = V8objtype.free838;
+                    Type = V8ObjType.free838;
 
             }
             else
             {
-                if ((int)this.Base.Version < (int)DBVer.ver8_3_8_0)
-                    Type = V8objtype.data80;
+                if ((int)this.Base.Version < (int)DBVer.ver_8_3_8_0)
+                    Type = V8ObjType.data80;
                 else
-                    Type = V8objtype.data838;
+                    Type = V8ObjType.data838;
             }
 
-            if (Type == V8objtype.data80 || Type == V8objtype.free80)
+            if (Type == V8ObjType.data80 || Type == V8ObjType.free80)
             {
                 Fatlevel = 1;
-                V8ob t = new V8ob();
+                V8Obj t = new V8Obj();
                 Byte[] buf = new Byte[0x1000];
 
                 //this._base.getblock(t, (UInt32)blockNum);
@@ -431,14 +431,14 @@ namespace _1STool1CD
                 t = ByteArrayToV8ob(buf);
                 if (!t.Sig.SequenceEqual(SIG_OBJ))
                 {
-                    t = new V8ob();
+                    t = new V8Obj();
                     Init();
                     Console.WriteLine($"Ошибка получения объекта из блока. Блок не является объектом. Блок {blockNum}");
                 }
 
                 Len = t.Len;
 
-                _version VV = new _version();
+                _Version VV = new _Version();
                 VV.Version_1 = t.Version.Version_1;
                 VV.Version_2 = t.Version.Version_2;
                 VV.Version_3 = t.Version.Version_3;
@@ -451,7 +451,7 @@ namespace _1STool1CD
                 Version = VV;
 
 
-                _version_rec VR = new _version_rec();
+                _VersionRec VR = new _VersionRec();
 
                 /*
                 Version_rec.Version_1 = Version.Version_1 + 1;
@@ -468,7 +468,7 @@ namespace _1STool1CD
                 Real_numblocks = 0;
                 Data = null;
 
-                if (Type == V8objtype.free80)
+                if (Type == V8ObjType.free80)
                 {
                     if (Len != 0)
                         Numblocks = (Len - 1) / 0x400 + 1;
@@ -507,11 +507,11 @@ namespace _1STool1CD
                 }
 
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 byte[] b = new byte[this.Base.Pagesize];
                 this.Base.Getblock(ref b, (UInt32)blockNum);
-                V838ob_data t = ByteArrayTov838ob(b);
+                V838ObjData t = ByteArrayTov838ob(b);
                 if (t.Sig[0] != 0x1c || t.Sig[1] != 0xfd)
                 {
                     b = null;
@@ -529,7 +529,7 @@ namespace _1STool1CD
                     return;
                 }
 
-                _version VV = new _version();
+                _Version VV = new _Version();
 
                 VV.Version_1 = t.Version.Version_1;
                 VV.Version_2 = t.Version.Version_2;
@@ -543,7 +543,7 @@ namespace _1STool1CD
 
                 Version = VV;
 
-                _version_rec VR = new _version_rec();
+                _VersionRec VR = new _VersionRec();
 
                 VR.Version_2 = Version.Version_1 + 1;
                 VR.Version_2 = 0;
@@ -593,7 +593,7 @@ namespace _1STool1CD
 
                 this.Base.Getblock(ref b, (UInt32)blockNum);
 
-                V838ob_free t = ByteArrayTov838ob_free(b);
+                V838ObjFree t = ByteArrayTov838ob_free(b);
 
                 if (t.Sig[0] != 0x1c || t.Sig[1] != 0xff)
                 {
@@ -606,7 +606,7 @@ namespace _1STool1CD
                 Len = 0; // ВРЕМЕННО! Пока не понятна структура файла свободных страниц
 
 
-                _version VV = new _version();
+                _Version VV = new _Version();
 
                 VV.Version_1 = t.Version;
 
@@ -619,7 +619,7 @@ namespace _1STool1CD
                 Version_rec.Version_2 = 0;
                 */
 
-                _version_rec VR = new _version_rec();
+                _VersionRec VR = new _VersionRec();
 
                 VR.Version_1 = Version.Version_1 + 1;
                 VR.Version_2 = 0;
@@ -663,7 +663,7 @@ namespace _1STool1CD
         {
             Len = 0;
 
-            _version VV = new _version();
+            _Version VV = new _Version();
 
             VV.Version_1 = 0;
             VV.Version_2 = 0;
@@ -677,7 +677,7 @@ namespace _1STool1CD
             Version_rec.Version_1 = 0;
             Version_rec.Version_2 = 0;
             */
-            _version_rec VR = new _version_rec();
+            _VersionRec VR = new _VersionRec();
             VR.Version_1 = 0;
             VR.Version_2 = 0;
             Version_rec = VR;
@@ -691,7 +691,7 @@ namespace _1STool1CD
             Block = 999999;
             Data = null;
             Lockinmemory = false;
-            Type = V8objtype.unknown;
+            Type = V8ObjType.unknown;
             Fatlevel = 0;
         }
 
@@ -704,7 +704,7 @@ namespace _1STool1CD
 
             byte[] tt;
             ObjTab b;
-            Objtab838 bb;
+            ObjTab838 bb;
             UInt32 i, l;
             Int32 j, pagesize, blocksperpage;
             UInt64 ll;
@@ -717,7 +717,7 @@ namespace _1STool1CD
             if (Data != null)
                 return Data;
 
-            if (Type == V8objtype.free80)
+            if (Type == V8ObjType.free80)
             {
                 l = (UInt32)Len * 4;
                 Data = new byte[l];
@@ -731,7 +731,7 @@ namespace _1STool1CD
                 }
                 Base.Getblock(ref tt, Blocks[i], (Int32)l);
             }
-            else if (Type == V8objtype.data80)
+            else if (Type == V8ObjType.data80)
             {
                 l = (UInt32)Len;
                 Data = new byte[l];
@@ -755,7 +755,7 @@ namespace _1STool1CD
                     if (l <= curlen) break;
                 }
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 pagesize = (Int32)Base.Pagesize;
                 blocksperpage = pagesize / 4;
@@ -794,7 +794,7 @@ namespace _1STool1CD
                     }
                 }
             }
-            else if (Type == V8objtype.free838)
+            else if (Type == V8ObjType.free838)
             {
                 // TODO: реализовать v8object::getdata() для файла свободных страниц формата 8.3.8
             }
@@ -823,7 +823,7 @@ namespace _1STool1CD
             UInt32 offsperpage = 0;
 
             ObjTab b;
-            Objtab838 bb;
+            ObjTab838 bb;
             UInt32 curobjblock = 0;
             UInt32 curoffobjblock = 0;
 
@@ -834,7 +834,7 @@ namespace _1STool1CD
             }
             else
             {
-                if (Type == V8objtype.free80)
+                if (Type == V8ObjType.free80)
                 {
                     if (_start + _length > Len * 4)
                     {
@@ -863,7 +863,7 @@ namespace _1STool1CD
                     }
 
                 }
-                else if (Type == V8objtype.data80)
+                else if (Type == V8ObjType.data80)
                 {
                     if (_start + _length > Len)
                     {
@@ -910,7 +910,7 @@ namespace _1STool1CD
                         }
                     }
                 }
-                else if (Type == V8objtype.data838)
+                else if (Type == V8ObjType.data838)
                 {
                     if (_start + _length > Len)
                     {
@@ -986,7 +986,7 @@ namespace _1STool1CD
                     }
 
                 }
-                else if (Type == V8objtype.free838)
+                else if (Type == V8ObjType.free838)
                 {
                     // TODO: реализовать V8Object::getdata для файла свободных страниц формата 8.3.8
                 }
@@ -1020,7 +1020,7 @@ namespace _1STool1CD
                 return false;
             }
 
-            if (Type == V8objtype.free80 || Type == V8objtype.free838)
+            if (Type == V8ObjType.free80 || Type == V8ObjType.free838)
             {
                 Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
@@ -1035,7 +1035,7 @@ namespace _1STool1CD
                 Set_len(_start + _length);
             }
 
-            if (Type == V8objtype.data80)
+            if (Type == V8ObjType.data80)
             {
                 curblock = (UInt32)_start >> 12;
 
@@ -1078,7 +1078,7 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 curblock = (UInt32)_start / Base.Pagesize;
 
@@ -1097,7 +1097,7 @@ namespace _1STool1CD
                     curoffobjblock = curblock - curobjblock * offsperpage;
 
                     //objtab838* bb = (objtab838*)base->getblock(blocks[curobjblock++]);
-                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
+                    ObjTab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
                     destIndex = 0;
                     while (_length != 0)
                     {
@@ -1169,7 +1169,7 @@ namespace _1STool1CD
                 return false;
             }
 
-            if (Type == V8objtype.free80 || Type == V8objtype.free838)
+            if (Type == V8ObjType.free80 || Type == V8ObjType.free838)
             {
                 Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
@@ -1180,7 +1180,7 @@ namespace _1STool1CD
 
             _buf = buf;
 
-            if (Type == V8objtype.data80)
+            if (Type == V8ObjType.data80)
             {
                 for (UInt32 i = 0; i < Numblocks; i++)
                 {
@@ -1218,7 +1218,7 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 curblock = 0;
                 srcIndex = 0;
@@ -1232,7 +1232,7 @@ namespace _1STool1CD
                     curoffobjblock = 0;
 
                     //objtab838* bb = (objtab838*)base->getblock(blocks[curobjblock++]);
-                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
+                    ObjTab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
 
                     while (_length != 0)
                     {
@@ -1297,7 +1297,7 @@ namespace _1STool1CD
                 return false;
             }
 
-            if (Type == V8objtype.free80 || Type == V8objtype.free838)
+            if (Type == V8ObjType.free80 || Type == V8ObjType.free838)
             {
                 Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
@@ -1313,7 +1313,7 @@ namespace _1STool1CD
             //stream->Seek(0, soFromBeginning);
             stream.Seek(0, SeekOrigin.Begin);
 
-            if (Type == V8objtype.data80)
+            if (Type == V8ObjType.data80)
             {
                 for (UInt32 i = 0; i < Numblocks; i++)
                 {
@@ -1341,7 +1341,7 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 curblock = 0;
 
@@ -1353,7 +1353,7 @@ namespace _1STool1CD
                     curobjblock = 0;
                     curoffobjblock = 0;
 
-                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
+                    ObjTab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
 
                     while (_length != 0)
                     {
@@ -1411,7 +1411,7 @@ namespace _1STool1CD
                 return false;
             }
 
-            if (Type == V8objtype.free80 || Type == V8objtype.free838)
+            if (Type == V8ObjType.free80 || Type == V8ObjType.free838)
             {
                 Console.WriteLine($"Попытка прямой записи в файл свободных страниц. Номер страницы файла {Block}");
                 return false;
@@ -1425,7 +1425,7 @@ namespace _1STool1CD
             if (_start + _length > Len)
                 Set_len(_start + _length);
 
-            if (Type == V8objtype.data80)
+            if (Type == V8ObjType.data80)
             {
                 curblock = (UInt32)_start >> 12;
                 curoffblock = (UInt32)_start - (curblock << 12);
@@ -1456,7 +1456,7 @@ namespace _1STool1CD
                 Write_new_version();
                 return true;
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 curblock = (UInt32)_start / Base.Pagesize;
                 curoffblock = (UInt32)_start - (curblock * Base.Pagesize);
@@ -1468,7 +1468,7 @@ namespace _1STool1CD
                     curobjblock = curblock / offsperpage;
                     curoffobjblock = curblock - curobjblock * offsperpage;
 
-                    Objtab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
+                    ObjTab838 bb = ByteArrayToObjtab838(Base.Getblock(Blocks[curobjblock++]));
 
                     while (_length != 0)
                     {
@@ -1511,7 +1511,7 @@ namespace _1STool1CD
         /// <returns></returns>
         public UInt64 Getlen()
         {
-            return (Type == V8objtype.free80) ? (Len * 4) : Len;
+            return (Type == V8ObjType.free80) ? (Len * 4) : Len;
         }
 
         /// <summary>
@@ -1560,20 +1560,20 @@ namespace _1STool1CD
         {
             UInt32 _start = (UInt32)offset;
             ObjTab b;
-            Objtab838 bb;
+            ObjTab838 bb;
             UInt32 curblock;
             UInt32 curoffblock;
             UInt32 curobjblock;
             UInt32 curoffobjblock;
             UInt32 offsperpage;
 
-            if (Type == V8objtype.free80)
+            if (Type == V8ObjType.free80)
             {
                 curblock = _start >> 12;
                 curoffblock = _start - (curblock << 12);
                 return (((UInt64)(Blocks[curblock])) << 12) + curoffblock;
             }
-            else if (Type == V8objtype.data80)
+            else if (Type == V8ObjType.data80)
             {
                 curblock = _start >> 12;
                 curoffblock = _start - (curblock << 12);
@@ -1586,7 +1586,7 @@ namespace _1STool1CD
 
                 return (((UInt64)(b.Blocks[curoffobjblock])) << 12) + curoffblock;
             }
-            else if (Type == V8objtype.data838)
+            else if (Type == V8ObjType.data838)
             {
                 curblock = _start / Base.Pagesize;
                 curoffblock = _start - (curblock * Base.Pagesize);
@@ -1605,7 +1605,7 @@ namespace _1STool1CD
                 }
             }
 
-            else if (Type == V8objtype.free838)
+            else if (Type == V8ObjType.free838)
             {
                 // TODO: реализовать v8object::get_fileoffset для файла свободных страниц формата 8.3.8
                 return 0;
@@ -1631,7 +1631,7 @@ namespace _1STool1CD
             Int32 i = (Int32)Len & 0x3ff; // length % 1024
 
             //v8ob ob = (v8ob*)base->getblock_for_write(block, true);
-            V8ob ob = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
+            V8Obj ob = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
 
             if (Real_numblocks > j)
             {
@@ -1679,7 +1679,7 @@ namespace _1STool1CD
                 b[i] = 0;
 
                 //v8ob* ob = (v8ob*)base->getblock_for_write(block, true);
-                V8ob ob = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
+                V8Obj ob = ByteArrayToV8ob(Base.Getblock_for_write(Block, true));
 
                 ob.Len = (UInt32)Len;
 
@@ -1700,12 +1700,12 @@ namespace _1STool1CD
         /// получает версию очередной записи и увеличивает сохраненную версию объекта
         /// </summary>
         /// <param name="ver"></param>
-        public void Get_version_rec_and_increase(_version ver)
+        public void Get_version_rec_and_increase(_Version ver)
         {
             ver.Version_1 = Version_rec.Version_1;
             ver.Version_2 = Version_rec.Version_2;
 
-            _version_rec VR = new _version_rec();
+            _VersionRec VR = new _VersionRec();
 
             VR.Version_1 = Version_rec.Version_1;
             VR.Version_2++;
@@ -1720,7 +1720,7 @@ namespace _1STool1CD
         /// получает сохраненную версию объекта
         /// </summary>
         /// <param name="ver"></param>
-        public void Get_version(_version ver)
+        public void Get_version(_Version ver)
         {
             ver.Version_1 = Version.Version_1;
             ver.Version_2 = Version.Version_2;
@@ -1731,9 +1731,9 @@ namespace _1STool1CD
         /// </summary>
         public void Write_new_version()
         {
-            _version new_ver = new _version(0,0,0);
+            _Version new_ver = new _Version(0,0,0);
             if (New_version_recorded) return;
-            Int32 veroffset = Type == V8objtype.data80 || Type == V8objtype.free80 ? 12 : 4;
+            Int32 veroffset = Type == V8ObjType.data80 || Type == V8ObjType.free80 ? 12 : 4;
 
             new_ver.Version_1 = Version.Version_1 + 1;
             new_ver.Version_2 = Version.Version_2;
